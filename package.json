@@ -5,9 +5,16 @@
   "repository": "git@github.com:mturley/konveyor-common-ui.git",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-node-resolve": "^8.4.0",
     "@types/react": "^16.9.44",
+    "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "rollup": "^2.23.0",
+    "rollup-plugin-peer-deps-external": "^2.2.3",
+    "rollup-plugin-postcss": "^3.1.3",
+    "rollup-plugin-typescript2": "^0.27.1",
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
