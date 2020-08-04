@@ -1,0 +1,17 @@
+{
+  "name": "konveyor-common-ui",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:mturley/konveyor-common-ui.git",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/react": "^16.9.44",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.9.7"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
