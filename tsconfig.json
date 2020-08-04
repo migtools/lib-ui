@@ -13,16 +13,12 @@
     "noImplicitThis": true,
     "noImplicitAny": false,
     "allowSyntheticDefaultImports": true,
+    "allowJs": true,
     "esModuleInterop": true,
     "strict": true,
     "importHelpers": true,
     "skipLibCheck": true
   },
   "include": ["src/**/*"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "src/**/*.stories.tsx",
-    "src/**/*.test.tsx"
-  ]
+  "exclude": ["node_modules", "dist", "src/**/*.stories.tsx", "src/**/*.test.tsx"]
 }
