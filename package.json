@@ -15,16 +15,22 @@
     "type-check": "yarn tsc --noEmit",
     "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "storybook": "start-storybook -p 6006",
+    "storybook:export": "build-storybook"
   },
   "devDependencies": {
+    "@babel/core": "^7.11.1",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@storybook/react": "^6.0.12",
     "@types/jest": "^26.0.8",
     "@types/react": "^16.9.44",
     "@types/rollup-plugin-postcss": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
+    "babel-loader": "^8.1.0",
+    "babel-preset-react-app": "^9.1.2",
     "eslint": "^7.6.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-prettier": "^3.1.4",
@@ -40,6 +46,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-postcss": "^3.1.3",
     "rollup-plugin-typescript2": "^0.27.1",
+    "sass-loader": "^9.0.3",
     "ts-jest": "^26.1.4",
     "typescript": "^3.9.7"
   },
