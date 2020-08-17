@@ -16,9 +16,9 @@ module.exports = {
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    '\\.(css|less)$': '<rootDir>/__mocks__/styleMock.js',
-    '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      '<rootDir>/__mocks__/fileMock.js',
+    '\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+      'identity-obj-proxy',
+    '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
   },
 
   // A preset that is used as a base for Jest's configuration
@@ -26,4 +26,6 @@ module.exports = {
 
   // The test environment that will be used for testing.
   testEnvironment: 'jsdom',
+
+  setupFilesAfterEnv: ['./jest.setup.ts'],
 };
