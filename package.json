@@ -1,7 +1,11 @@
 {
   "name": "konveyor-common-ui",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "files": [
+    "dist"
+  ],
   "repository": "git@github.com:mturley/konveyor-common-ui.git",
   "license": "Apache-2.0",
   "scripts": {
@@ -10,7 +14,8 @@
     "format": "prettier --check --write ./src/**/*.{tsx,ts}",
     "type-check": "yarn tsc --noEmit",
     "ci": "yarn type-check && yarn lint && yarn test",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "build": "rollup -c"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^14.0.0",
