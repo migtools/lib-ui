@@ -1,8 +1,8 @@
 # konveyor-common-ui
 
-Reusable React components and TypeScript modules shared between Konveyor UI projects.
+Reusable React components, hooks, and TypeScript modules shared between Konveyor UI projects.
 
-This library exists as a place to store and reuse abstractions (React components and hooks, generic JS/TS helpers) that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
+This library exists as a place to store and reuse abstractions that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
@@ -28,11 +28,11 @@ If you need to use an unpublished branch (such as when developing an app PR and 
 
 **_TODO: figure out details here_**
 
-We should avoid releasing apps this way, installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
+We should avoid leaving apps configured this way; installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
 
 ### Install peer dependencies
 
-This package depends has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
+This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
 When you install @konveyor/common-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
 
@@ -106,7 +106,7 @@ When you add a new component, be sure to also export it at the top level (`src/i
 TODO:
 
 - Add docs extension for Storybook
-- Publish Storybook to GitHub pages
+- Publish Storybook to GitHub pages and link it at the top of the repo
 - Test importing the TestComponent into another project via GitHub dependency href? Can we do that?
 - Look into automated NPM releases when merging PRs or something like that?
 - Add reusable components from mig-ui and virt-ui
