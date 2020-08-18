@@ -16,7 +16,7 @@
     "type-check": "yarn tsc --noEmit",
     "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist",
-    "build": "rollup -c",
+    "build": "yarn clean && rollup -c",
     "storybook": "start-storybook -p 6006",
     "storybook:export": "build-storybook"
   },
