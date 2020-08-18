@@ -39,7 +39,7 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
 ## Development
 
 ```sh
-git clone git@github.com:mturley/konveyor-common-ui.git
+git clone https://github.com/mturley/konveyor-common-ui.git
 cd konveyor-common-ui
 yarn install
 ```
