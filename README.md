@@ -60,12 +60,6 @@ To run the [Storybook](https://storybook.js.org/) dev server (examples and docs)
 yarn storybook
 ```
 
-To build the library bundle using Rollup (outputs to `./dist`):
-
-```sh
-yarn build
-```
-
 To run the type-checker, linter and unit tests:
 
 ```sh
@@ -81,6 +75,12 @@ To run Prettier and format your code (do this before committing if you don't run
 
 ```sh
 yarn format
+```
+
+To build the library bundle using Rollup (outputs to `./dist`):
+
+```sh
+yarn build
 ```
 
 To export the Storybook docs as a static site (outputs to `./storybook-static`):

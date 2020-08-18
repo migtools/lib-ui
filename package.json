@@ -12,13 +12,13 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "lint": "eslint --ext .tsx,.js ./src/",
-    "format": "prettier --check --write ./src/**/*.{tsx,ts}",
+    "format": "prettier --check --write ./src/**/*.{tsx,ts,scss}",
     "type-check": "yarn tsc --noEmit",
     "ci": "yarn type-check && yarn lint && yarn test",
-    "clean": "rimraf dist",
-    "build": "yarn clean && rollup -c",
+    "clean": "rimraf dist && rimraf storybook-static",
+    "build": "rimraf dist && rollup -c",
     "storybook": "start-storybook -p 6006",
-    "storybook:export": "build-storybook"
+    "storybook:export": "rimraf storybook-static && build-storybook"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
