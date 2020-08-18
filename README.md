@@ -32,7 +32,9 @@ We should avoid releasing apps this way, installing from npm will be more effici
 
 ### Install peer dependencies
 
-This package has React and PatternFly packages as peer dependencies. When you install @konveyor/common-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
+This package depends has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
+
+When you install @konveyor/common-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
 
 ### Use it!
 

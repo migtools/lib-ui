@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
+    "@patternfly/react-core": "^4.40.4",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@storybook/react": "^6.0.12",
@@ -55,6 +56,7 @@
     "typescript": "^3.9.7"
   },
   "peerDependencies": {
+    "@patternfly/react-core": "^4.40.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }
