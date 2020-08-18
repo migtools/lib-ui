@@ -6,7 +6,7 @@ Reusable React components and TypeScript modules shared between Konveyor UI proj
 
 ## Usage
 
-**_TODO: figure out details of publishing to npm or adding a prepare script so we can import directly from GitHub_**
+**_Note: this isn't actually published yet, we need to move it to the konveyor GitHub org and configure automation. TODO: figure out details of publishing to npm or adding a prepare script so we can import directly from GitHub._**
 
 ### Install from npm
 
