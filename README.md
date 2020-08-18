@@ -1,8 +1,8 @@
 # konveyor-common-ui
 
-Reusable React components and TypeScript modules shared between Konveyor UI projects.
+Reusable React components, hooks, and TypeScript modules shared between Konveyor UI projects.
 
-This library exists as a place to store and reuse abstractions (React components and hooks, generic JS/TS helpers) that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
+This library exists as a place to store and reuse abstractions that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
