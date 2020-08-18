@@ -28,11 +28,11 @@ If you need to use an unpublished branch (such as when developing an app PR and 
 
 **_TODO: figure out details here_**
 
-We should avoid releasing apps this way, installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
+We should avoid leaving apps configured this way; installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
 
 ### Install peer dependencies
 
-This package depends has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
+This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
 When you install @konveyor/common-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
 
