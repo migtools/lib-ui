@@ -106,7 +106,7 @@ When you add a new component, be sure to also export it at the top level (`src/i
 TODO:
 
 - Add docs extension for Storybook
-- Publish Storybook to GitHub pages
+- Publish Storybook to GitHub pages and link it at the top of the repo
 - Test importing the TestComponent into another project via GitHub dependency href? Can we do that?
 - Look into automated NPM releases when merging PRs or something like that?
 - Add reusable components from mig-ui and virt-ui
