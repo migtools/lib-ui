@@ -55,6 +55,8 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
 
 ### Quick-start
 
+Clone and install dependencies:
+
 ```sh
 git clone https://github.com/mturley/konveyor-common-ui.git
 cd konveyor-common-ui
