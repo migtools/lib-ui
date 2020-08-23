@@ -46,7 +46,7 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
 
 ---
 
-## Development
+## Development Quick-start
 
 ```sh
 git clone https://github.com/mturley/konveyor-common-ui.git
@@ -54,11 +54,13 @@ cd konveyor-common-ui
 yarn install
 ```
 
-To run the [Storybook](https://storybook.js.org/) dev server (examples and docs) at http://localhost:6006:
+Run the [Storybook](https://storybook.js.org/) dev server (examples and docs) at http://localhost:6006:
 
 ```sh
 yarn storybook
 ```
+
+## Development Scripts
 
 To run the type-checker, linter and unit tests:
 
@@ -67,17 +69,17 @@ To run the type-checker, linter and unit tests:
 yarn ci
 # Or run them individually:
 yarn type-check
-yarn lint
-yarn test # or yarn test:watch
+yarn lint [--fix]
+yarn test [--watch]
 ```
 
-To run Prettier and format your code (do this before committing if you don't run Prettier in your editor)
+[Prettier](https://prettier.io/) code formatting is enforced by ESLint. To run Prettier and format your code (do this before committing if you don't run Prettier in your editor):
 
 ```sh
 yarn format
 ```
 
-To build the library bundle using Rollup (outputs to `./dist`):
+To run a production build using Rollup (outputs to `./dist`):
 
 ```sh
 yarn build
@@ -89,7 +91,7 @@ To export the Storybook docs as a static site (outputs to `./storybook-static`):
 yarn storybook:export
 ```
 
-### Structure
+## File Structure
 
 Components live in `src/MyComponent/` directories, which should each contain:
 
@@ -103,7 +105,7 @@ When you add a new component, be sure to also export it at the top level (`src/i
 
 ---
 
-TODO:
+## TODO:
 
 - Add docs extension for Storybook
 - Publish Storybook to GitHub pages and link it at the top of the repo
