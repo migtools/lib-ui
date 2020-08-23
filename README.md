@@ -46,7 +46,14 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
 
 ---
 
-## Development Quick-start
+## Development
+
+### Prerequisites
+
+- [NodeJS](https://nodejs.org/en/) >= 12.x
+- [Yarn "Classic"](https://classic.yarnpkg.com/lang/en/) (1.x)
+
+### Quick-start
 
 ```sh
 git clone https://github.com/mturley/konveyor-common-ui.git
@@ -60,7 +67,7 @@ Run the [Storybook](https://storybook.js.org/) dev server (examples and docs) at
 yarn storybook
 ```
 
-## Development Scripts
+### Scripts
 
 To run the type-checker, linter and unit tests:
 
