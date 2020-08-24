@@ -1,11 +1,15 @@
 name: PR Storybook Preview
-on: pull_request_target
+on: pull_request
 
 jobs:
   deploy-pr-preview:
     name: Deploy to Surge
     runs-on: ubuntu-18.04
     steps:
+      - name: Set up token
+        id: token
+        # This is a base64-encoded OAuth token for the "konveyor-preview-bot" GitHub account, which has no secure access.
+        run: echo "::set-output name=GH_TOKEN::`echo 'ODk3MzkyNzJlMDQwZjQ3YThhODJjYjYwZmFhM2RlOWQ3ZTk2YWM3OQo=' | base64 -d`"
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup Node.js
@@ -20,7 +24,7 @@ jobs:
         uses: actions/github-script@v3
         id: surge-url
         with:
-          github-token: ${{ secrets.GH_TOKEN }}
+          github-token: ${{ steps.token.outputs.GH_TOKEN }}
           script: |
             const { issue: { number: issue_number } } = context;
             return `konveyor-lib-ui-pr-${issue_number}-preview.surge.sh`;
@@ -28,9 +32,9 @@ jobs:
       - name: Install Surge
         run: npm install -g surge
       - name: Deploy Storybook to Surge
-        run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token ${{ secrets.SURGE_TOKEN }}
+        run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token 62bd7a07b9bf812ff8d3ea91ccd2dc2f
       - name: Post URL as PR comment
         uses: mshick/add-pr-comment@v1
         with:
           message: "🚀 Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}} ✨"
-          repo-token: ${{ secrets.GH_TOKEN }}
+          repo-token: ${{ steps.token.outputs.GH_TOKEN }}
