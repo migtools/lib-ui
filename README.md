@@ -40,7 +40,7 @@ When you install @konveyor/common-ui, you should get a warning from your package
 In your JS/TS, Import named modules from the library, just like PatternFly:
 
 ```js
-import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
+import { MyComponent, useSomeHook } from '@konveyor/common-ui';
 ```
 
 ---
