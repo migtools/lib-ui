@@ -2,7 +2,7 @@ import React from 'react';
 import TestComponent from './TestComponent';
 
 export default {
-  title: 'TestComponent',
+  title: 'Components/TestComponent',
 };
 
 export const Primary: React.FunctionComponent = () => <TestComponent theme="primary" />;
