@@ -1,0 +1,37 @@
+name: PR Storybook Preview
+on: pull_request_target
+
+jobs:
+  deploy-pr-preview:
+    name: Deploy to Surge
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Install dependencies
+        run: yarn install
+      - name: Build Storybook
+        run: yarn storybook:export
+      - name: Generate Surge URL
+        uses: actions/github-script@v3
+        id: surge-url
+        with:
+          github-token: ${{ secrets.GH_TOKEN }}
+          script: |
+            const { issue: { number: issue_number } } = context;
+            return `konveyor-common-ui-pr-${issue_number}-preview.surge.sh`;
+          result-encoding: string
+      - name: Install Surge
+        run: npm install -g surge
+      - name: Deploy Storybook to Surge
+        run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token ${{ secrets.SURGE_TOKEN }}
+      - name: Post URL as PR comment
+        uses: unsplash/comment-on-pr@v1.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        with:
+          msg: "✨ Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}}"
