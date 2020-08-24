@@ -101,6 +101,22 @@ To export the Storybook docs as a static site (outputs to `./storybook-static`):
 yarn storybook:export
 ```
 
+## Triggering an npm release
+
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) via GitHub Actions to automate its npm releases. When a PR is merged to master, it is checked for specific key words in the commit message to decide whether a release needs to be made, and whether it will be a minor or major version bump.
+
+To assist in formatting commit messages correctly for this purpose, the repo is set up for use with [Commitizen](http://commitizen.github.io/cz-cli/), which provides a CLI for guided commit messages.
+
+**To make a commit that should trigger a release**:
+
+First, `git add` any changes you want to commit, then:
+
+```sh
+yarn commit
+```
+
+Follow the prompts based on the scope of your commit. When your commit is merged to master, an automatic release will be triggered and a message will be posted to your PR when it is complete.
+
 ## File Structure
 
 Components live in `src/MyComponent/` directories, which should each contain:
