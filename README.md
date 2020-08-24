@@ -6,7 +6,7 @@ This library exists as a place to store and reuse abstractions that are useful f
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
-[![Build Status](https://travis-ci.com/mturley/konveyor-common-ui.svg?branch=master)](https://travis-ci.com/mturley/konveyor-common-ui)
+[![Build Status](https://travis-ci.com/konveyor/konveyor-common-ui.svg?branch=master)](https://travis-ci.com/konveyor/konveyor-common-ui)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Usage
@@ -59,7 +59,7 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui`;
 Clone and install dependencies:
 
 ```sh
-git clone https://github.com/mturley/konveyor-common-ui.git
+git clone https://github.com/konveyor/konveyor-common-ui.git
 cd konveyor-common-ui
 yarn install
 ```
