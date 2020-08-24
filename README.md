@@ -11,8 +11,6 @@ The React components in this library are compositions and extensions of [pattern
 
 ## Usage
 
-**_Note: this isn't actually published yet, we need to move it to the konveyor GitHub org and configure automation. TODO: figure out details of publishing to npm or adding a prepare script so we can import directly from GitHub._**
-
 ### Install from npm
 
 In your app repo, install the library as a normal npm dependency:
