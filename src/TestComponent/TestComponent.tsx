@@ -7,7 +7,7 @@ export interface TestComponentProps {
 
 const TestComponent: React.FunctionComponent<TestComponentProps> = ({ theme }) => (
   <div data-testid="test-component" className={`test-component test-component-${theme}`}>
-    <h1 className="heading">Test component</h1>
+    <h1 className="heading">Test component v1</h1>
   </div>
 );
 
