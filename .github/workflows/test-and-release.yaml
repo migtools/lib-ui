@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   test-and-release:
-    name: Run tests and release
+    name: Run tests and release to npm
     runs-on: ubuntu-18.04
     steps:
       - name: Checkout
