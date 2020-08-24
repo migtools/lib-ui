@@ -32,5 +32,5 @@ jobs:
       - name: Post URL as PR comment
         uses: mshick/add-pr-comment@v1
         with:
-          message: "✨ Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}}"
+          message: "🚀 Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}} ✨"
           repo-token: ${{ secrets.GH_TOKEN }}
