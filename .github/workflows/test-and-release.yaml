@@ -31,4 +31,4 @@ jobs:
       - name: Install Surge
         run: npm install -g surge
       - name: Deploy Storybook to Surge
-        run: surge ./storybook-static/ konveyor-common-ui.surge.sh --token ${{ secrets.SURGE_TOKEN }}
+        run: surge ./storybook-static/ lib-ui.surge.sh --token ${{ secrets.SURGE_TOKEN }}
