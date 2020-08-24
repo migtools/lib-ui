@@ -135,3 +135,4 @@ When you add a new component, be sure to also export it at the top level (`src/i
 - Test importing the TestComponent into another project via GitHub dependency href? Can we do that?
 - Add reusable components from mig-ui and virt-ui
 - Start actually using the thing
+- Unit tests?
