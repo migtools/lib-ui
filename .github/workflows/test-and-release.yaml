@@ -1,5 +1,8 @@
 name: Test and Release
-on: [push]
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   test-and-release:
@@ -23,3 +26,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: yarn run semantic-release
+      - name: Build Storybook
+        run: yarn storybook:export
+      - name: Install Surge
+        run: npm install -g surge
+      - name: Deploy Storybook to Surge
+        run: surge ./storybook-static/ konveyor-common-ui.surge.sh --token ${{ secrets.SURGE_TOKEN }}
