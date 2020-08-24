@@ -49,7 +49,7 @@ import { MyComponent, useSomeHook } from '@konveyor/lib-ui';
 
 ### Prerequisites
 
-- [NodeJS](https://nodejs.org/en/) >= 12.x
+- [NodeJS](https://nodejs.org/en/) >= 10.x
 - [Yarn "Classic"](https://classic.yarnpkg.com/lang/en/) (1.x)
 
 ### Quick-start
