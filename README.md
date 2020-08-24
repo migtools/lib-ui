@@ -1,4 +1,4 @@
-# konveyor-common-ui
+# @konveyor/lib-ui
 
 Reusable React components, hooks, and TypeScript modules shared between Konveyor UI projects.
 
@@ -6,7 +6,7 @@ This library exists as a place to store and reuse abstractions that are useful f
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
-[![Build Status](https://travis-ci.com/konveyor/konveyor-common-ui.svg?branch=master)](https://travis-ci.com/konveyor/konveyor-common-ui)
+[![Build Status](https://travis-ci.com/konveyor/lib-ui.svg?branch=master)](https://travis-ci.com/konveyor/lib-ui)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 ## Usage
@@ -16,9 +16,9 @@ The React components in this library are compositions and extensions of [pattern
 In your app repo, install the library as a normal npm dependency:
 
 ```sh
-yarn add @konveyor/common-ui
+yarn add @konveyor/lib-ui
 # or:
-npm install @konveyor/common-ui
+npm install @konveyor/lib-ui
 ```
 
 ### Or, install from GitHub
@@ -33,14 +33,14 @@ We should avoid leaving apps configured this way; installing from npm will be mo
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
-When you install @konveyor/common-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
+When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
 
 ### Use it!
 
 In your JS/TS, Import named modules from the library, just like PatternFly:
 
 ```js
-import { MyComponent, useSomeHook } from '@konveyor/common-ui';
+import { MyComponent, useSomeHook } from '@konveyor/lib-ui';
 ```
 
 ---
@@ -57,8 +57,8 @@ import { MyComponent, useSomeHook } from '@konveyor/common-ui';
 Clone and install dependencies:
 
 ```sh
-git clone https://github.com/konveyor/konveyor-common-ui.git
-cd konveyor-common-ui
+git clone https://github.com/konveyor/lib-ui.git konveyor-lib-ui
+cd konveyor-lib-ui
 yarn install
 ```
 

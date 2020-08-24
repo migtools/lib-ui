@@ -23,15 +23,15 @@ jobs:
           github-token: ${{ secrets.GH_TOKEN }}
           script: |
             const { issue: { number: issue_number } } = context;
-            return `konveyor-common-ui-pr-${issue_number}-preview.surge.sh`;
+            return `konveyor-lib-ui-pr-${issue_number}-preview.surge.sh`;
           result-encoding: string
       - name: Install Surge
         run: npm install -g surge
       - name: Deploy Storybook to Surge
         run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token ${{ secrets.SURGE_TOKEN }}
       - name: Post URL as PR comment
-        uses: unsplash/comment-on-pr@v1.2.0
+        uses: unsplash/comment-on-pr@master
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         with:
-          msg: "✨ Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}}"
+          msg: '✨ Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}}'
