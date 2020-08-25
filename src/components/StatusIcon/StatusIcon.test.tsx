@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
@@ -21,8 +22,17 @@ const checkClass = (props: IStatusIconProps, className: string) => {
   expect(icon).toHaveClass(className);
 };
 
+const checkText = (props: IStatusIconProps, text: string) => {
+  const { container } = render(<StatusIcon {...props} />);
+  const icon = container.querySelector('.pf-l-flex');
+  expect(icon).toContainHTML(text);
+};
+
 describe('StatusIcon', () => {
   describe('Ok status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Ok, label: 'Ready' }, 'Ready');
+    });
     it('should have correct color', () => {
       checkColor({ status: StatusType.Ok }, successColor.value);
     });
@@ -35,6 +45,9 @@ describe('StatusIcon', () => {
   });
 
   describe('Warning status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Warning, label: 'Warning' }, 'Warning');
+    });
     it('should have correct color', () => {
       checkColor({ status: StatusType.Warning }, warningColor.value);
     });
@@ -47,6 +60,9 @@ describe('StatusIcon', () => {
   });
 
   describe('Error status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Error, label: 'Error' }, 'Error');
+    });
     it('should have correct color', () => {
       checkColor({ status: StatusType.Error }, dangerColor.value);
     });

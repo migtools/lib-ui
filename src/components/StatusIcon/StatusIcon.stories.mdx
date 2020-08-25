@@ -1,0 +1,56 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { StatusIcon, StatusType } from './StatusIcon';
+
+<Meta title="Components/StatusIcon" component={StatusIcon} />
+
+# StatusIcon
+
+A small wrapper for PatternFly's CheckCircleIcon, WarningTriangleIcon and ExclamationCircleIcon that automatically sets the right color.
+
+## Examples
+
+### Basic
+
+<Canvas>
+  <Story name="Basic">
+    <StatusIcon status={StatusType.Ok} />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Warning} />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Error} />
+  </Story>
+</Canvas>
+
+### Disabled
+
+<Canvas>
+  <Story name="Disabled">
+    <StatusIcon status={StatusType.Ok} isDisabled />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Warning} isDisabled />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Error} isDisabled />
+  </Story>
+</Canvas>
+
+### With label
+
+<Canvas>
+  <Story name="With label">
+    <StatusIcon status={StatusType.Ok} label="Ready" />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Warning} label="Warning" />
+    <br />
+    <br />
+    <StatusIcon status={StatusType.Error} label="Error" />
+  </Story>
+</Canvas>
+
+## Props
+
+<ArgsTable of={StatusIcon} />

@@ -123,7 +123,7 @@ Components live in `src/MyComponent/` directories, which should each contain:
 
 - `MyComponent.tsx` - component source and type interfaces (types can be their own file if they are verbose enough)
 - `MyComponent.scss` - any custom styles not covered by PatternFly, we should avoid these when possible
-- `MyComponent.stories.tsx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component
+- `MyComponent.stories.mdx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component
 - `MyComponent.test.tsx` - unit tests using [jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - `index.ts` - define your exports for the component directory
 

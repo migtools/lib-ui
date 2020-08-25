@@ -24,8 +24,8 @@
     "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist && rimraf storybook-static",
     "build": "rimraf dist && rollup -c",
-    "storybook": "start-storybook -p 6006",
-    "storybook:export": "rimraf storybook-static && build-storybook"
+    "storybook": "start-storybook --docs -p 6006",
+    "storybook:export": "rimraf storybook-static && build-storybook --docs"
   },
   "peerDependencies": {
     "@patternfly/react-core": "^4.40.4",

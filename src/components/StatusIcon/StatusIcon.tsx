@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Flex, FlexItem } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
   WarningTriangleIcon,
@@ -19,17 +20,20 @@ export enum StatusType {
 
 export interface IStatusIconProps {
   status: StatusType;
+  label?: string;
   isDisabled?: boolean;
   className?: string;
 }
 
 export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   status,
-  isDisabled,
+  label,
+  isDisabled = false,
   className = '',
 }: IStatusIconProps) => {
+  let icon: React.ReactElement | null = null;
   if (status === StatusType.Ok) {
-    return (
+    icon = (
       <CheckCircleIcon
         className={className}
         color={isDisabled ? disabledColor.value : successColor.value}
@@ -37,7 +41,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
     );
   }
   if (status === StatusType.Warning) {
-    return (
+    icon = (
       <WarningTriangleIcon
         className={className}
         color={isDisabled ? disabledColor.value : warningColor.value}
@@ -45,12 +49,20 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
     );
   }
   if (status === StatusType.Error) {
-    return (
+    icon = (
       <ExclamationCircleIcon
         className={className}
         color={isDisabled ? disabledColor.value : dangerColor.value}
       />
     );
   }
-  return null;
+  if (label) {
+    return (
+      <Flex spaceItems={{ default: 'spaceItemsMd' }}>
+        <FlexItem>{icon}</FlexItem>
+        <FlexItem>{label}</FlexItem>
+      </Flex>
+    );
+  }
+  return icon;
 };
