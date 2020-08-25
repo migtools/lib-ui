@@ -11,6 +11,8 @@ The React components in this library are compositions and extensions of [pattern
 
 ## Usage
 
+Documentation and examples (Storybook): http://konveyor.github.io/virt-ui
+
 ### Install from npm
 
 In your app repo, install the library as a normal npm dependency:
