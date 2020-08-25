@@ -18,6 +18,9 @@ module.exports = {
         presets: [['react-app', { flow: false, typescript: true }]],
       },
     });
+
+    // TODO do we need to import more CSS here for PF than the base.css from preview.js?
+
     config.resolve.extensions.push('.ts', '.tsx');
 
     return config;

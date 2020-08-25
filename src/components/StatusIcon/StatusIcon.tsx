@@ -58,7 +58,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (label) {
     return (
-      <Flex spaceItems={{ default: 'spaceItemsMd' }}>
+      <Flex spaceItems={{ default: 'spaceItemsSm' }}>
         <FlexItem>{icon}</FlexItem>
         <FlexItem>{label}</FlexItem>
       </Flex>
