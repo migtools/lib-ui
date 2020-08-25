@@ -35,7 +35,7 @@ We should avoid leaving apps configured this way; installing from npm will be mo
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
-When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
+When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/master/package.json#L30) as dependencies in your app.
 
 ### Use it!
 
@@ -134,7 +134,7 @@ When you add a new component, be sure to also export it at the top level (`src/i
 ## TODO:
 
 - Add docs extension for Storybook
-- Test importing the TestComponent into another project via GitHub dependency href? Can we do that?
+- Test importing into another project via GitHub dependency href? Can we do that?
 - Add reusable components from mig-ui and virt-ui
 - Start actually using the thing
 - Unit tests?
