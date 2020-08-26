@@ -6,7 +6,6 @@
     [
       "@semantic-release/commit-analyzer",
       {
-        "preset": "angular",
         "releaseRules": [
           {
             "breaking": true,
@@ -60,5 +59,6 @@
     "@semantic-release/release-notes-generator",
     "@semantic-release/github",
     "@semantic-release/npm"
-  ]
+  ],
+  "preset": "angular"
 }
