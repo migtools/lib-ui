@@ -20,7 +20,7 @@ export enum StatusType {
 
 export interface IStatusIconProps {
   status: StatusType;
-  label?: string;
+  label?: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
 }
@@ -58,7 +58,11 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (label) {
     return (
-      <Flex spaceItems={{ default: 'spaceItemsSm' }}>
+      <Flex
+        spaceItems={{ default: 'spaceItemsSm' }}
+        alignItems={{ default: 'alignItemsCenter' }}
+        className={className}
+      >
         <FlexItem>{icon}</FlexItem>
         <FlexItem>{label}</FlexItem>
       </Flex>
