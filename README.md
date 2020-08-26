@@ -103,7 +103,7 @@ yarn storybook:export
 
 ## Triggering an npm release
 
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) via GitHub Actions to automate its npm releases. When a PR is merged to master, it is checked for specific key words in the commit message to decide whether a release needs to be made, and whether it will be a minor or major version bump.
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) via GitHub Actions to automate its npm releases. When a commit is pushed to master, it is checked for specific key words in the commit message to decide whether a release needs to be made, and whether it will be a minor or major version bump. Your commit message will also be added and categorized in the release notes.
 
 To assist in formatting commit messages correctly for this purpose, the repo is set up for use with [Commitizen](http://commitizen.github.io/cz-cli/), which provides a CLI for guided commit messages.
 
@@ -115,7 +115,7 @@ First, `git add` any changes you want to commit, then:
 yarn commit
 ```
 
-Follow the prompts based on the scope of your commit. When your commit is merged to master, an automatic release will be triggered and a message will be posted to your PR when it is complete.
+Follow the prompts based on the scope of your commit. **Note: This will generate a message for an individual commit, but since we use squash-and-merge, what matters is your PR title.** If your PR contains multiple commits, please make sure the PR title itself matches the expected format. [See our PR template for more details](https://github.com/konveyor/lib-ui/blob/master/.github/pull_request_template.md).
 
 ## File Structure
 
