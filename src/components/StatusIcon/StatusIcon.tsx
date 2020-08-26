@@ -61,6 +61,8 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
       <Flex
         spaceItems={{ default: 'spaceItemsSm' }}
         alignItems={{ default: 'alignItemsCenter' }}
+        flexWrap={{ default: 'nowrap' }}
+        style={{ whiteSpace: 'nowrap' }}
         className={className}
       >
         <FlexItem>{icon}</FlexItem>
