@@ -1,1 +1,1 @@
-export * from './TestComponent';
+export * from './components/StatusIcon';

@@ -24,14 +24,22 @@
     "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist && rimraf storybook-static",
     "build": "rimraf dist && rollup -c",
-    "storybook": "start-storybook -p 6006",
-    "storybook:export": "rimraf storybook-static && build-storybook"
+    "storybook": "start-storybook --docs -p 6006",
+    "storybook:export": "rimraf storybook-static && build-storybook --docs"
+  },
+  "peerDependencies": {
+    "@patternfly/react-core": "^4.40.4",
+    "@patternfly/react-tokens": "^4.9.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@patternfly/react-core": "^4.40.4",
+    "@patternfly/react-tokens": "^4.9.4",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
+    "@storybook/addon-docs": "^6.0.18",
     "@storybook/addons": "^6.0.16",
     "@storybook/react": "^6.0.16",
     "@storybook/theming": "^6.0.16",
@@ -56,6 +64,7 @@
     "prettier": "^2.0.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-is": "^16.8.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.23.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
@@ -64,12 +73,8 @@
     "sass-loader": "^9.0.3",
     "semantic-release": "^17.1.1",
     "ts-jest": "^26.2.0",
-    "typescript": "^3.9.7"
-  },
-  "peerDependencies": {
-    "@patternfly/react-core": "^4.40.4",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.1"
   },
   "config": {
     "commitizen": {

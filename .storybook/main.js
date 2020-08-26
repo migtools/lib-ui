@@ -1,9 +1,9 @@
 const path = require('path');
 
 module.exports = {
-  stories: ['../src/**/*.stories.tsx'],
+  stories: ['../src/**/*.stories.@(tsx|mdx)'],
   // Add any Storybook addons you want here: https://storybook.js.org/addons/
-  addons: [],
+  addons: ['@storybook/addon-docs'],
   webpackFinal: async (config) => {
     config.module.rules.push({
       test: /\.scss$/,
@@ -18,6 +18,9 @@ module.exports = {
         presets: [['react-app', { flow: false, typescript: true }]],
       },
     });
+
+    // TODO do we need to import more CSS here for PF than the base.css from preview.js?
+
     config.resolve.extensions.push('.ts', '.tsx');
 
     return config;

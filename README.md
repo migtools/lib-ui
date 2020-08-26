@@ -35,7 +35,7 @@ We should avoid leaving apps configured this way; installing from npm will be mo
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
-When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. Make sure you have the right versions as dependencies in your app.
+When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/master/package.json#L30) as dependencies in your app.
 
 ### Use it!
 
@@ -123,7 +123,7 @@ Components live in `src/MyComponent/` directories, which should each contain:
 
 - `MyComponent.tsx` - component source and type interfaces (types can be their own file if they are verbose enough)
 - `MyComponent.scss` - any custom styles not covered by PatternFly, we should avoid these when possible
-- `MyComponent.stories.tsx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component
+- `MyComponent.stories.mdx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component. We are using the [MDX story format](https://storybook.js.org/docs/react/writing-docs/mdx).
 - `MyComponent.test.tsx` - unit tests using [jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - `index.ts` - define your exports for the component directory
 
@@ -134,7 +134,7 @@ When you add a new component, be sure to also export it at the top level (`src/i
 ## TODO:
 
 - Add docs extension for Storybook
-- Test importing the TestComponent into another project via GitHub dependency href? Can we do that?
+- Test importing into another project via GitHub dependency href? Can we do that?
 - Add reusable components from mig-ui and virt-ui
 - Start actually using the thing
 - Unit tests?
