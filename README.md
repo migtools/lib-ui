@@ -119,15 +119,18 @@ Follow the prompts based on the scope of your commit. **Note: This will generate
 
 ## File Structure
 
-Components live in `src/MyComponent/` directories, which should each contain:
+Components live in `src/components/MyComponent/` directories, which should each contain:
 
 - `MyComponent.tsx` - component source and type interfaces (types can be their own file if they are verbose enough)
 - `MyComponent.scss` - any custom styles not covered by PatternFly, we should avoid these when possible
-- `MyComponent.stories.mdx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component. We are using the [MDX story format](https://storybook.js.org/docs/react/writing-docs/mdx).
+- `MyComponent.stories.mdx` - define your [Storybook stories](https://storybook.js.org/docs/react/get-started/whats-a-story) (examples and docs) for your component. We are using the [MDX story format](https://storybook.js.org/docs/react/writing-docs/mdx). The `title` prop of your story's `<Meta>` defines where it appears in the Storybook nav.
+- Optional: `MyComponent.stories.tsx` - if you need to use TypeScript in the body of your MDX stories, you'll need to define them in a TypeScript file and import them into your MDX file. See existing stories for examples.
 - `MyComponent.test.tsx` - unit tests using [jest](https://jestjs.io/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)
 - `index.ts` - define your exports for the component directory
 
-When you add a new component, be sure to also export it at the top level (`src/index.ts`)
+When you add a new component, be sure to also export it at the top level (`src/index.ts`).
+
+Hooks follow the same structure, but they live under `src/hooks/`.
 
 ---
 
