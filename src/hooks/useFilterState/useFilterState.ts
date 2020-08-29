@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { IFilterValues, FilterCategory } from '../../components/FilterToolbar';
 
-// TODO these could be given generic types to avoid using `any` (https://www.typescriptlang.org/docs/handbook/generics.html)
-
 interface FilterStateHook {
   filterValues: IFilterValues;
   setFilterValues: (values: IFilterValues) => void;
