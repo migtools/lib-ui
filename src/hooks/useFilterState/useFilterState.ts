@@ -3,7 +3,7 @@ import { IFilterValues, FilterCategory } from '../../components/FilterToolbar';
 
 export interface IFilterStateArgs<T> {
   items: T[];
-  filterCategories: FilterCategory[] | undefined;
+  filterCategories: FilterCategory[];
 }
 
 export interface IFilterState<T> {
