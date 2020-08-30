@@ -17,6 +17,7 @@ export const FilterableTable: React.FunctionComponent = () => {
     { name: 'Orange', price: '$0.74' },
     { name: 'Banana', price: '$0.45' },
   ];
+
   const filterCategories: FilterCategory[] = [
     {
       key: 'name',
@@ -25,10 +26,10 @@ export const FilterableTable: React.FunctionComponent = () => {
       placeholderText: 'Filter by name...',
     },
   ];
-  console.log('fruits', fruits, filterCategories);
-  const { filterValues, setFilterValues, filteredItems } = useFilterState({
+
+  const { filterValues, setFilterValues, filteredItems } = useFilterState<IFruit>({
     items: fruits,
-    filterCategories,
+    filterCategories: filterCategories,
   });
 
   const columns: ICell[] = [{ title: 'Name' }, { title: 'Price' }];
