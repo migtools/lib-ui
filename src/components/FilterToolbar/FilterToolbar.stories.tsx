@@ -27,7 +27,10 @@ export const FilterableTable: React.FunctionComponent = () => {
       placeholderText: 'Filter by name...',
     },
   ];
-  const { filterValues, setFilterValues, filteredItems } = useFilterState(fruits, filterCategories);
+  const { filterValues, setFilterValues, filteredItems } = useFilterState({
+    items: fruits,
+    filterCategories: filterCategories,
+  });
 
   const columns: ICell[] = [{ title: 'Name' }, { title: 'Price' }];
   const rows: IRow[] = [];
