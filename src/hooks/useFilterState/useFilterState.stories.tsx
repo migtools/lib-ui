@@ -10,13 +10,12 @@ export const FilterableTable: React.FunctionComponent = () => {
   interface IFruit {
     name: string;
     price: string;
-    description: string;
   }
 
   const fruits: IFruit[] = [
-    { name: 'Apple', price: '$0.83', description: 'Red delicious!' },
-    { name: 'Orange', price: '$0.74', description: 'Fresh and juicy!' },
-    { name: 'Banana', price: '$0.45', description: 'On sale this week!' },
+    { name: 'Apple', price: '$0.83' },
+    { name: 'Orange', price: '$0.74' },
+    { name: 'Banana', price: '$0.45' },
   ];
   const filterCategories: FilterCategory[] = [
     {
@@ -26,8 +25,11 @@ export const FilterableTable: React.FunctionComponent = () => {
       placeholderText: 'Filter by name...',
     },
   ];
-
-  const { filterValues, setFilterValues, filteredItems } = useFilterState(fruits, filterCategories);
+  console.log('fruits', fruits, filterCategories);
+  const { filterValues, setFilterValues, filteredItems } = useFilterState({
+    items: fruits,
+    filterCategories,
+  });
 
   const columns: ICell[] = [{ title: 'Name' }, { title: 'Price' }];
   const rows: IRow[] = [];

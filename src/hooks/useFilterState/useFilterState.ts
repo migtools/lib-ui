@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { IFilterValues, FilterCategory } from '../../components/FilterToolbar';
 
-interface FilterStateHook {
+export interface IFilterState<T> {
   filterValues: IFilterValues;
   setFilterValues: (values: IFilterValues) => void;
   filteredItems: any[];
 }
+export interface IFilterStateArgs<T> {
+  items: T[];
+  filterCategories: FilterCategory[];
+}
 
-export const useFilterState = (
-  items: any[],
-  filterCategories: FilterCategory[]
-): FilterStateHook => {
+export const useFilterState = <T>({
+  items,
+  filterCategories,
+}: IFilterStateArgs<T>): IFilterState<T> => {
   const [filterValues, setFilterValues] = React.useState<IFilterValues>({});
 
   const filteredItems = items.filter((item) =>
