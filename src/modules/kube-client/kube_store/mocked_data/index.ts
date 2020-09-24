@@ -1,2 +1,2 @@
-import data from './1566562129.json';
+import data from './1566562129';
 export default data;
