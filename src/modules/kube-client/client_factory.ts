@@ -31,9 +31,33 @@ export class ClientFactoryMissingDiscoveryApi extends Error {
   }
 }
 
-let tokenExpiryHandler = null;
+// TODO use individual args instead of mig-ui-coupled state structure
+interface IMigState {
+  auth: {
+    user: { access_token: string; expiry_time: number };
+    migMeta: { clusterApi: string; discoveryApi: string; namespace: string };
+  };
+  token: {
+    tokenList: {
+      MigToken: {
+        spec: {
+          migClusterRef: {
+            name: string;
+          };
+        };
+      };
+      Secret: {
+        data: {
+          token: string;
+        };
+      };
+    }[];
+  };
+}
+
+let tokenExpiryHandler: TokenExpiryHandler | null = null;
 export const ClientFactory = {
-  cluster: (state: any, customResponseType: ResponseType = 'json') => {
+  cluster: (state: IMigState, customResponseType: ResponseType = 'json'): ClusterClient => {
     if (!state.auth.user) {
       throw new ClientFactoryMissingUserError();
     }
@@ -48,20 +72,28 @@ export const ClientFactory = {
     );
 
     if (tokenExpiryHandler) {
-      newClient.setTokenExpiryHandler(tokenExpiryHandler, state.auth.user.expiry_time);
+      newClient.setTokenExpiryHandler(
+        (tokenExpiryHandler as unknown) as TokenExpiryHandler,
+        state.auth.user.expiry_time
+      );
     }
 
     return newClient;
   },
-  discovery: (state: any, clusterName?: string, customResponseType: ResponseType = 'json') => {
+  discovery: (
+    state: IMigState,
+    clusterName?: string,
+    customResponseType: ResponseType = 'json'
+  ): DiscoveryClient => {
     if (!state.auth.user) {
       throw new ClientFactoryMissingUserError();
     }
     if (!state.auth.migMeta.discoveryApi) {
+      // TODO make discovery API optional
       throw new ClientFactoryMissingDiscoveryApi();
     }
 
-    let decodedToken = null;
+    let decodedToken: string | null = null;
     if (clusterName) {
       const matchingToken = state.token.tokenList.find(
         (token) => token.MigToken.spec.migClusterRef.name === clusterName
@@ -79,12 +111,15 @@ export const ClientFactory = {
     );
 
     if (tokenExpiryHandler) {
-      discoveryClient.setTokenExpiryHandler(tokenExpiryHandler, state.auth.user.expiry_time);
+      discoveryClient.setTokenExpiryHandler(
+        (tokenExpiryHandler as unknown) as TokenExpiryHandler,
+        state.auth.user.expiry_time
+      );
     }
     return discoveryClient;
   },
 };
 
-export const setTokenExpiryHandler = (newExpiryHandler: TokenExpiryHandler) => {
+export const setTokenExpiryHandler = (newExpiryHandler: TokenExpiryHandler): void => {
   tokenExpiryHandler = newExpiryHandler;
 };

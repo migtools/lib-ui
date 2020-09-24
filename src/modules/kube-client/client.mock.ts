@@ -1,14 +1,14 @@
-import { KubeResource } from './resources';
+/* eslint-disable @typescript-eslint/ban-types */
 import { KubeStore } from './kube_store';
-import { TokenExpiryHandler } from './resources/common';
+import { TokenExpiryHandler, KubeResource } from './resources/common';
 
 export class MockClusterClient {
   private name: string;
   private state: object;
   private kube_store: KubeStore;
   private reqTime = 500;
-  private tokenExpiryHandler: TokenExpiryHandler;
-  private tokenExpiryTime: number;
+  private tokenExpiryHandler: TokenExpiryHandler | null = null;
+  private tokenExpiryTime: number | null = null;
   public apiRoot: string;
 
   constructor(name: string, state: object) {
@@ -18,7 +18,7 @@ export class MockClusterClient {
     this.apiRoot = 'http://mock-api.biz';
   }
 
-  public setTokenExpiryHandler(handler: TokenExpiryHandler, tokenExpiryTime: number) {
+  public setTokenExpiryHandler(handler: TokenExpiryHandler, tokenExpiryTime: number): void {
     this.tokenExpiryHandler = handler;
     this.tokenExpiryTime = tokenExpiryTime;
   }

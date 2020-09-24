@@ -7,16 +7,18 @@ function determineHostClusterName() {
 }
 
 export const ClientFactory = {
-  hostCluster: (state: any) => {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  hostCluster: (state: object): MockClusterClient => {
     return new MockClusterClient(determineHostClusterName(), state);
   },
-  forCluster: (clusterName: string, state: any) => {
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  forCluster: (clusterName: string, state: object): MockClusterClient => {
     return new MockClusterClient(clusterName, state);
   },
 };
 
-let tokenExpiryHandler = null;
+let tokenExpiryHandler: TokenExpiryHandler | null = null;
 
-export const setTokenExpiryHandler = (newExpiryHandler: TokenExpiryHandler) => {
+export const setTokenExpiryHandler = (newExpiryHandler: TokenExpiryHandler): void => {
   tokenExpiryHandler = newExpiryHandler;
 };

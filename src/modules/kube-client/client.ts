@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { KubeResource, OAuthClient, TokenExpiryHandler } from './resources/common';
 import axios, { AxiosInstance, ResponseType } from 'axios';
 
@@ -9,7 +10,7 @@ export interface IClusterClient {
   create(resource: KubeResource, newObject: object, params?: object): Promise<any>;
   delete(resource: KubeResource, name: string, params?: object): Promise<any>;
   apiRoot: string;
-  setTokenExpiryHandler: (TokenExpiryHandler, number) => void;
+  setTokenExpiryHandler: (handler: TokenExpiryHandler, tokenExpiryTime: number) => void;
 }
 
 export class ClientTokenExpiredError extends Error {

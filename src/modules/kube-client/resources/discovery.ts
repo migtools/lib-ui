@@ -43,7 +43,7 @@ export class PersistentVolumesDiscovery extends DiscoveryResource {
     super(cluster, 'persistentvolumes', params);
   }
 
-  public async get(client: IDiscoveryClient) {
+  public async get(client: IDiscoveryClient): Promise<any> {
     const pv = await client.get(this);
     return pv.data;
   }

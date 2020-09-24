@@ -9,7 +9,7 @@ export interface IDiscoveryResource {
   discoveryAggregator(): string;
   discoveryType(): string;
   path(): string;
-  parametrized(IDiscoveryParameters?): { [param: string]: string };
+  parametrized(params?: IDiscoveryParameters): { [param: string]: string };
 }
 
 export interface INamedDiscoveryResource extends IDiscoveryResource {
@@ -25,12 +25,13 @@ export interface IGroupVersionKindPlural {
 export interface IDiscoveryParameters {
   offset?: number;
   limit?: number;
-  [param: string]: string | number;
+  [param: string]: string | number | undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type TokenExpiryHandler = (oldToken: object) => void;
 
-function namedPath(listPath, name) {
+function namedPath(listPath: string, name: string) {
   return [listPath, name].join('/');
 }
 
@@ -55,7 +56,7 @@ export abstract class NamespacedResource implements IKubeResource {
     ].join('/');
   }
 
-  public namedPath(name): string {
+  public namedPath(name: string): string {
     return namedPath(this.listPath(), name);
   }
 }
@@ -65,7 +66,7 @@ export abstract class ClusterResource implements IKubeResource {
   public listPath(): string {
     return ['/apis', this.gvk().group, this.gvk().version, this.gvk().kindPlural].join('/');
   }
-  public namedPath(name): string {
+  public namedPath(name: string): string {
     return namedPath(this.listPath(), name);
   }
 }
@@ -88,21 +89,21 @@ export abstract class DiscoveryResource implements IDiscoveryResource {
     this._discoveryParameters = discoveryParameters;
   }
 
-  public discoveryType() {
+  public discoveryType(): string {
     return this._type;
   }
 
-  public discoveryAggregator() {
+  public discoveryAggregator(): string {
     return [this._aggregatorType, this._aggregatorName].join('/');
   }
 
-  public parametrized(params: IDiscoveryParameters = {}) {
+  public parametrized(params: IDiscoveryParameters = {}): { [param: string]: string } {
     const merged = {};
     Object.keys(this._discoveryParameters).map(
-      (param) => (merged[param] = this._discoveryParameters[param].toString())
+      (param) => (merged[param] = this._discoveryParameters[param]?.toString())
     );
     Object.keys(params).map(
-      (param) => (merged[param] = this._discoveryParameters[param].toString())
+      (param) => (merged[param] = this._discoveryParameters[param]?.toString())
     );
     return merged;
   }
@@ -128,7 +129,7 @@ export abstract class NamedDiscoveryResource extends DiscoveryResource
     this._name = name;
   }
 
-  public discoveryName() {
+  public discoveryName(): string {
     return this._name;
   }
 
@@ -139,27 +140,27 @@ export abstract class NamedDiscoveryResource extends DiscoveryResource
 
 export abstract class OAuthClient {
   private _token: string;
-  private _tokenExpiryTime: number;
-  private _tokenExpiryHandler: TokenExpiryHandler;
+  private _tokenExpiryTime: number | null = null;
+  private _tokenExpiryHandler: TokenExpiryHandler | null = null;
 
   constructor(token: string) {
     this._token = token;
   }
 
-  public getOAuthHeader() {
+  public getOAuthHeader(): { Authorization: string } {
     return {
       Authorization: `Bearer ${this._token}`,
     };
   }
 
-  public setTokenExpiryHandler(handler: TokenExpiryHandler, tokenExpiryTime: number) {
+  public setTokenExpiryHandler(handler: TokenExpiryHandler, tokenExpiryTime: number): void {
     this._tokenExpiryHandler = handler;
     this._tokenExpiryTime = tokenExpiryTime;
   }
 
-  public checkExpiry(err) {
+  public checkExpiry(err: { response?: { status: number } }): void {
     if (err.response && err.response.status === 401) {
-      this._tokenExpiryHandler(this._oldToken());
+      this._tokenExpiryHandler && this._tokenExpiryHandler(this._oldToken());
     }
   }
 

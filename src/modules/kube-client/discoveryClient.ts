@@ -2,6 +2,7 @@ import axios, { AxiosInstance, ResponseType } from 'axios';
 import { IDiscoveryResource, IDiscoveryParameters, OAuthClient } from './resources/common';
 
 export interface IDiscoveryClient {
+  // eslint-disable-next-line @typescript-eslint/ban-types
   get(resource: IDiscoveryResource, params?: object): Promise<any>;
   getRaw(path: string): Promise<any>;
   apiRoot(): string;
@@ -33,11 +34,11 @@ export class DiscoveryClient extends OAuthClient implements IDiscoveryClient {
     });
   }
 
-  public rootNamespace() {
+  public rootNamespace(): string {
     return ['namespaces', this._discoveryNamespace].join('/');
   }
 
-  public apiRoot() {
+  public apiRoot(): string {
     return [this._discoveryApi, this.rootNamespace()].join('/');
   }
 
