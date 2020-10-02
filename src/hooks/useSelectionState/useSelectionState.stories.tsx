@@ -4,11 +4,8 @@ import { Table, TableHeader, TableBody, ICell, IRow } from '@patternfly/react-ta
 import { useSelectionState } from './useSelectionState';
 
 export const Checkboxes: React.FunctionComponent = () => {
-  // import { Checkbox } from '@patternfly/react-core';
-
   interface IFruit {
     name: string;
-    // Anything else, this can come straight from API data
   }
 
   const fruits: IFruit[] = [{ name: 'Apple' }, { name: 'Orange' }, { name: 'Banana' }];
@@ -53,8 +50,6 @@ export const Checkboxes: React.FunctionComponent = () => {
 };
 
 export const ExpandableTable: React.FunctionComponent = () => {
-  // import { Table, TableHeader, TableBody, ICell, IRow } from '@patternfly/react-table';
-
   interface IFruit {
     name: string;
     price: string;
@@ -108,21 +103,21 @@ export const ExpandableTable: React.FunctionComponent = () => {
 };
 
 export const ExternalState: React.FunctionComponent = () => {
-  // import { Checkbox } from '@patternfly/react-core';
-
   interface IFruit {
     name: string;
-    // Anything else, this can come straight from API data
   }
 
-  // Somewhere else in your app, perhaps:
   const [selectedFruits, setSelectedFruits] = React.useState<IFruit[]>([]);
 
   const fruits: IFruit[] = [{ name: 'Apple' }, { name: 'Orange' }, { name: 'Banana' }];
 
-  const { isItemSelected, toggleItemSelected, areAllSelected, selectAll } = useSelectionState<
-    IFruit
-  >({
+  const {
+    selectedItems,
+    isItemSelected,
+    toggleItemSelected,
+    areAllSelected,
+    selectAll,
+  } = useSelectionState<IFruit>({
     items: fruits,
     isEqual: (a, b) => a.name === b.name,
     externalState: [selectedFruits, setSelectedFruits],
@@ -146,10 +141,10 @@ export const ExternalState: React.FunctionComponent = () => {
           onChange={() => toggleItemSelected(fruit)}
         />
       ))}
-      {selectedFruits.length > 0 ? (
+      {selectedItems.length > 0 ? (
         <>
           <br />
-          <p>Do something with these! {selectedFruits.map((fruit) => fruit.name).join(', ')}</p>
+          <p>Do something with these! {selectedItems.map((fruit) => fruit.name).join(', ')}</p>
         </>
       ) : null}
     </div>
