@@ -106,3 +106,52 @@ export const ExpandableTable: React.FunctionComponent = () => {
     </Table>
   );
 };
+
+export const ExternalState: React.FunctionComponent = () => {
+  // import { Checkbox } from '@patternfly/react-core';
+
+  interface IFruit {
+    name: string;
+    // Anything else, this can come straight from API data
+  }
+
+  // Somewhere else in your app, perhaps:
+  const [selectedFruits, setSelectedFruits] = React.useState<IFruit[]>([]);
+
+  const fruits: IFruit[] = [{ name: 'Apple' }, { name: 'Orange' }, { name: 'Banana' }];
+
+  const { isItemSelected, toggleItemSelected, areAllSelected, selectAll } = useSelectionState<
+    IFruit
+  >({
+    items: fruits,
+    isEqual: (a, b) => a.name === b.name,
+    externalState: [selectedFruits, setSelectedFruits],
+  });
+
+  return (
+    <div>
+      <Checkbox
+        id="select-all"
+        label="Select all"
+        isChecked={areAllSelected}
+        onChange={(checked) => selectAll(checked)}
+      />
+      <br />
+      {fruits.map((fruit) => (
+        <Checkbox
+          key={fruit.name}
+          id={`${fruit.name}-checkbox`}
+          label={fruit.name}
+          isChecked={isItemSelected(fruit)}
+          onChange={() => toggleItemSelected(fruit)}
+        />
+      ))}
+      {selectedFruits.length > 0 ? (
+        <>
+          <br />
+          <p>Do something with these! {selectedFruits.map((fruit) => fruit.name).join(', ')}</p>
+        </>
+      ) : null}
+    </div>
+  );
+};

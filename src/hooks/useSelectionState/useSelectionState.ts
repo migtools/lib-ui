@@ -4,6 +4,7 @@ export interface ISelectionStateArgs<T> {
   items: T[];
   initialSelected?: T[];
   isEqual?: (a: T, b: T) => boolean;
+  externalState?: [T[], React.Dispatch<React.SetStateAction<T[]>>];
 }
 
 export interface ISelectionState<T> {
@@ -19,8 +20,10 @@ export const useSelectionState = <T>({
   items,
   initialSelected = [],
   isEqual = (a, b) => a === b,
+  externalState,
 }: ISelectionStateArgs<T>): ISelectionState<T> => {
-  const [selectedItems, setSelectedItems] = React.useState<T[]>(initialSelected);
+  const internalState = React.useState<T[]>(initialSelected);
+  const [selectedItems, setSelectedItems] = externalState || internalState;
 
   const isItemSelected = (item: T) => selectedItems.some((i) => isEqual(item, i));
 
