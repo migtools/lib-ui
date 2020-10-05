@@ -11,6 +11,7 @@ export interface ISelectionState<T> {
   selectedItems: T[];
   isItemSelected: (item: T) => boolean;
   toggleItemSelected: (item: T, isSelecting?: boolean) => void;
+  selectMultiple: (items: T[], isSelecting: boolean) => void;
   areAllSelected: boolean;
   selectAll: (isSelecting?: boolean) => void;
   setSelectedItems: (items: T[]) => void;
@@ -35,6 +36,17 @@ export const useSelectionState = <T>({
     }
   };
 
+  const selectMultiple = (items: T[], isSelecting: boolean) => {
+    const otherSelectedItems = selectedItems.filter(
+      (selected) => !items.some((item) => isEqual(selected, item))
+    );
+    if (isSelecting) {
+      setSelectedItems([...otherSelectedItems, ...items]);
+    } else {
+      setSelectedItems(otherSelectedItems);
+    }
+  };
+
   const selectAll = (isSelecting = true) => setSelectedItems(isSelecting ? items : []);
   const areAllSelected = selectedItems.length === items.length;
 
@@ -50,6 +62,7 @@ export const useSelectionState = <T>({
     selectedItems: selectedItemsInOrder,
     isItemSelected,
     toggleItemSelected,
+    selectMultiple,
     areAllSelected,
     selectAll,
     setSelectedItems,
