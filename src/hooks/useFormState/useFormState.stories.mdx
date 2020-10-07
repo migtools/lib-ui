@@ -1,0 +1,131 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { useFormState } from './useFormState';
+import {
+  BasicTextFields,
+  PatternFlyTextFields,
+  PatternFlyTextFieldsWithHelpers,
+} from './useFormState.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Hooks/useFormState" component={useFormState} />
+
+# useFormState
+
+A custom hook for managing field values, validation, and other form state.
+This is a simpler alternative to libraries like [Formik](https://formik.org/), built to minimize boilerplate and maximimize readability.
+It includes full support for [TypeScript generics](https://www.typescriptlang.org/docs/handbook/generics.html); the types of values and function
+parameters returned by `useFormField` and `useFormState` can be inferred from the `initialValue` passed to each `useFormField()`, or explicitly
+passed as individual type parameters to each `useFormField<T>()`, or passed as a unified interface to the type parameter of `useFormState<T>()`.
+
+This hook uses [yup](https://github.com/jquense/yup) for field validation, and its TypeScript signature enforces that each of your schema types is
+compatible with its field type. `yup` is bundled as a dependency of `@konveyor/lib-ui`, but it is recommended that you also install `@types/yup` as a
+devDependency in your app if you are using TypeScript.
+
+We built this solution because we find that most forms do not have complex requirements, and libraries like Formik and co. tend to add unnecessary complexity.
+We were burned by lots of confusing debugging sessions trying to figure out the reinitialization behavior of Formik, among other things,
+and decided that it would be better to use something much simpler which we have total control of in-house. We have found that we can build forms
+more quickly and with fewer headaches this way, and we hope others find it useful as well.
+
+Note: this package also provides a [ValidatedTextInput component](./?path=/docs/components-validatedtextinput--pattern-fly-text-fields) to simplify rendering
+PatternFly text fields driven by this hook.
+
+## Types
+
+```ts
+function useFormField<T>(
+  initialValue: T,
+  schema: [T] extends [Array<infer E>] ? yup.ArraySchema<E> : yup.Schema<T>,
+  options?: { initialTouched?: boolean }
+): IFormField<T>;
+
+function useFormState<TFieldValues>(
+  fields: {
+    // an object with values as useFormField calls
+    [key in keyof TFieldValues]: IFormField<TFieldValues[key]>;
+  },
+  yupOptions?: yup.ValidateOptions
+): IFormState<TFieldValues>;
+
+interface IFormField<T> {
+  value: T;
+  setValue: React.Dispatch<React.SetStateAction<T>>;
+  isDirty: boolean; // true if the value is different from initialValue by deep comparison
+  isTouched: boolean;
+  setIsTouched: (isTouched: boolean) => void;
+  reset: () => void;
+  schema: [T] extends [Array<infer E>] ? yup.ArraySchema<E> : yup.Schema<T>;
+}
+
+interface IValidatedFormField<T> extends IFormField<T> {
+  error: yup.ValidationError | null;
+  isValid: boolean;
+}
+
+interface IFormState<TFieldValues> {
+  fields: {
+    // The same fields object passed into useFormState, but with error and isValid properties added
+    [key in keyof TFieldValues]: IValidatedFormField<TFieldValues[key]>;
+  };
+  values: TFieldValues; // For convenience in submitting forms (values are also included in fields property)
+  isDirty: boolean; // true if any field has isDirty
+  isValid: boolean; // true if every field has isValid
+  reset: () => void;
+  schema: yup.ObjectSchema | null; // In case you want to do anything fancy outside the hook
+}
+```
+
+## Examples
+
+### Basic text fields
+
+In this example, the Name field is required and has a required length of 4 to 64 characters.
+The Description field is optional, but has a maximum length of 128 characters.
+When values matching these validation schema are entered, the Submit button will enable.
+When invalid values are entered, a descriptive error will appear on the field when it loses focus.
+
+Note: This example is given to demonstrate how custom fields with any markup can be built using this hook.
+The below examples show how to use it with PatternFly components.
+
+<Canvas>
+  <Story story={BasicTextFields} />
+</Canvas>
+
+### PatternFly text fields with explicit props
+
+This form is the same as the above example, except using PatternFly's TextInput and TextArea instead of plain HTML elements.
+
+Note: This example is given to demonstrate how custom PatternFly fields can be built using this hook.
+The below example shows how to render these fields even more simply using helper components.
+
+<Canvas>
+  <Story story={PatternFlyTextFields} />
+</Canvas>
+
+### PatternFly text fields with prop helpers
+
+This package also provides `getFormGroupProps`, `getTextInputProps` and `getTextAreaProps` helpers which can take a form field object
+and return the necessary props to render PatternFly's FormGroup, TextInput and TextArea components.
+
+Note: These helpers are provided for convenience if you need to build a custom field, you can reduce boilerplate even further by
+using the [ValidatedTextInput component](./?path=/docs/components-validatedtextinput--pattern-fly-text-fields).
+
+Most custom non-text fields can use `getFormGroupProps` even if the other helpers are not useful.
+
+<Canvas>
+  <Story story={PatternFlyTextFieldsWithHelpers} />
+</Canvas>
+
+## TODO: better docs coming soon
+
+This initial version is a copy of the implementation introduced in https://github.com/konveyor/virt-ui/pull/53 and enhanced in https://github.com/konveyor/virt-ui/pull/100.
+I am adding it here so it can be reused more widely while it is being developed. Unit tests and better documentation will follow.
+
+TODO:
+
+- More examples with different types of fields, custom field types, etc.
+- Better explanation of inferred types and variations with explicit type params used
+- Unit tests
+- Possible performance optimizations
+- ???
+
+<GithubLink path="src/hooks/useFormState/useFormState.ts" />
