@@ -1,0 +1,32 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { ValidatedTextInput } from './ValidatedTextInput';
+import { PatternFlyTextFields } from './ValidatedTextInput.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Components/ValidatedTextInput" component={ValidatedTextInput} />
+
+# ValidatedTextInput
+
+A small wrapper for PatternFly's FormGroup, TextInput and TextArea components that integrates with the
+[useFormState and useFormField hooks](./?path=/docs/hooks-useformstate--basic-text-fields) provided in this package.
+Handles props for controlled values and validation internally and exposes `formGroupProps` and `inputProps` for any
+additional PatternFly component props needed.
+
+## Example
+
+### PatternFly text fields with no boilerplate!
+
+This form is the same as in the [PatternFly Text Fields example on the useFormState hook page](./?path=/docs/hooks-useformstate--basic-text-fields#patternfly-text-fields-with-prop-helpers), except that
+it uses `ValidatedTextInput` to alleviate the boilerplate of passing props from the returned form state.
+
+<Canvas>
+  <Story story={PatternFlyTextFields} />
+</Canvas>
+
+## Props
+
+In addition to the below props, the component accepts the `label`, `fieldId` and `isRequired` props of PatternFly's `FormGroup` and the `type` prop of PatternFly's `TextInput`.
+
+<ArgsTable of={ValidatedTextInput} />
+
+<GithubLink path="src/components/ValidatedTextInput/ValidatedTextInput.tsx" />
