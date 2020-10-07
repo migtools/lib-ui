@@ -37,6 +37,8 @@ This package has React and PatternFly packages as peer dependencies, which are n
 
 When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/master/package.json#L30) as dependencies in your app.
 
+**Note: The `axios` peer dependency is only required if you are using `modules/kube-client`.**
+
 ### Use it!
 
 In your JS/TS, Import named modules from the library, just like PatternFly:
