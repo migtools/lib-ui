@@ -1,5 +1,12 @@
-import axios, { AxiosInstance, ResponseType } from 'axios';
 import { IDiscoveryResource, IDiscoveryParameters, OAuthClient } from './resources/common';
+
+import type { AxiosStatic, AxiosInstance, ResponseType } from 'axios';
+
+let axios: AxiosStatic;
+try {
+  axios = require('axios');
+  // eslint-disable-next-line no-empty
+} catch (e) {}
 
 export interface IDiscoveryClient {
   // eslint-disable-next-line @typescript-eslint/ban-types

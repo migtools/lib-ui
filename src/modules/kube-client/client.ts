@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { KubeResource, OAuthClient, TokenExpiryHandler } from './resources/common';
-import axios, { AxiosInstance, ResponseType } from 'axios';
+
+import type { AxiosStatic, AxiosInstance, ResponseType } from 'axios';
+
+let axios: AxiosStatic;
+try {
+  axios = require('axios');
+  // eslint-disable-next-line no-empty
+} catch (e) {}
 
 export interface IClusterClient {
   list(resource: KubeResource, params?: object): Promise<any>;
