@@ -37,7 +37,6 @@ export interface IFormState<TFieldValues> {
   isDirty: boolean;
   isValid: boolean;
   reset: () => void;
-  schema: yup.ObjectSchema | null; // In case you want to do anything fancy outside the hook
 }
 
 // The generic T type variable is the type of the field's value (the T in IFormField<T>).
@@ -94,34 +93,25 @@ export const useFormState = <TFieldValues>(
   );
   const isDirty = fieldKeys.some((key) => fields[key].isDirty);
 
-  // Memoize the schema, only recompute if the field keys changed
-  const [formSchema, setFormSchema] = React.useState<yup.ObjectSchema | null>(null);
-  const lastFieldKeysRef = React.useRef(fieldKeys);
-  React.useEffect(() => {
-    if (!formSchema || !equal(lastFieldKeysRef.current, fieldKeys)) {
-      lastFieldKeysRef.current = fieldKeys;
-      const schemaShape = fieldKeys.reduce(
-        (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
-        {} as { [key in keyof TFieldValues]?: yup.Schema<TFieldValues[key]> }
-      );
-      setFormSchema(yup.object().shape(schemaShape).defined());
-    }
-  }, [fieldKeys, fields, formSchema]);
-
   // Memoize the validation, only recompute if the field values changed
   const [validationError, setValidationError] = React.useState<yup.ValidationError | null>(null);
   const [hasRunInitialValidation, setHasRunInitialValidation] = React.useState(false);
   const lastValuesRef = React.useRef(values);
   React.useEffect(() => {
-    if (formSchema && (!hasRunInitialValidation || !equal(lastValuesRef.current, values))) {
+    if (!hasRunInitialValidation || !equal(lastValuesRef.current, values)) {
+      const schemaShape = fieldKeys.reduce(
+        (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
+        {} as { [key in keyof TFieldValues]?: yup.Schema<TFieldValues[key]> }
+      );
+      const schema = yup.object().shape(schemaShape).defined();
       setHasRunInitialValidation(true);
       lastValuesRef.current = values;
-      formSchema
+      schema
         .validate(values, { abortEarly: false, ...yupOptions })
         .then(() => setValidationError(null))
         .catch((e) => setValidationError(e as yup.ValidationError));
     }
-  }, [formSchema, hasRunInitialValidation, validationError, values, yupOptions]);
+  }, [fieldKeys, fields, hasRunInitialValidation, validationError, values, yupOptions]);
 
   type ErrorsByField = { [key in keyof TFieldValues]: yup.ValidationError };
   const errorsByField =
@@ -147,7 +137,6 @@ export const useFormState = <TFieldValues>(
     isDirty,
     isValid: hasRunInitialValidation && !validationError,
     reset: () => fieldKeys.forEach((key) => fields[key].reset()),
-    schema: formSchema,
   };
 };
 
@@ -161,7 +150,7 @@ export const getFormGroupProps = <T>(
 });
 
 export const getTextFieldProps = (
-  field: IValidatedFormField<string>
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
   onChange: field.setValue,
@@ -169,8 +158,10 @@ export const getTextFieldProps = (
   validated: field.isValid ? 'default' : 'error',
 });
 
-export const getTextInputProps = (field: IValidatedFormField<string>): Partial<TextInputProps> =>
-  getTextFieldProps(field) as Partial<Exclude<TextInputProps, 'ref'>>;
+export const getTextInputProps = (
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
+): Partial<TextInputProps> => getTextFieldProps(field) as Partial<TextInputProps>;
 
-export const getTextAreaProps = (field: IValidatedFormField<string>): Partial<TextAreaProps> =>
-  getTextFieldProps(field) as Partial<Exclude<TextAreaProps, 'ref'>>;
+export const getTextAreaProps = (
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
+): Partial<TextAreaProps> => getTextFieldProps(field) as Partial<TextAreaProps>;

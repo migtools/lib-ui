@@ -70,7 +70,6 @@ interface IFormState<TFieldValues> {
   isDirty: boolean; // true if any field has isDirty
   isValid: boolean; // true if every field has isValid
   reset: () => void;
-  schema: yup.ObjectSchema | null; // In case you want to do anything fancy outside the hook
 }
 ```
 

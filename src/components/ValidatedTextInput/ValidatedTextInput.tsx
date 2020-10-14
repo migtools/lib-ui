@@ -18,7 +18,7 @@ interface IValidatedTextInputProps
   extends Pick<FormGroupProps, 'label' | 'fieldId' | 'isRequired'>,
     Pick<TextInputProps, 'type'> {
   /** A field returned from useFormField() or useFormState().fields.* */
-  field: IValidatedFormField<string>;
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>;
   /** Either a TextInput or TextArea from @patternfly/react-core. Defaults to TextInput */
   component?: typeof TextInput | typeof TextArea;
   /** Any extra props for the PatternFly FormGroup */
@@ -41,7 +41,7 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
     label={label}
     isRequired={isRequired}
     fieldId={fieldId}
-    {...getFormGroupProps(field)}
+    {...getFormGroupProps(field as IValidatedFormField<string | undefined>)}
     {...formGroupProps}
   >
     {component === TextInput ? (
