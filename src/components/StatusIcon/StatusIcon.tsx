@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Flex, FlexItem } from '@patternfly/react-core';
+import { Flex, FlexItem, Spinner, spinnerSize } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
   WarningTriangleIcon,
@@ -19,6 +19,7 @@ export enum StatusType {
   Warning = 'Warning',
   Error = 'Error',
   Info = 'Info',
+  Loading = 'Loading',
 }
 
 export interface IStatusIconProps {
@@ -26,6 +27,7 @@ export interface IStatusIconProps {
   label?: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
+  size?: spinnerSize;
 }
 
 export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
@@ -33,6 +35,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   label,
   isDisabled = false,
   className = '',
+  size = spinnerSize.sm,
 }: IStatusIconProps) => {
   let icon: React.ReactElement | null = null;
   if (status === StatusType.Ok) {
@@ -66,6 +69,9 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
         color={isDisabled ? disabledColor.value : infoColor.value}
       />
     );
+  }
+  if (status === StatusType.Loading) {
+    icon = <Spinner className={className} size={size} />;
   }
   if (label) {
     return (

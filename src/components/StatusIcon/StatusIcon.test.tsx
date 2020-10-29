@@ -8,8 +8,8 @@ import {
   global_danger_color_100 as dangerColor,
   global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
-
 import { StatusIcon, StatusType, IStatusIconProps } from './StatusIcon';
+import { spinnerSize } from '@patternfly/react-core';
 
 const checkColor = (props: IStatusIconProps, color: string) => {
   const { container } = render(<StatusIcon {...props} />);
@@ -17,9 +17,9 @@ const checkColor = (props: IStatusIconProps, color: string) => {
   expect(icon).toHaveAttribute('fill', color);
 };
 
-const checkClass = (props: IStatusIconProps, className: string) => {
+const checkClass = (props: IStatusIconProps, className: string, selector: string) => {
   const { container } = render(<StatusIcon {...props} />);
-  const icon = container.querySelector('svg');
+  const icon = container.querySelector(selector);
   expect(icon).toHaveClass(className);
 };
 
@@ -27,6 +27,12 @@ const checkText = (props: IStatusIconProps, text: string) => {
   const { container } = render(<StatusIcon {...props} />);
   const icon = container.querySelector('.pf-l-flex');
   expect(icon).toContainHTML(text);
+};
+
+const checkSize = (props: IStatusIconProps, size: string, selector: string) => {
+  const { container } = render(<StatusIcon {...props} />);
+  const icon = container.querySelector(selector);
+  expect(icon).toHaveClass(size);
 };
 
 describe('StatusIcon', () => {
@@ -41,7 +47,7 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Ok, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Ok, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Ok, className: 'foo' }, 'foo', 'svg');
     });
   });
 
@@ -56,7 +62,7 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Warning, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Warning, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Warning, className: 'foo' }, 'foo', 'svg');
     });
   });
 
@@ -71,7 +77,7 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Error, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Error, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Error, className: 'foo' }, 'foo', 'svg');
     });
   });
 
@@ -86,7 +92,19 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Info, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Info, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Info, className: 'foo' }, 'foo', 'svg');
+    });
+  });
+
+  describe('Loading status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Loading, label: 'Loading' }, 'Loading');
+    });
+    it('should pass down a given className', () => {
+      checkClass({ status: StatusType.Loading, className: 'foo' }, 'foo', 'span');
+    });
+    it('should pass down a given size', () => {
+      checkSize({ status: StatusType.Loading, size: spinnerSize.md }, 'pf-m-md', 'span');
     });
   });
 });
