@@ -71,7 +71,20 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
     );
   }
   if (status === StatusType.Loading) {
-    icon = <Spinner className={className} size={size} />;
+    return (
+      <Flex
+        spaceItems={{ default: 'spaceItemsSm' }}
+        alignItems={{ default: 'alignItemsFlexEnd' }}
+        flexWrap={{ default: 'nowrap' }}
+        style={{ whiteSpace: 'nowrap' }}
+        className={className}
+      >
+        <FlexItem>
+          <Spinner className={className} size={size} />;
+        </FlexItem>
+        <FlexItem>{label ? label : null}</FlexItem>
+      </Flex>
+    );
   }
   if (label) {
     return (
