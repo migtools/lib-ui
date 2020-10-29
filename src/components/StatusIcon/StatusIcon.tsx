@@ -4,18 +4,21 @@ import {
   CheckCircleIcon,
   WarningTriangleIcon,
   ExclamationCircleIcon,
+  InfoCircleIcon,
 } from '@patternfly/react-icons';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
   global_danger_color_100 as dangerColor,
+  global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
 
 export enum StatusType {
   Ok = 'Ok',
   Warning = 'Warning',
   Error = 'Error',
+  Info = 'Info',
 }
 
 export interface IStatusIconProps {
@@ -53,6 +56,14 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
       <ExclamationCircleIcon
         className={className}
         color={isDisabled ? disabledColor.value : dangerColor.value}
+      />
+    );
+  }
+  if (status === StatusType.Info) {
+    icon = (
+      <InfoCircleIcon
+        className={className}
+        color={isDisabled ? disabledColor.value : infoColor.value}
       />
     );
   }
