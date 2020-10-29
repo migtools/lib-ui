@@ -9,7 +9,6 @@ import {
   global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
 import { StatusIcon, StatusType, IStatusIconProps } from './StatusIcon';
-import { spinnerSize } from '@patternfly/react-core';
 
 const checkColor = (props: IStatusIconProps, color: string) => {
   const { container } = render(<StatusIcon {...props} />);
@@ -27,12 +26,6 @@ const checkText = (props: IStatusIconProps, text: string) => {
   const { container } = render(<StatusIcon {...props} />);
   const icon = container.querySelector('.pf-l-flex');
   expect(icon).toContainHTML(text);
-};
-
-const checkSize = (props: IStatusIconProps, size: string, selector: string) => {
-  const { container } = render(<StatusIcon {...props} />);
-  const icon = container.querySelector(selector);
-  expect(icon).toHaveClass(size);
 };
 
 describe('StatusIcon', () => {
@@ -102,9 +95,6 @@ describe('StatusIcon', () => {
     });
     it('should pass down a given className', () => {
       checkClass({ status: StatusType.Loading, className: 'foo' }, 'foo', 'span');
-    });
-    it('should pass down a given size', () => {
-      checkSize({ status: StatusType.Loading, size: spinnerSize.md }, 'pf-m-md', 'span');
     });
   });
 });
