@@ -1,21 +1,27 @@
 import * as React from 'react';
-import { Flex, FlexItem } from '@patternfly/react-core';
+import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
   WarningTriangleIcon,
   ExclamationCircleIcon,
+  InfoCircleIcon,
 } from '@patternfly/react-icons';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
   global_danger_color_100 as dangerColor,
+  global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
+
+import './StatusIcon.css';
 
 export enum StatusType {
   Ok = 'Ok',
   Warning = 'Warning',
   Error = 'Error',
+  Info = 'Info',
+  Loading = 'Loading',
 }
 
 export interface IStatusIconProps {
@@ -55,6 +61,17 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
         color={isDisabled ? disabledColor.value : dangerColor.value}
       />
     );
+  }
+  if (status === StatusType.Info) {
+    icon = (
+      <InfoCircleIcon
+        className={className}
+        color={isDisabled ? disabledColor.value : infoColor.value}
+      />
+    );
+  }
+  if (status === StatusType.Loading) {
+    icon = <Spinner className={`${className} status-icon-loading-spinner`} />;
   }
   if (label) {
     return (

@@ -6,8 +6,8 @@ import {
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
   global_danger_color_100 as dangerColor,
+  global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
-
 import { StatusIcon, StatusType, IStatusIconProps } from './StatusIcon';
 
 const checkColor = (props: IStatusIconProps, color: string) => {
@@ -16,9 +16,9 @@ const checkColor = (props: IStatusIconProps, color: string) => {
   expect(icon).toHaveAttribute('fill', color);
 };
 
-const checkClass = (props: IStatusIconProps, className: string) => {
+const checkClass = (props: IStatusIconProps, className: string, selector: string) => {
   const { container } = render(<StatusIcon {...props} />);
-  const icon = container.querySelector('svg');
+  const icon = container.querySelector(selector);
   expect(icon).toHaveClass(className);
 };
 
@@ -40,7 +40,7 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Ok, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Ok, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Ok, className: 'foo' }, 'foo', 'svg');
     });
   });
 
@@ -55,7 +55,7 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Warning, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Warning, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Warning, className: 'foo' }, 'foo', 'svg');
     });
   });
 
@@ -70,7 +70,31 @@ describe('StatusIcon', () => {
       checkColor({ status: StatusType.Error, isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: StatusType.Error, className: 'foo' }, 'foo');
+      checkClass({ status: StatusType.Error, className: 'foo' }, 'foo', 'svg');
+    });
+  });
+
+  describe('Info status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Info, label: 'Info' }, 'Info');
+    });
+    it('should have correct color', () => {
+      checkColor({ status: StatusType.Info }, infoColor.value);
+    });
+    it('should have disabled color if disabled', () => {
+      checkColor({ status: StatusType.Info, isDisabled: true }, disabledColor.value);
+    });
+    it('should pass down a given className', () => {
+      checkClass({ status: StatusType.Info, className: 'foo' }, 'foo', 'svg');
+    });
+  });
+
+  describe('Loading status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Loading, label: 'Loading' }, 'Loading');
+    });
+    it('should pass down a given className', () => {
+      checkClass({ status: StatusType.Loading, className: 'foo' }, 'foo', 'span');
     });
   });
 });
