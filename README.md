@@ -36,6 +36,7 @@ When you install @konveyor/lib-ui, you should get a warning from your package ma
 If you need to use an unpublished branch (such as when developing an app PR and a lib-ui PR at the same time), you can reference the dependency directly from your local disk by using `yarn link` or `npm link`.
 
 First, clone the lib-ui repo somewhere, `cd` to that clone, install and build the package, and run `yarn link`.
+Unfortunately, you then need to delete `node_modules` in the lib-ui directory so the app's builder doesn't pick it up.
 
 ```sh
 git clone https://github.com/konveyor/lib-ui.git konveyor-lib-ui
@@ -43,6 +44,7 @@ cd konveyor-lib-ui
 yarn install
 yarn build
 yarn link
+rm -rf node_modules
 ```
 
 Then, `cd` to the app you're developing, and run `yarn link @konveyor/lib-ui` to install the linked version instead of the npm version.
@@ -52,7 +54,14 @@ cd ../virt-ui
 yarn link @konveyor/lib-ui
 ```
 
-If you make a change in your local lib-ui clone, run `yarn build` again and your app should pick up the changes.
+If you make a change in your local lib-ui clone, reinstall its dependencies, rebuild, and remove them. Your app should then pick up the changes.
+
+```sh
+cd ../konveyor-lib-ui
+yarn install
+yarn build
+rm -rf node_modules
+```
 
 When you're done, in your app repo, unlink the package and force a reinstall of the npm version:
 
