@@ -25,9 +25,19 @@ npm install @konveyor/lib-ui
 
 ### Or, install from GitHub
 
-If you need to use an unpublished branch (such as when developing an app PR and a common-ui PR at the same time), you can reference the dependency directly from GitHub:
+If you need to use an unpublished branch (such as when developing an app PR and a lib-ui PR at the same time), you can reference the dependency directly from GitHub by specifying a repo and branch in your package.json.
 
-**_TODO: figure out details here_**
+To install from an upstream branch:
+
+```
+"@konveyor/lib-ui": "github:konveyor/lib-ui#some-branch",
+```
+
+To install from a branch in your fork:
+
+```
+"@konveyor/lib-ui": "github:yourusername/lib-ui#some-branch",
+```
 
 We should avoid leaving apps configured this way; installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
 
@@ -133,13 +143,3 @@ Components live in `src/components/MyComponent/` directories, which should each 
 When you add a new component, be sure to also export it at the top level (`src/index.ts`).
 
 Hooks follow the same structure, but they live under `src/hooks/`.
-
----
-
-## TODO:
-
-- Add docs extension for Storybook
-- Test importing into another project via GitHub dependency href? Can we do that?
-- Add reusable components from mig-ui and virt-ui
-- Start actually using the thing
-- Unit tests?
