@@ -99,17 +99,25 @@ export const useFormState = <TFieldValues>(
   const lastValuesRef = React.useRef(values);
   React.useEffect(() => {
     if (!hasRunInitialValidation || !equal(lastValuesRef.current, values)) {
+      lastValuesRef.current = values;
       const schemaShape = fieldKeys.reduce(
         (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
         {} as { [key in keyof TFieldValues]?: yup.Schema<TFieldValues[key]> }
       );
       const schema = yup.object().shape(schemaShape).defined();
       setHasRunInitialValidation(true);
-      lastValuesRef.current = values;
       schema
         .validate(values, { abortEarly: false, ...yupOptions })
-        .then(() => setValidationError(null))
-        .catch((e) => setValidationError(e as yup.ValidationError));
+        .then(() => {
+          if (lastValuesRef.current === values) {
+            setValidationError(null);
+          }
+        })
+        .catch((e) => {
+          if (lastValuesRef.current === values) {
+            setValidationError(e as yup.ValidationError);
+          }
+        });
     }
   }, [fieldKeys, fields, hasRunInitialValidation, validationError, values, yupOptions]);
 
