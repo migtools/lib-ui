@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
-    "dist"
+    "dist/**"
   ],
   "repository": "https://github.com/konveyor/lib-ui.git",
   "publishConfig": {
