@@ -23,24 +23,6 @@ yarn add @konveyor/lib-ui
 npm install @konveyor/lib-ui
 ```
 
-### Or, install from GitHub
-
-If you need to use an unpublished branch (such as when developing an app PR and a lib-ui PR at the same time), you can reference the dependency directly from GitHub by specifying a repo and branch in your package.json.
-
-To install from an upstream branch:
-
-```
-"@konveyor/lib-ui": "github:konveyor/lib-ui#some-branch",
-```
-
-To install from a branch in your fork:
-
-```
-"@konveyor/lib-ui": "github:yourusername/lib-ui#some-branch",
-```
-
-We should avoid leaving apps configured this way; installing from npm will be more efficient and reliable. Once the changes you depend on are released, you should switch your app back to the npm version.
-
 ### Install peer dependencies
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
@@ -48,6 +30,39 @@ This package has React and PatternFly packages as peer dependencies, which are n
 When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/master/package.json#L30) as dependencies in your app.
 
 **Note: The `axios` peer dependency is only required if you are using `modules/kube-client`.**
+
+### Optional: Install from local source
+
+If you need to use an unpublished branch (such as when developing an app PR and a lib-ui PR at the same time), you can reference the dependency directly from your local disk by using `yarn link` or `npm link`.
+
+First, clone the lib-ui repo somewhere, `cd` to that clone, install and build the package, and run `yarn link`.
+
+```sh
+git clone https://github.com/konveyor/lib-ui.git konveyor-lib-ui
+cd konveyor-lib-ui
+yarn install
+yarn build
+yarn link
+```
+
+Then, `cd` to the app you're developing, and run `yarn link @konveyor/lib-ui` to install the linked version instead of the npm version.
+
+```sh
+cd ../virt-ui
+yarn link @konveyor/lib-ui
+```
+
+If you make a change in your local lib-ui clone, run `yarn build` again and your app should pick up the changes.
+
+When you're done, in your app repo, unlink the package and force a reinstall of the npm version:
+
+```sh
+cd ../virt-ui
+yarn unlink @konveyor/lib-ui
+yarn install --force
+```
+
+Then in the lib-ui directory, run `yarn unlink` if you no longer want it available for linking.
 
 ### Use it!
 
