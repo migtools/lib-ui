@@ -24,6 +24,7 @@
     "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist && rimraf storybook-static",
     "build": "rimraf dist && rollup -c",
+    "prepare": "rimraf dist && rollup -c",
     "storybook": "start-storybook --docs -p 6006",
     "storybook:export": "rimraf storybook-static && build-storybook --docs"
   },
