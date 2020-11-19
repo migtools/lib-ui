@@ -5,6 +5,7 @@ import {
   WarningTriangleIcon,
   ExclamationCircleIcon,
   InfoCircleIcon,
+  UnknownIcon,
 } from '@patternfly/react-icons';
 import {
   global_disabled_color_200 as disabledColor,
@@ -22,6 +23,7 @@ export enum StatusType {
   Error = 'Error',
   Info = 'Info',
   Loading = 'Loading',
+  Unknown = 'Unknown',
 }
 
 export interface IStatusIconProps {
@@ -72,6 +74,14 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (status === StatusType.Loading) {
     icon = <Spinner className={`${className} status-icon-loading-spinner`} />;
+  }
+  if (status === StatusType.Unknown) {
+    icon = (
+      <UnknownIcon
+        className={className}
+        color={isDisabled ? disabledColor.value : warningColor.value}
+      />
+    );
   }
   if (label) {
     return (

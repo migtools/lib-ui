@@ -97,4 +97,13 @@ describe('StatusIcon', () => {
       checkClass({ status: StatusType.Loading, className: 'foo' }, 'foo', 'span');
     });
   });
+
+  describe('Unknown status', () => {
+    it('should have label if present', () => {
+      checkText({ status: StatusType.Unknown, label: 'Unknown' }, 'Unknown');
+    });
+    it('should pass down a given className', () => {
+      checkClass({ status: StatusType.Unknown, className: 'foo' }, 'foo', 'svg');
+    });
+  });
 });
