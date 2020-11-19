@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
-  WarningTriangleIcon,
+  ExclamationTriangleIcon,
   ExclamationCircleIcon,
   InfoCircleIcon,
-  UnknownIcon,
+  QuestionCircleIcon,
 } from '@patternfly/react-icons';
 import {
   global_disabled_color_200 as disabledColor,
@@ -51,7 +51,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (status === StatusType.Warning) {
     icon = (
-      <WarningTriangleIcon
+      <ExclamationTriangleIcon
         className={className}
         color={isDisabled ? disabledColor.value : warning100Color.value}
       />
@@ -78,7 +78,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (status === StatusType.Unknown) {
     icon = (
-      <UnknownIcon
+      <QuestionCircleIcon
         className={className}
         color={isDisabled ? disabledColor.value : warning200Color.value}
       />
