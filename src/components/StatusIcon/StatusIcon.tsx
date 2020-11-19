@@ -10,7 +10,8 @@ import {
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
-  global_warning_color_100 as warningColor,
+  global_warning_color_100 as warning100Color,
+  global_warning_color_200 as warning200Color,
   global_danger_color_100 as dangerColor,
   global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
@@ -52,7 +53,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
     icon = (
       <WarningTriangleIcon
         className={className}
-        color={isDisabled ? disabledColor.value : warningColor.value}
+        color={isDisabled ? disabledColor.value : warning100Color.value}
       />
     );
   }
@@ -79,7 +80,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
     icon = (
       <UnknownIcon
         className={className}
-        color={isDisabled ? disabledColor.value : warningColor.value}
+        color={isDisabled ? disabledColor.value : warning200Color.value}
       />
     );
   }
