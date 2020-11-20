@@ -4,8 +4,8 @@ import '@testing-library/jest-dom';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
-  global_warning_color_100 as warning100Color,
-  global_warning_color_200 as warning200Color,
+  global_warning_color_100 as warningColor,
+  global_Color_dark_200 as unknownColor,
   global_danger_color_100 as dangerColor,
   global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
@@ -50,7 +50,7 @@ describe('StatusIcon', () => {
       checkText({ status: StatusType.Warning, label: 'Warning' }, 'Warning');
     });
     it('should have correct color', () => {
-      checkColor({ status: StatusType.Warning }, warning100Color.value);
+      checkColor({ status: StatusType.Warning }, warningColor.value);
     });
     it('should have disabled color if disabled', () => {
       checkColor({ status: StatusType.Warning, isDisabled: true }, disabledColor.value);
@@ -104,7 +104,7 @@ describe('StatusIcon', () => {
       checkText({ status: StatusType.Unknown, label: 'Unknown' }, 'Unknown');
     });
     it('should have correct color', () => {
-      checkColor({ status: StatusType.Unknown }, warning200Color.value);
+      checkColor({ status: StatusType.Unknown }, unknownColor.value);
     });
     it('should have disabled color if disabled', () => {
       checkColor({ status: StatusType.Unknown, isDisabled: true }, disabledColor.value);
