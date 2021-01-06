@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "commit": "npx git-cz",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint --ext .tsx,.js ./src/",
     "format": "prettier --check --write ./src/**/*.{tsx,ts,scss}",
