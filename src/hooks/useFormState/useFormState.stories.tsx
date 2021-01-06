@@ -46,7 +46,7 @@ export const BasicTextFields: React.FunctionComponent = () => {
         ) : null}
       </div>
       <button
-        disabled={!form.isValid}
+        disabled={!form.isTouched && !form.isValid}
         onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
       >
         Submit
@@ -96,7 +96,7 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
       <Flex>
         <Button
           variant="primary"
-          isDisabled={!form.isValid}
+          isDisabled={!form.isTouched && !form.isValid}
           onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
         >
           Submit
@@ -132,7 +132,7 @@ export const PatternFlyTextFieldsWithHelpers: React.FunctionComponent = () => {
       <Flex>
         <Button
           variant="primary"
-          isDisabled={!form.isValid}
+          isDisabled={!form.isTouched && !form.isValid}
           onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
         >
           Submit
