@@ -36,6 +36,7 @@ export interface IFormState<TFieldValues> {
   values: TFieldValues; // For convenience in submitting forms (values are also included in fields property)
   isDirty: boolean;
   isValid: boolean;
+  isTouched: boolean;
   reset: () => void;
 }
 
@@ -92,6 +93,7 @@ export const useFormState = <TFieldValues>(
     {} as TFieldValues
   );
   const isDirty = fieldKeys.some((key) => fields[key].isDirty);
+  const isTouched = fieldKeys.some((key) => fields[key].isTouched);
 
   // Memoize the validation, only recompute if the field values changed
   const [validationError, setValidationError] = React.useState<yup.ValidationError | null>(null);
@@ -143,6 +145,7 @@ export const useFormState = <TFieldValues>(
     fields: validatedFields,
     values,
     isDirty,
+    isTouched,
     isValid: hasRunInitialValidation && !validationError,
     reset: () => fieldKeys.forEach((key) => fields[key].reset()),
   };
