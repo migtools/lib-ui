@@ -46,10 +46,13 @@ export const BasicTextFields: React.FunctionComponent = () => {
         ) : null}
       </div>
       <button
-        disabled={!form.isTouched && !form.isValid}
+        disabled={!form.isDirty || !form.isValid}
         onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
       >
         Submit
+      </button>
+      <button disabled={!form.isDirty} onClick={form.reset} style={{ marginLeft: 5 }}>
+        Reset
       </button>
     </>
   );
@@ -96,10 +99,13 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
       <Flex>
         <Button
           variant="primary"
-          isDisabled={!form.isTouched && !form.isValid}
+          isDisabled={!form.isDirty || !form.isValid}
           onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
         >
           Submit
+        </Button>
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
+          Reset
         </Button>
       </Flex>
     </Form>
@@ -132,10 +138,67 @@ export const PatternFlyTextFieldsWithHelpers: React.FunctionComponent = () => {
       <Flex>
         <Button
           variant="primary"
-          isDisabled={!form.isTouched && !form.isValid}
+          isDisabled={!form.isDirty || !form.isValid}
           onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
         >
           Submit
+        </Button>
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
+          Reset
+        </Button>
+      </Flex>
+    </Form>
+  );
+};
+
+export const AsyncPrefilling: React.FunctionComponent = () => {
+  const form = useFormState({
+    name: useFormField('', yup.string().label('Name').min(4).max(64).required()),
+    description: useFormField('', yup.string().label('Description').max(128)),
+  });
+
+  // Simulate a network request. You should use a better state handler like React Query or Redux for this.
+  const [isLoading, setIsLoading] = React.useState(true);
+  React.useEffect(() => {
+    if (isLoading) {
+      setTimeout(() => {
+        const objectFromServer = { name: 'Existing name', description: 'Existing description' };
+        form.fields.name.setInitialValue(objectFromServer.name);
+        form.fields.description.setInitialValue(objectFromServer.description);
+        setIsLoading(false);
+      }, 1000);
+    }
+  }, [isLoading, form.fields.description, form.fields.name]);
+
+  if (isLoading) return <h1>Loading...</h1>;
+
+  return (
+    <Form>
+      <FormGroup
+        label="Name"
+        isRequired
+        fieldId="example-3-name"
+        {...getFormGroupProps(form.fields.name)}
+      >
+        <TextInput id="example-3-name" type="text" {...getTextInputProps(form.fields.name)} />
+      </FormGroup>
+      <FormGroup
+        label="Description"
+        fieldId="example-3-desc"
+        {...getFormGroupProps(form.fields.description)}
+      >
+        <TextArea id="example-3-desc" {...getTextAreaProps(form.fields.description)} ref={null} />
+      </FormGroup>
+      <Flex>
+        <Button
+          variant="primary"
+          isDisabled={!form.isDirty || !form.isValid}
+          onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
+        >
+          Submit
+        </Button>
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
+          Reset
         </Button>
       </Flex>
     </Form>
