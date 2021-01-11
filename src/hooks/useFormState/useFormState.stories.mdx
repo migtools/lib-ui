@@ -4,6 +4,7 @@ import {
   BasicTextFields,
   PatternFlyTextFields,
   PatternFlyTextFieldsWithHelpers,
+  AsyncPrefilling,
 } from './useFormState.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
@@ -112,6 +113,20 @@ Most custom non-text fields can use `getFormGroupProps` even if the other helper
 
 <Canvas>
   <Story story={PatternFlyTextFieldsWithHelpers} />
+</Canvas>
+
+### Pre-filling a form asynchronously
+
+If the form's initial values are known when it is first rendered, they can simply be passed as the `initialValue` arguments of each `useFormField` call.
+However, let's say you're using a form to edit some object you're loading from the network and you need to wait for that request to resolve before you pre-fill the form.
+
+For this, you can use the `setInitialValue` function on each field object. This changes the current field value, but it also changes the value used to determine if the form `isDirty` and used when `reset`ing the form.
+
+Here, the submit button is only enabled if the form is dirty, so you can clearly see whether changes have been made to the object from the network that we're editing.
+The reset button also changes the values back to the values we got from the network instead of clearing the form.
+
+<Canvas>
+  <Story story={AsyncPrefilling} />
 </Canvas>
 
 ## TODO: better docs coming soon
