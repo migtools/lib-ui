@@ -8,6 +8,7 @@ type MaybeArraySchema<T> = [T] extends [Array<infer E>] ? yup.ArraySchema<E> : y
 export interface IFormField<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
+  setInitialValue: (value: T) => void;
   isDirty: boolean;
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
@@ -55,16 +56,21 @@ export const useFormField = <T>(
   schema: MaybeArraySchema<T>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
+  const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
   const [value, setValue] = React.useState<T>(initialValue);
   const [isTouched, setIsTouched] = React.useState(options.initialTouched || false);
   return {
     value,
     setValue,
-    isDirty: !equal(value, initialValue),
+    setInitialValue: (value: T) => {
+      setInitializedValue(value);
+      setValue(value);
+    },
+    isDirty: !equal(value, initializedValue),
     isTouched,
     setIsTouched,
     reset: () => {
-      setValue(initialValue);
+      setValue(initializedValue);
       setIsTouched(options.initialTouched || false);
     },
     schema,
