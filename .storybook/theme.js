@@ -5,5 +5,5 @@ export default create({
   brandTitle: '@konveyor/lib-ui',
   brandUrl: 'https://github.com/konveyor/lib-ui',
   brandImage:
-    'https://raw.githubusercontent.com/konveyor/lib-ui/master/.storybook/img/konveyor-logo-light.png',
+    'https://raw.githubusercontent.com/konveyor/lib-ui/main/.storybook/img/konveyor-logo-light.png',
 });

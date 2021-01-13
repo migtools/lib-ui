@@ -10,7 +10,7 @@
   "publishConfig": {
     "access": "public",
     "branches": [
-      "master"
+      "main"
     ]
   },
   "license": "Apache-2.0",

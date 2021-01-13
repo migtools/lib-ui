@@ -6,7 +6,6 @@ This library exists as a place to store and reuse abstractions that are useful f
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
-[![Build Status](https://travis-ci.com/konveyor/lib-ui.svg?branch=master)](https://travis-ci.com/konveyor/lib-ui)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
 Documentation and examples (Storybook): http://konveyor.github.io/lib-ui/
@@ -27,7 +26,7 @@ npm install @konveyor/lib-ui
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
-When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/master/package.json#L30) as dependencies in your app.
+When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/main/package.json#L30) as dependencies in your app.
 
 **Note: The `axios` peer dependency is only required if you are using `modules/kube-client`.**
 
@@ -139,7 +138,7 @@ yarn storybook:export
 
 ## Triggering an npm release
 
-This project uses [semantic-release](https://github.com/semantic-release/semantic-release) via GitHub Actions to automate its npm releases. When a commit is pushed to master, it is checked for specific key words in the commit message to decide whether a release needs to be made, and whether it will be a minor or major version bump. Your commit message will also be added and categorized in the release notes.
+This project uses [semantic-release](https://github.com/semantic-release/semantic-release) via GitHub Actions to automate its npm releases. When a commit is pushed to main, it is checked for specific key words in the commit message to decide whether a release needs to be made, and whether it will be a minor or major version bump. Your commit message will also be added and categorized in the release notes.
 
 To assist in formatting commit messages correctly for this purpose, the repo is set up for use with [Commitizen](http://commitizen.github.io/cz-cli/), which provides a CLI for guided commit messages.
 
@@ -151,7 +150,7 @@ First, `git add` any changes you want to commit, then:
 yarn commit
 ```
 
-Follow the prompts based on the scope of your commit. **Note: This will generate a message for an individual commit, but since we use squash-and-merge, what matters is your PR title.** If your PR contains multiple commits, please make sure the PR title itself matches the expected format. [See our PR template for more details](https://github.com/konveyor/lib-ui/blob/master/.github/pull_request_template.md).
+Follow the prompts based on the scope of your commit. **Note: This will generate a message for an individual commit, but since we use squash-and-merge, what matters is your PR title.** If your PR contains multiple commits, please make sure the PR title itself matches the expected format. [See our PR template for more details](https://github.com/konveyor/lib-ui/blob/main/.github/pull_request_template.md).
 
 ## File Structure
 
