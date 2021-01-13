@@ -2,14 +2,16 @@ import * as React from 'react';
 import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
-  WarningTriangleIcon,
+  ExclamationTriangleIcon,
   ExclamationCircleIcon,
   InfoCircleIcon,
+  QuestionCircleIcon,
 } from '@patternfly/react-icons';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
+  global_Color_dark_200 as unknownColor,
   global_danger_color_100 as dangerColor,
   global_info_color_100 as infoColor,
 } from '@patternfly/react-tokens';
@@ -22,6 +24,7 @@ export enum StatusType {
   Error = 'Error',
   Info = 'Info',
   Loading = 'Loading',
+  Unknown = 'Unknown',
 }
 
 export interface IStatusIconProps {
@@ -48,7 +51,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (status === StatusType.Warning) {
     icon = (
-      <WarningTriangleIcon
+      <ExclamationTriangleIcon
         className={className}
         color={isDisabled ? disabledColor.value : warningColor.value}
       />
@@ -72,6 +75,14 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   }
   if (status === StatusType.Loading) {
     icon = <Spinner className={`${className} status-icon-loading-spinner`} />;
+  }
+  if (status === StatusType.Unknown) {
+    icon = (
+      <QuestionCircleIcon
+        className={className}
+        color={isDisabled ? disabledColor.value : unknownColor.value}
+      />
+    );
   }
   if (label) {
     return (
