@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "commit": "npx git-cz",
-    "test": "jest",
+    "test": "jest --coverage",
     "test:watch": "jest --watch",
     "lint": "eslint --ext .tsx,.js ./src/",
     "format": "prettier --check --write ./src/**/*.{tsx,ts,scss}",
@@ -30,7 +30,7 @@
   "peerDependencies": {
     "@patternfly/react-core": "^4.40.4",
     "@patternfly/react-tokens": "^4.9.4",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -54,7 +54,7 @@
     "@types/yup": "^0.29.7",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
-    "axios": "^0.20.0",
+    "axios": "^0.21.1",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "cz-conventional-changelog": "3.2.0",

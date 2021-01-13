@@ -8,6 +8,7 @@ type MaybeArraySchema<T> = [T] extends [Array<infer E>] ? yup.ArraySchema<E> : y
 export interface IFormField<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
+  setInitialValue: (value: T) => void;
   isDirty: boolean;
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
@@ -36,6 +37,7 @@ export interface IFormState<TFieldValues> {
   values: TFieldValues; // For convenience in submitting forms (values are also included in fields property)
   isDirty: boolean;
   isValid: boolean;
+  isTouched: boolean;
   reset: () => void;
 }
 
@@ -54,16 +56,21 @@ export const useFormField = <T>(
   schema: MaybeArraySchema<T>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
+  const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
   const [value, setValue] = React.useState<T>(initialValue);
   const [isTouched, setIsTouched] = React.useState(options.initialTouched || false);
   return {
     value,
     setValue,
-    isDirty: !equal(value, initialValue),
+    setInitialValue: (value: T) => {
+      setInitializedValue(value);
+      setValue(value);
+    },
+    isDirty: !equal(value, initializedValue),
     isTouched,
     setIsTouched,
     reset: () => {
-      setValue(initialValue);
+      setValue(initializedValue);
       setIsTouched(options.initialTouched || false);
     },
     schema,
@@ -92,6 +99,7 @@ export const useFormState = <TFieldValues>(
     {} as TFieldValues
   );
   const isDirty = fieldKeys.some((key) => fields[key].isDirty);
+  const isTouched = fieldKeys.some((key) => fields[key].isTouched);
 
   // Memoize the validation, only recompute if the field values changed
   const [validationError, setValidationError] = React.useState<yup.ValidationError | null>(null);
@@ -143,6 +151,7 @@ export const useFormState = <TFieldValues>(
     fields: validatedFields,
     values,
     isDirty,
+    isTouched,
     isValid: hasRunInitialValidation && !validationError,
     reset: () => fieldKeys.forEach((key) => fields[key].reset()),
   };
