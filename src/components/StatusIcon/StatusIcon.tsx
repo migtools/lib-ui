@@ -32,27 +32,27 @@ export type StatusIconType = keyof typeof StatusType;
 
 type IconType =
   | {
-      icon: typeof CheckCircleIcon;
+      Icon: typeof CheckCircleIcon;
       color: typeof successColor;
     }
   | {
-      icon: typeof ExclamationTriangleIcon;
+      Icon: typeof ExclamationTriangleIcon;
       color: typeof warningColor;
     }
   | {
-      icon: typeof ExclamationCircleIcon;
+      Icon: typeof ExclamationCircleIcon;
       color: typeof errorColor;
     }
   | {
-      icon: typeof InfoCircleIcon;
+      Icon: typeof InfoCircleIcon;
       color: typeof infoColor;
     }
   | {
-      icon: typeof Spinner;
+      Icon: typeof Spinner;
       color: typeof loadingColor;
     }
   | {
-      icon: typeof QuestionCircleIcon;
+      Icon: typeof QuestionCircleIcon;
       color: typeof unknownColor;
     };
 
@@ -60,27 +60,27 @@ type iconListType = { [key in StatusIconType]: IconType };
 
 const iconList: iconListType = {
   [StatusType.Ok]: {
-    icon: CheckCircleIcon,
+    Icon: CheckCircleIcon,
     color: successColor,
   },
   [StatusType.Warning]: {
-    icon: ExclamationCircleIcon,
+    Icon: ExclamationCircleIcon,
     color: warningColor,
   },
   [StatusType.Error]: {
-    icon: ExclamationCircleIcon,
+    Icon: ExclamationCircleIcon,
     color: errorColor,
   },
   [StatusType.Info]: {
-    icon: InfoCircleIcon,
+    Icon: InfoCircleIcon,
     color: infoColor,
   },
   [StatusType.Loading]: {
-    icon: Spinner,
+    Icon: Spinner,
     color: loadingColor,
   },
   [StatusType.Unknown]: {
-    icon: QuestionCircleIcon,
+    Icon: QuestionCircleIcon,
     color: unknownColor,
   },
 };
@@ -98,25 +98,29 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   isDisabled = false,
   className = '',
 }: IStatusIconProps) => {
-  const Icon = iconList[status].icon;
+  const Icon = iconList[status].Icon;
+  const icon = (
+    <Icon
+      color={isDisabled ? disabledColor.value : iconList[status].color.value}
+      className={
+        status === StatusType.Loading ? `${className} status-icon-loading-spinner` : className
+      }
+    />
+  );
 
-  return label ? (
-    <Flex
-      spaceItems={{ default: 'spaceItemsSm' }}
-      alignItems={{ default: 'alignItemsCenter' }}
-      flexWrap={{ default: 'nowrap' }}
-      style={{ whiteSpace: 'nowrap' }}
-      className={className}
-    >
-      <FlexItem>
-        <Icon
-          color={isDisabled ? disabledColor.value : iconList[status].color.value}
-          className={
-            status === StatusType.Loading ? `${className} status-icon-loading-spinner` : className
-          }
-        />
-      </FlexItem>
-      <FlexItem>{label}</FlexItem>
-    </Flex>
-  ) : null;
+  if (label) {
+    return (
+      <Flex
+        spaceItems={{ default: 'spaceItemsSm' }}
+        alignItems={{ default: 'alignItemsCenter' }}
+        flexWrap={{ default: 'nowrap' }}
+        style={{ whiteSpace: 'nowrap' }}
+        className={className}
+      >
+        <FlexItem>{icon}</FlexItem>
+        <FlexItem>{label}</FlexItem>
+      </Flex>
+    );
+  }
+  return icon;
 };
