@@ -12,8 +12,9 @@ import {
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
   global_Color_dark_200 as unknownColor,
-  global_danger_color_100 as dangerColor,
+  global_danger_color_100 as errorColor,
   global_info_color_100 as infoColor,
+  global_info_color_200 as loadingColor,
 } from '@patternfly/react-tokens';
 
 import './StatusIcon.css';
@@ -27,8 +28,65 @@ export enum StatusType {
   Unknown = 'Unknown',
 }
 
+export type StatusIconType = keyof typeof StatusType;
+
+type IconType =
+  | {
+      icon: typeof CheckCircleIcon;
+      color: typeof successColor;
+    }
+  | {
+      icon: typeof ExclamationTriangleIcon;
+      color: typeof warningColor;
+    }
+  | {
+      icon: typeof ExclamationCircleIcon;
+      color: typeof errorColor;
+    }
+  | {
+      icon: typeof InfoCircleIcon;
+      color: typeof infoColor;
+    }
+  | {
+      icon: typeof Spinner;
+      color: typeof loadingColor;
+    }
+  | {
+      icon: typeof QuestionCircleIcon;
+      color: typeof unknownColor;
+    };
+
+type iconListType = { [key in StatusIconType]: IconType };
+
+const iconList: iconListType = {
+  [StatusType.Ok]: {
+    icon: CheckCircleIcon,
+    color: successColor,
+  },
+  [StatusType.Warning]: {
+    icon: ExclamationCircleIcon,
+    color: warningColor,
+  },
+  [StatusType.Error]: {
+    icon: ExclamationCircleIcon,
+    color: errorColor,
+  },
+  [StatusType.Info]: {
+    icon: InfoCircleIcon,
+    color: infoColor,
+  },
+  [StatusType.Loading]: {
+    icon: Spinner,
+    color: loadingColor,
+  },
+  [StatusType.Unknown]: {
+    icon: QuestionCircleIcon,
+    color: unknownColor,
+  },
+};
+
 export interface IStatusIconProps {
-  status: StatusType;
+  status: StatusIconType;
   label?: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
@@ -40,63 +98,25 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   isDisabled = false,
   className = '',
 }: IStatusIconProps) => {
-  let icon: React.ReactElement | null = null;
-  if (status === StatusType.Ok) {
-    icon = (
-      <CheckCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : successColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Warning) {
-    icon = (
-      <ExclamationTriangleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : warningColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Error) {
-    icon = (
-      <ExclamationCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : dangerColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Info) {
-    icon = (
-      <InfoCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : infoColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Loading) {
-    icon = <Spinner className={`${className} status-icon-loading-spinner`} />;
-  }
-  if (status === StatusType.Unknown) {
-    icon = (
-      <QuestionCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : unknownColor.value}
-      />
-    );
-  }
-  if (label) {
-    return (
-      <Flex
-        spaceItems={{ default: 'spaceItemsSm' }}
-        alignItems={{ default: 'alignItemsCenter' }}
-        flexWrap={{ default: 'nowrap' }}
-        style={{ whiteSpace: 'nowrap' }}
-        className={className}
-      >
-        <FlexItem>{icon}</FlexItem>
-        <FlexItem>{label}</FlexItem>
-      </Flex>
-    );
-  }
-  return icon;
+  const Icon = iconList[status].icon;
+
+  return label ? (
+    <Flex
+      spaceItems={{ default: 'spaceItemsSm' }}
+      alignItems={{ default: 'alignItemsCenter' }}
+      flexWrap={{ default: 'nowrap' }}
+      style={{ whiteSpace: 'nowrap' }}
+      className={className}
+    >
+      <FlexItem>
+        <Icon
+          color={isDisabled ? disabledColor.value : iconList[status].color.value}
+          className={
+            status === StatusType.Loading ? `${className} status-icon-loading-spinner` : className
+          }
+        />
+      </FlexItem>
+      <FlexItem>{label}</FlexItem>
+    </Flex>
+  ) : null;
 };
