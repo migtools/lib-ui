@@ -56,9 +56,9 @@ type IconType =
       color: typeof unknownColor;
     };
 
-type iconListType = { [key in StatusIconType]: IconType };
+type IconListType = { [key in StatusIconType]: IconType };
 
-const iconList: iconListType = {
+const iconList: IconListType = {
   [StatusType.Ok]: {
     Icon: CheckCircleIcon,
     color: successColor,
