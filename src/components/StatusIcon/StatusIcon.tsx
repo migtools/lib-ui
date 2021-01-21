@@ -7,6 +7,8 @@ import {
   InfoCircleIcon,
   QuestionCircleIcon,
 } from '@patternfly/react-icons';
+import { SpinnerProps } from '@patternfly/react-core/dist/esm/components';
+import { SVGIconProps } from '@patternfly/react-icons/dist/esm/createIcon';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
@@ -30,34 +32,12 @@ export enum StatusType {
 
 export type StatusIconType = keyof typeof StatusType;
 
-type IconType =
-  | {
-      Icon: typeof CheckCircleIcon;
-      color: typeof successColor;
-    }
-  | {
-      Icon: typeof ExclamationTriangleIcon;
-      color: typeof warningColor;
-    }
-  | {
-      Icon: typeof ExclamationCircleIcon;
-      color: typeof errorColor;
-    }
-  | {
-      Icon: typeof InfoCircleIcon;
-      color: typeof infoColor;
-    }
-  | {
-      Icon: typeof Spinner;
-      color: typeof loadingColor;
-    }
-  | {
-      Icon: typeof QuestionCircleIcon;
-      color: typeof unknownColor;
-    };
-
-type IconListType = { [key in StatusIconType]: IconType };
-
+type IconListType = {
+  [key in StatusType]: {
+    Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
+    color: { name: string; value: string; var: string };
+  };
+};
 const iconList: IconListType = {
   [StatusType.Ok]: {
     Icon: CheckCircleIcon,
