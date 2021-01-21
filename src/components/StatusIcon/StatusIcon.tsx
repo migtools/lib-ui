@@ -20,16 +20,7 @@ import {
 
 import './StatusIcon.css';
 
-export enum StatusType {
-  Ok = 'Ok',
-  Warning = 'Warning',
-  Error = 'Error',
-  Info = 'Info',
-  Loading = 'Loading',
-  Unknown = 'Unknown',
-}
-
-export type StatusIconType = keyof typeof StatusType;
+export type StatusType = 'Ok' | 'Warning' | 'Error' | 'Info' | 'Loading' | 'Unknown';
 
 type IconListType = {
   [key in StatusType]: {
@@ -38,34 +29,34 @@ type IconListType = {
   };
 };
 const iconList: IconListType = {
-  [StatusType.Ok]: {
+  Ok: {
     Icon: CheckCircleIcon,
     color: successColor,
   },
-  [StatusType.Warning]: {
+  Warning: {
     Icon: ExclamationTriangleIcon,
     color: warningColor,
   },
-  [StatusType.Error]: {
+  Error: {
     Icon: ExclamationCircleIcon,
     color: errorColor,
   },
-  [StatusType.Info]: {
+  Info: {
     Icon: InfoCircleIcon,
     color: infoColor,
   },
-  [StatusType.Loading]: {
+  Loading: {
     Icon: Spinner,
     color: loadingColor,
   },
-  [StatusType.Unknown]: {
+  Unknown: {
     Icon: QuestionCircleIcon,
     color: unknownColor,
   },
 };
 
 export interface IStatusIconProps {
-  status: StatusIconType;
+  status: StatusType;
   label?: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
@@ -81,9 +72,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   const icon = (
     <Icon
       color={isDisabled ? disabledColor.value : iconList[status].color.value}
-      className={
-        status === StatusType.Loading ? `${className} status-icon-loading-spinner` : className
-      }
+      className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
     />
   );
 
