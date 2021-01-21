@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
+import { Flex, FlexItem, Spinner, SpinnerProps } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -7,8 +7,7 @@ import {
   InfoCircleIcon,
   QuestionCircleIcon,
 } from '@patternfly/react-icons';
-import { SpinnerProps } from '@patternfly/react-core/dist/esm/components';
-import { SVGIconProps } from '@patternfly/react-icons/dist/esm/createIcon';
+import { SVGIconProps } from '@patternfly/react-icons/dist/js/createIcon';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
@@ -44,7 +43,7 @@ const iconList: IconListType = {
     color: successColor,
   },
   [StatusType.Warning]: {
-    Icon: ExclamationCircleIcon,
+    Icon: ExclamationTriangleIcon,
     color: warningColor,
   },
   [StatusType.Error]: {
