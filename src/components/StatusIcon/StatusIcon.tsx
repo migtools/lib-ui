@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Flex, FlexItem, Spinner } from '@patternfly/react-core';
+import { Flex, FlexItem, Spinner, SpinnerProps } from '@patternfly/react-core';
 import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
@@ -7,25 +7,53 @@ import {
   InfoCircleIcon,
   QuestionCircleIcon,
 } from '@patternfly/react-icons';
+import { SVGIconProps } from '@patternfly/react-icons/dist/js/createIcon';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
   global_warning_color_100 as warningColor,
   global_Color_dark_200 as unknownColor,
-  global_danger_color_100 as dangerColor,
+  global_danger_color_100 as errorColor,
   global_info_color_100 as infoColor,
+  global_info_color_200 as loadingColor,
 } from '@patternfly/react-tokens';
 
 import './StatusIcon.css';
 
-export enum StatusType {
-  Ok = 'Ok',
-  Warning = 'Warning',
-  Error = 'Error',
-  Info = 'Info',
-  Loading = 'Loading',
-  Unknown = 'Unknown',
-}
+export type StatusType = 'Ok' | 'Warning' | 'Error' | 'Info' | 'Loading' | 'Unknown';
+
+type IconListType = {
+  [key in StatusType]: {
+    Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
+    color: { name: string; value: string; var: string };
+  };
+};
+const iconList: IconListType = {
+  Ok: {
+    Icon: CheckCircleIcon,
+    color: successColor,
+  },
+  Warning: {
+    Icon: ExclamationTriangleIcon,
+    color: warningColor,
+  },
+  Error: {
+    Icon: ExclamationCircleIcon,
+    color: errorColor,
+  },
+  Info: {
+    Icon: InfoCircleIcon,
+    color: infoColor,
+  },
+  Loading: {
+    Icon: Spinner,
+    color: loadingColor,
+  },
+  Unknown: {
+    Icon: QuestionCircleIcon,
+    color: unknownColor,
+  },
+};
 
 export interface IStatusIconProps {
   status: StatusType;
@@ -40,50 +68,14 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   isDisabled = false,
   className = '',
 }: IStatusIconProps) => {
-  let icon: React.ReactElement | null = null;
-  if (status === StatusType.Ok) {
-    icon = (
-      <CheckCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : successColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Warning) {
-    icon = (
-      <ExclamationTriangleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : warningColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Error) {
-    icon = (
-      <ExclamationCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : dangerColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Info) {
-    icon = (
-      <InfoCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : infoColor.value}
-      />
-    );
-  }
-  if (status === StatusType.Loading) {
-    icon = <Spinner className={`${className} status-icon-loading-spinner`} />;
-  }
-  if (status === StatusType.Unknown) {
-    icon = (
-      <QuestionCircleIcon
-        className={className}
-        color={isDisabled ? disabledColor.value : unknownColor.value}
-      />
-    );
-  }
+  const Icon = iconList[status].Icon;
+  const icon = (
+    <Icon
+      color={isDisabled ? disabledColor.value : iconList[status].color.value}
+      className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
+    />
+  );
+
   if (label) {
     return (
       <Flex
