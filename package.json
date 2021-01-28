@@ -36,13 +36,13 @@
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.1",
+    "@babel/core": "^7.12.10",
     "@patternfly/react-core": "^4.40.4",
     "@patternfly/react-table": "^4.16.7",
     "@patternfly/react-tokens": "^4.9.4",
-    "@rollup/plugin-commonjs": "^14.0.0",
+    "@rollup/plugin-commonjs": "^17.0.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-node-resolve": "^11.1.0",
     "@storybook/addon-docs": "^6.1.15",
     "@storybook/addons": "^6.1.15",
     "@storybook/react": "^6.1.15",
