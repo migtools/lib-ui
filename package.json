@@ -43,10 +43,10 @@
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
-    "@storybook/addon-docs": "^6.0.18",
-    "@storybook/addons": "^6.0.16",
-    "@storybook/react": "^6.0.16",
-    "@storybook/theming": "^6.0.16",
+    "@storybook/addon-docs": "^6.1.15",
+    "@storybook/addons": "^6.1.15",
+    "@storybook/react": "^6.1.15",
+    "@storybook/theming": "^6.1.15",
     "@testing-library/jest-dom": "^5.11.3",
     "@testing-library/react": "^10.4.8",
     "@types/jest": "^26.0.10",
@@ -79,8 +79,7 @@
     "sass-loader": "^9.0.3",
     "semantic-release": "^17.1.1",
     "ts-jest": "^26.2.0",
-    "typescript": "^3.9.7",
-    "webpack": "^4.44.1"
+    "typescript": "^3.9.7"
   },
   "config": {
     "commitizen": {
