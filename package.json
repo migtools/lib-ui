@@ -20,7 +20,7 @@
     "test:watch": "npm run test -- --watch",
     "lint": "$(npm bin)/eslint --ext .tsx,.js ./src/",
     "lint:fix": "npm run lint -- --fix",
-    "format": "$(npm bin)/prettier --check --write ./src/**/*.{tsx,ts,scss}",
+    "format": "$(npm bin)/prettier --check --write ./src/**/*.{tsx,ts,css}",
     "type-check": "$(npm bin)/tsc --noEmit",
     "ci": "npm run type-check && npm run lint && npm run test",
     "clean": "$(npm bin)/rimraf dist && $(npm bin)/rimraf storybook-static",
