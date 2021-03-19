@@ -6,6 +6,7 @@ import {
   ExclamationCircleIcon,
   InfoCircleIcon,
   QuestionCircleIcon,
+  PauseCircleIcon,
 } from '@patternfly/react-icons';
 import { SVGIconProps } from '@patternfly/react-icons/dist/js/createIcon';
 import {
@@ -20,12 +21,12 @@ import {
 
 import './StatusIcon.css';
 
-export type StatusType = 'Ok' | 'Warning' | 'Error' | 'Info' | 'Loading' | 'Unknown';
+export type StatusType = 'Ok' | 'Warning' | 'Error' | 'Info' | 'Loading' | 'Paused' | 'Unknown';
 
 type IconListType = {
   [key in StatusType]: {
     Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
-    color: { name: string; value: string; var: string };
+    color?: { name: string; value: string; var: string };
   };
 };
 const iconList: IconListType = {
@@ -49,6 +50,9 @@ const iconList: IconListType = {
     Icon: Spinner,
     color: loadingColor,
   },
+  Paused: {
+    Icon: PauseCircleIcon,
+  },
   Unknown: {
     Icon: QuestionCircleIcon,
     color: unknownColor,
@@ -71,7 +75,7 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   const Icon = iconList[status].Icon;
   const icon = (
     <Icon
-      color={isDisabled ? disabledColor.value : iconList[status].color.value}
+      color={isDisabled ? disabledColor.value : iconList[status].color?.value || '#151515'} // TODO use --pf-global--Color--100 after upgrading PF, for some reason that is resolving to #000 in this version
       className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
     />
   );
