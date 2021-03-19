@@ -99,6 +99,21 @@ describe('StatusIcon', () => {
     });
   });
 
+  describe('Paused status', () => {
+    it('should have label if present', () => {
+      checkText({ status: 'Paused', label: 'Paused' }, 'Paused');
+    });
+    it('should have correct color', () => {
+      checkColor({ status: 'Paused' }, '#151515');
+    });
+    it('should have disabled color if disabled', () => {
+      checkColor({ status: 'Paused', isDisabled: true }, disabledColor.value);
+    });
+    it('should pass down a given className', () => {
+      checkClass({ status: 'Paused', className: 'foo' }, 'foo', 'svg');
+    });
+  });
+
   describe('Unknown status', () => {
     it('should have label if present', () => {
       checkText({ status: 'Unknown', label: 'Unknown' }, 'Unknown');
