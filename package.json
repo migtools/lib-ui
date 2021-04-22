@@ -51,7 +51,6 @@
     "@types/jest": "^26.0.10",
     "@types/react": "^16.9.44",
     "@types/rollup-plugin-postcss": "^2.0.0",
-    "@types/yup": "^0.29.7",
     "@typescript-eslint/eslint-plugin": "^3.8.0",
     "@typescript-eslint/parser": "^3.8.0",
     "axios": "^0.21.1",
@@ -88,6 +87,6 @@
   },
   "dependencies": {
     "fast-deep-equal": "^3.1.3",
-    "yup": "^0.29.3"
+    "yup": "^0.32.9"
   }
 }
