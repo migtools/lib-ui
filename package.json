@@ -28,17 +28,17 @@
     "storybook:export": "rimraf storybook-static && build-storybook --docs"
   },
   "peerDependencies": {
-    "@patternfly/react-core": "^4.40.4",
-    "@patternfly/react-tokens": "^4.9.4",
+    "@patternfly/react-core": "^4.115.1",
+    "@patternfly/react-tokens": "^4.11.2",
     "axios": "^0.21.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@patternfly/react-core": "^4.40.4",
-    "@patternfly/react-table": "^4.16.7",
-    "@patternfly/react-tokens": "^4.9.4",
+    "@patternfly/react-core": "^4.115.1",
+    "@patternfly/react-table": "^4.26.6",
+    "@patternfly/react-tokens": "^4.11.2",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
@@ -67,9 +67,9 @@
     "node-sass": "^5.0.0",
     "postcss": "^8.2.12",
     "prettier": "^2.2.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-is": "^16.8.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-is": "^17.0.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.45.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
