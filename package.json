@@ -64,6 +64,7 @@
     "eslint-plugin-react-hooks": "^4.2.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^26.6.3",
+    "levenary": "^1.1.1",
     "node-sass": "^5.0.0",
     "postcss": "^8.2.12",
     "prettier": "^2.2.1",
