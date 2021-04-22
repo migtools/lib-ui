@@ -18,7 +18,7 @@
     "commit": "npx git-cz",
     "test": "$(npm bin)/jest --coverage",
     "test:watch": "npm run test -- --watch",
-    "lint": "$(npm bin)/eslint --ext .tsx,.js ./src/",
+    "lint": "$(npm bin)/eslint --ext .tsx,.ts,.js ./src/",
     "lint:fix": "npm run lint -- --fix",
     "format": "$(npm bin)/prettier --check --write ./src/**/*.{tsx,ts,css}",
     "type-check": "$(npm bin)/tsc --noEmit",
