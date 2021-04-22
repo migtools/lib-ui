@@ -12,7 +12,7 @@ export interface IFormField<T> {
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
   reset: () => void;
-  schema: yup.SchemaOf<T>;
+  schema: yup.AnySchema<T>;
 }
 
 export interface IValidatedFormField<T> extends IFormField<T> {
@@ -52,7 +52,7 @@ export interface IFormState<TFieldValues> {
 
 export const useFormField = <T>(
   initialValue: T,
-  schema: yup.SchemaOf<T>,
+  schema: yup.AnySchema<T>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
   const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
@@ -109,7 +109,7 @@ export const useFormState = <TFieldValues>(
       lastValuesRef.current = values;
       const schemaShape = fieldKeys.reduce(
         (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
-        {} as { [key in keyof TFieldValues]: yup.SchemaOf<TFieldValues[key]> }
+        {} as { [key in keyof TFieldValues]: yup.AnySchema<TFieldValues[key]> }
       );
       const schema = yup.object().shape(schemaShape);
       setHasRunInitialValidation(true);
