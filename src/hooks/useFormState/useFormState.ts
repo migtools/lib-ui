@@ -2,8 +2,7 @@ import { FormGroupProps, TextAreaProps, TextInputProps } from '@patternfly/react
 import * as React from 'react';
 import * as yup from 'yup';
 import equal from 'fast-deep-equal';
-
-type MaybeArraySchema<T> = [T] extends [Array<infer E>] ? yup.ArraySchema<E> : yup.Schema<T>;
+import { ValidateOptions } from 'yup/lib/types';
 
 export interface IFormField<T> {
   value: T;
@@ -13,7 +12,7 @@ export interface IFormField<T> {
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
   reset: () => void;
-  schema: MaybeArraySchema<T>;
+  schema: yup.SchemaOf<T>;
 }
 
 export interface IValidatedFormField<T> extends IFormField<T> {
@@ -53,7 +52,7 @@ export interface IFormState<TFieldValues> {
 
 export const useFormField = <T>(
   initialValue: T,
-  schema: MaybeArraySchema<T>,
+  schema: yup.SchemaOf<T>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
   const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
@@ -91,7 +90,7 @@ export const useFormField = <T>(
 
 export const useFormState = <TFieldValues>(
   fields: FormFields<TFieldValues>,
-  yupOptions: yup.ValidateOptions = {}
+  yupOptions: ValidateOptions = {}
 ): IFormState<TFieldValues> => {
   const fieldKeys = Object.keys(fields) as (keyof TFieldValues)[];
   const values: TFieldValues = fieldKeys.reduce(
@@ -110,9 +109,9 @@ export const useFormState = <TFieldValues>(
       lastValuesRef.current = values;
       const schemaShape = fieldKeys.reduce(
         (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
-        {} as { [key in keyof TFieldValues]?: yup.Schema<TFieldValues[key]> }
+        {} as { [key in keyof TFieldValues]: yup.SchemaOf<TFieldValues[key]> }
       );
-      const schema = yup.object().shape(schemaShape).defined();
+      const schema = yup.object().shape(schemaShape);
       setHasRunInitialValidation(true);
       schema
         .validate(values, { abortEarly: false, ...yupOptions })
@@ -132,7 +131,7 @@ export const useFormState = <TFieldValues>(
   type ErrorsByField = { [key in keyof TFieldValues]: yup.ValidationError };
   const errorsByField =
     validationError?.inner.reduce(
-      (newObj, error) => ({ ...newObj, [error.path]: error }),
+      (newObj, error) => ({ ...newObj, [error.path || '']: error }),
       {} as ErrorsByField
     ) || ({} as ErrorsByField);
 
