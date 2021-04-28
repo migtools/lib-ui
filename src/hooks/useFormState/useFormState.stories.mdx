@@ -5,6 +5,7 @@ import {
   PatternFlyTextFields,
   PatternFlyTextFieldsWithHelpers,
   AsyncPrefilling,
+  ComplexFieldTypes,
 } from './useFormState.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
@@ -19,8 +20,7 @@ parameters returned by `useFormField` and `useFormState` can be inferred from th
 passed as individual type parameters to each `useFormField<T>()`, or passed as a unified interface to the type parameter of `useFormState<T>()`.
 
 This hook uses [yup](https://github.com/jquense/yup) for field validation, and its TypeScript signature enforces that each of your schema types is
-compatible with its field type. `yup` is bundled as a dependency of `@konveyor/lib-ui`, but it is recommended that you also install `@types/yup` as a
-devDependency in your app if you are using TypeScript.
+compatible with its field type. `yup` is bundled as a dependency of `@konveyor/lib-ui`.
 
 We built this solution because we find that most forms do not have complex requirements, and libraries like Formik and co. tend to add unnecessary complexity.
 We were burned by lots of confusing debugging sessions trying to figure out the reinitialization behavior of Formik, among other things,
@@ -113,6 +113,24 @@ Most custom non-text fields can use `getFormGroupProps` even if the other helper
 
 <Canvas>
   <Story story={PatternFlyTextFieldsWithHelpers} />
+</Canvas>
+
+### Complex field types and validations
+
+You can store any type of value in a form field, but you need to find the right `yup` schema type to use. `yup.string()`, `yup.number()` and `yup.boolean()` are straightforward,
+but you may also need to use things like `yup.array()`, `yup.date()`, `yup.object<ObjectSchema>()`. (Note: only use `yup.object` when you need specific validation on each property in the object, which may be better designed as individual useFormField hooks).
+If nothing else fits, you can always use `yup.mixed<T>()` which allows you to use any type but does not validate the value for you. If you use `mixed`, be sure to add your own validations with schema methods like `required`, `oneOf`, and `test`.
+See the [yup API documentation](https://github.com/jquense/yup#api) for more information.
+
+This example includes a mixed field and an array field (leveraging the `useSelectionState` hook also provided by lib-ui). It has custom validations to make sure the store you select is open and that you don't select more than 2 items (for some reason).
+
+Note that the type parameters passed here to `useFormField` are not required, because the field type can usually be inferred from the yup schema.
+However, since the schema are non-trivial we're specifying types here explicitly just to be sure the schema match up with what we're expecting.
+If you're having trouble with yup schema types resolving to `T | undefined` instead of `T`, try chaining `.default(someDefault)` to tell yup what to validate against if there is an undefined value.
+[Learn more about yup's TypeScript support here](https://github.com/jquense/yup/blob/master/docs/typescript.md).
+
+<Canvas>
+  <Story story={ComplexFieldTypes} />
 </Canvas>
 
 ### Pre-filling a form asynchronously

@@ -8,6 +8,7 @@ import {
   getFormGroupProps,
   getTextInputProps,
   getTextAreaProps,
+  useSelectionState,
 } from '../..';
 
 export const BasicTextFields: React.FunctionComponent = () => {
@@ -29,7 +30,7 @@ export const BasicTextFields: React.FunctionComponent = () => {
           onBlur={() => form.fields.name.setIsTouched(true)}
         />
         {!form.fields.name.isValid ? (
-          <p style={{ color: 'red' }}>{form.fields.name.error.message}</p>
+          <p style={{ color: 'red' }}>{form.fields.name.error?.message}</p>
         ) : null}
       </div>
       <div>
@@ -42,7 +43,7 @@ export const BasicTextFields: React.FunctionComponent = () => {
           onBlur={() => form.fields.description.setIsTouched(true)}
         />
         {!form.fields.description.isValid ? (
-          <p style={{ color: 'red' }}>{form.fields.description.error.message}</p>
+          <p style={{ color: 'red' }}>{form.fields.description.error?.message}</p>
         ) : null}
       </div>
       <button
@@ -202,5 +203,99 @@ export const AsyncPrefilling: React.FunctionComponent = () => {
         </Button>
       </Flex>
     </Form>
+  );
+};
+
+export const ComplexFieldTypes: React.FunctionComponent = () => {
+  // GROCERY_STORES and GROCERY_ITEMS represent some data you might load from an API.
+  interface IGroceryStore {
+    name: string;
+    isOpen: boolean;
+  }
+  const GROCERY_STORES: IGroceryStore[] = [
+    { name: 'Market Basket', isOpen: true },
+    { name: 'Wegmans', isOpen: false },
+    { name: 'Aldi', isOpen: true },
+  ];
+  const GROCERY_ITEMS: string[] = ['Milk', 'Eggs', 'Flour', 'Butter'];
+
+  const form = useFormState({
+    store: useFormField<IGroceryStore | null>(
+      null,
+      yup
+        .mixed<IGroceryStore | null>()
+        .required()
+        .test('is-open', 'The selected store is closed', (value) => !!value?.isOpen)
+    ),
+    items: useFormField<string[]>(
+      [],
+      yup.array(yup.string().default('')).required().max(2, 'Select no more than 2 items')
+    ),
+  });
+
+  const { isItemSelected, toggleItemSelected } = useSelectionState<string>({
+    items: GROCERY_ITEMS,
+    externalState: [form.fields.items.value, form.fields.items.setValue],
+  });
+
+  return (
+    <>
+      <div>
+        <label htmlFor="example-4-store">Store:</label>&nbsp;
+        <select
+          id="example-4-store"
+          onChange={(event) => {
+            form.fields.store.setValue(
+              GROCERY_STORES.find((store) => store.name === event.target.value) || null
+            );
+            form.fields.store.setIsTouched(true);
+          }}
+          value={form.values.store?.name || ''}
+        >
+          <option value="" disabled>
+            Select a store...
+          </option>
+          {GROCERY_STORES.map((store) => (
+            <option key={store.name} value={store.name}>
+              {store.name} - {store.isOpen ? 'Open' : 'Closed'}
+            </option>
+          ))}
+        </select>
+        {!form.fields.store.isValid ? (
+          <p style={{ color: 'red' }}>{form.fields.store.error?.message}</p>
+        ) : null}
+      </div>
+      <div>
+        <label htmlFor="example-4-items">Items:</label>
+        <br />
+        {GROCERY_ITEMS.map((item) => (
+          <div key={item}>
+            <input
+              type="checkbox"
+              id={`${item}-checkbox`}
+              checked={isItemSelected(item)}
+              onChange={() => {
+                toggleItemSelected(item);
+                form.fields.items.setIsTouched(true);
+              }}
+            />
+            &nbsp;
+            <label htmlFor={`${item}-checkbox`}>{item}</label>
+          </div>
+        ))}
+        {!form.fields.items.isValid ? (
+          <p style={{ color: 'red' }}>{form.fields.items.error?.message}</p>
+        ) : null}
+      </div>
+      <button
+        disabled={!form.isDirty || !form.isValid}
+        onClick={() => alert(`Submit form! ${JSON.stringify(form.values)}`)}
+      >
+        Submit
+      </button>
+      <button disabled={!form.isDirty} onClick={form.reset} style={{ marginLeft: 5 }}>
+        Reset
+      </button>
+    </>
   );
 };

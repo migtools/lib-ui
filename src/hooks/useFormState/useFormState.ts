@@ -52,7 +52,7 @@ export interface IFormState<TFieldValues> {
 
 export const useFormField = <T>(
   initialValue: T,
-  schema: yup.AnySchema<T>,
+  schema: yup.AnySchema<T | undefined>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
   const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
@@ -72,7 +72,7 @@ export const useFormField = <T>(
       setValue(initializedValue);
       setIsTouched(options.initialTouched || false);
     },
-    schema,
+    schema: schema.defined(),
   };
 };
 
