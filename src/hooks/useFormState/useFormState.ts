@@ -7,11 +7,15 @@ import { ValidateOptions } from 'yup/lib/types';
 export interface IFormField<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
-  setInitialValue: (value: T) => void;
-  isDirty: boolean;
+  defaultValue: T;
+  cleanValue: T;
+  reinitialize: (value: T) => void; // Sets defaultValue, cleanValue and value
+  prefill: (value: T) => void; // Sets cleanValue and value
+  clear: () => void; // Sets value to defaultValue
+  revert: () => void; // Sets value to cleanValue
+  isDirty: boolean; // True if value is different from cleanValue
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
-  reset: () => void;
   schema: yup.AnySchema<T>;
 }
 
@@ -37,7 +41,8 @@ export interface IFormState<TFieldValues> {
   isDirty: boolean;
   isValid: boolean;
   isTouched: boolean;
-  reset: () => void;
+  clear: () => void;
+  revert: () => void;
 }
 
 // The generic T type variable is the type of the field's value (the T in IFormField<T>).
@@ -55,23 +60,35 @@ export const useFormField = <T>(
   schema: yup.AnySchema<T | undefined>,
   options: { initialTouched?: boolean } = {}
 ): IFormField<T> => {
-  const [initializedValue, setInitializedValue] = React.useState<T>(initialValue);
-  const [value, setValue] = React.useState<T>(initialValue);
+  const [defaultValue, setDefaultValue] = React.useState<T>(initialValue); // The value used on clear()
+  const [cleanValue, setCleanValue] = React.useState<T>(initialValue); // The value considered "unchanged", determines isDirty and used on revert()
+  const [value, setValue] = React.useState<T>(initialValue); // The actual value in the field
   const [isTouched, setIsTouched] = React.useState(options.initialTouched || false);
   return {
     value,
     setValue,
-    setInitialValue: (value: T) => {
-      setInitializedValue(value);
+    defaultValue,
+    cleanValue,
+    reinitialize: (value: T) => {
+      setDefaultValue(value);
+      setCleanValue(value);
       setValue(value);
     },
-    isDirty: !equal(value, initializedValue),
-    isTouched,
-    setIsTouched,
-    reset: () => {
-      setValue(initializedValue);
+    prefill: (value: T) => {
+      setCleanValue(value);
+      setValue(value);
+    },
+    clear: () => {
+      setValue(defaultValue);
       setIsTouched(options.initialTouched || false);
     },
+    revert: () => {
+      setValue(cleanValue);
+      setIsTouched(options.initialTouched || false);
+    },
+    isDirty: !equal(value, cleanValue),
+    isTouched,
+    setIsTouched,
     schema: schema.defined(),
   };
 };
@@ -152,7 +169,8 @@ export const useFormState = <TFieldValues>(
     isDirty,
     isTouched,
     isValid: hasRunInitialValidation && !validationError,
-    reset: () => fieldKeys.forEach((key) => fields[key].reset()),
+    clear: () => fieldKeys.forEach((key) => fields[key].clear()),
+    revert: () => fieldKeys.forEach((key) => fields[key].revert()),
   };
 };
 
