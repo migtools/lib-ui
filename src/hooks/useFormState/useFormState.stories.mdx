@@ -147,9 +147,8 @@ For this, you can use the `prefill` function on each field object. This changes 
 Here, the submit button is only enabled if the form is dirty, so you can clearly see whether changes have been made to the object from the network that we're editing.
 The revert button also changes the values back to the values we got from the network instead of clearing the form.
 
-Note that we have separate buttons here for "Revert" and "Clear". The `revert` function sets each form field to its `cleanValue`, which was changed by the `prefill` function to correspond to the
-current "unchanged" version of this object we have on the server. The `clear` function instead sets each form field to its `defaultValue`, which is the initial value passed into `useFormField`.
-If we want to instead change those actual defaults, we can use the `reinitialize` function.
+Note that we have separate buttons here for "Revert" and "Clear". The `revert` function sets each field to its `cleanValue` (which can be changed by `prefill`), and the `clear` function sets each
+field to its `defaultValue` (which can be changed by `reinitialize`). Both default to the `initialValue` originally passed into `useFormField`.
 
 This distinction between clean/prefilled and default/initialized values is useful in cases like this where we only want to enable the submit button if the values have been changed compared to
 our real server-side data, but we also want to provide a way to clear the form back to a truly empty state.
