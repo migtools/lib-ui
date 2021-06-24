@@ -52,8 +52,8 @@ export const BasicTextFields: React.FunctionComponent = () => {
       >
         Submit
       </button>
-      <button disabled={!form.isDirty} onClick={form.reset} style={{ marginLeft: 5 }}>
-        Reset
+      <button disabled={!form.isDirty} onClick={form.clear} style={{ marginLeft: 5 }}>
+        Clear
       </button>
     </>
   );
@@ -105,8 +105,8 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
         >
           Submit
         </Button>
-        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
-          Reset
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.clear}>
+          Clear
         </Button>
       </Flex>
     </Form>
@@ -144,8 +144,8 @@ export const PatternFlyTextFieldsWithHelpers: React.FunctionComponent = () => {
         >
           Submit
         </Button>
-        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
-          Reset
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.clear}>
+          Clear
         </Button>
       </Flex>
     </Form>
@@ -164,8 +164,8 @@ export const AsyncPrefilling: React.FunctionComponent = () => {
     if (isLoading) {
       setTimeout(() => {
         const objectFromServer = { name: 'Existing name', description: 'Existing description' };
-        form.fields.name.setInitialValue(objectFromServer.name);
-        form.fields.description.setInitialValue(objectFromServer.description);
+        form.fields.name.prefill(objectFromServer.name);
+        form.fields.description.prefill(objectFromServer.description);
         setIsLoading(false);
       }, 1000);
     }
@@ -198,8 +198,11 @@ export const AsyncPrefilling: React.FunctionComponent = () => {
         >
           Submit
         </Button>
-        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.reset}>
-          Reset
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.revert}>
+          Revert
+        </Button>
+        <Button variant="secondary" isDisabled={!form.isDirty} onClick={form.clear}>
+          Clear
         </Button>
       </Flex>
     </Form>
@@ -293,8 +296,8 @@ export const ComplexFieldTypes: React.FunctionComponent = () => {
       >
         Submit
       </button>
-      <button disabled={!form.isDirty} onClick={form.reset} style={{ marginLeft: 5 }}>
-        Reset
+      <button disabled={!form.isDirty} onClick={form.clear} style={{ marginLeft: 5 }}>
+        Clear
       </button>
     </>
   );

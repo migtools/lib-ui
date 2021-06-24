@@ -50,11 +50,16 @@ function useFormState<TFieldValues>(
 interface IFormField<T> {
   value: T;
   setValue: React.Dispatch<React.SetStateAction<T>>;
-  isDirty: boolean; // true if the value is different from initialValue by deep comparison
+  defaultValue: T;
+  cleanValue: T;
+  reinitialize: (value: T) => void; // Sets defaultValue, cleanValue and value
+  prefill: (value: T) => void; // Sets cleanValue and value
+  clear: () => void; // Sets value to defaultValue
+  revert: () => void; // Sets value to cleanValue
+  isDirty: boolean; // True if value is different from cleanValue
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
-  reset: () => void;
-  schema: [T] extends [Array<infer E>] ? yup.ArraySchema<E> : yup.Schema<T>;
+  schema: yup.AnySchema<T>;
 }
 
 interface IValidatedFormField<T> extends IFormField<T> {
@@ -63,14 +68,13 @@ interface IValidatedFormField<T> extends IFormField<T> {
 }
 
 interface IFormState<TFieldValues> {
-  fields: {
-    // The same fields object passed into useFormState, but with error and isValid properties added
-    [key in keyof TFieldValues]: IValidatedFormField<TFieldValues[key]>;
-  };
+  fields: ValidatedFormFields<TFieldValues>;
   values: TFieldValues; // For convenience in submitting forms (values are also included in fields property)
-  isDirty: boolean; // true if any field has isDirty
-  isValid: boolean; // true if every field has isValid
-  reset: () => void;
+  isDirty: boolean;
+  isValid: boolean;
+  isTouched: boolean;
+  clear: () => void;
+  revert: () => void;
 }
 ```
 
@@ -138,10 +142,16 @@ If you're having trouble with yup schema types resolving to `T | undefined` inst
 If the form's initial values are known when it is first rendered, they can simply be passed as the `initialValue` arguments of each `useFormField` call.
 However, let's say you're using a form to edit some object you're loading from the network and you need to wait for that request to resolve before you pre-fill the form.
 
-For this, you can use the `setInitialValue` function on each field object. This changes the current field value, but it also changes the value used to determine if the form `isDirty` and used when `reset`ing the form.
+For this, you can use the `prefill` function on each field object. This changes the current field value, but it also changes the `cleanValue` (used to determine if the form `isDirty` and used when `revert`ing the form).
 
 Here, the submit button is only enabled if the form is dirty, so you can clearly see whether changes have been made to the object from the network that we're editing.
-The reset button also changes the values back to the values we got from the network instead of clearing the form.
+The revert button also changes the values back to the values we got from the network instead of clearing the form.
+
+Note that we have separate buttons here for "Revert" and "Clear". The `revert` function sets each field to its `cleanValue` (which can be changed by `prefill`), and the `clear` function sets each
+field to its `defaultValue` (which can be changed by `reinitialize`). Both default to the `initialValue` originally passed into `useFormField`.
+
+This distinction between clean/prefilled and default/initialized values is useful in cases like this where we only want to enable the submit button if the values have been changed compared to
+our real server-side data, but we also want to provide a way to clear the form back to a truly empty state.
 
 <Canvas>
   <Story story={AsyncPrefilling} />
