@@ -61,7 +61,6 @@ export class DiscoveryClient extends OAuthClient implements IDiscoveryClient {
     }
   };
 
-
   public getRaw = (path: string): Promise<any> => {
     return this._get(path);
   };

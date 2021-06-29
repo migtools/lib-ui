@@ -9,12 +9,7 @@ export interface IDiscoveryResource {
   discoveryAggregator(): string;
   discoveryType(): string;
   path(): string;
-  parametrized(params?: IDiscoveryParameters): { [param: string]: string };
-}
-export interface IDebugTreeResource {
-  discoveryAggregator(): string;
-  discoveryType(): string;
-  path(): string;
+  parametrized?(params?: IDiscoveryParameters): { [param: string]: string };
 }
 export interface INamedDiscoveryResource extends IDiscoveryResource {
   discoveryName(): string;
@@ -117,7 +112,8 @@ export abstract class DiscoveryResource implements IDiscoveryResource {
   }
 }
 
-export abstract class NamedDiscoveryResource extends DiscoveryResource
+export abstract class NamedDiscoveryResource
+  extends DiscoveryResource
   implements INamedDiscoveryResource {
   private readonly _name: string;
 
@@ -175,28 +171,3 @@ export abstract class OAuthClient {
     };
   }
 }
-
-export class DebugTreeDiscoveryResource implements IDebugTreeResource {
-  private readonly _aggregatorType: string;
-  private readonly _aggregatorName: string;
-  private readonly _aggregatorSpecifier: string;
-
-  constructor(planName: string, migrationName: string, treeType = 'plans') {
-    this._aggregatorType = treeType;
-    this._aggregatorName = planName;
-    this._aggregatorSpecifier = migrationName;
-  }
-
-  public discoveryType() {
-    return 'tree';
-  }
-
-  public discoveryAggregator() {
-    return [this._aggregatorType, this._aggregatorName].join('/');
-  }
-
-  public path(): string {
-    return [this.discoveryAggregator(), this.discoveryType(), this._aggregatorSpecifier].join('/');
-  }
-}
-

@@ -71,8 +71,32 @@ export class PlanPodReportDiscovery extends DiscoveryResource {
   }
 }
 
-export class DebugTreeDiscoveryResource extends DiscoveryResource {
-  constructor(planName: string, params: IDiscoveryParameters = {}) {
-    super(planName, 'tree', params, 'plans');
+export interface IDebugTreeResource {
+  discoveryAggregator(): string;
+  discoveryType(): string;
+  path(): string;
+}
+
+export class DebugTreeDiscoveryResource implements IDebugTreeResource {
+  private readonly _aggregatorType: string;
+  private readonly _aggregatorName: string;
+  private readonly _aggregatorSpecifier: string;
+
+  constructor(planName: string, migrationName: string, treeType = 'plans') {
+    this._aggregatorType = treeType;
+    this._aggregatorName = planName;
+    this._aggregatorSpecifier = migrationName;
+  }
+
+  public discoveryType() {
+    return 'tree';
+  }
+
+  public discoveryAggregator() {
+    return [this._aggregatorType, this._aggregatorName].join('/');
+  }
+
+  public path(): string {
+    return [this.discoveryAggregator(), this.discoveryType(), this._aggregatorSpecifier].join('/');
   }
 }
