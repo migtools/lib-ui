@@ -9,9 +9,8 @@ export interface IDiscoveryResource {
   discoveryAggregator(): string;
   discoveryType(): string;
   path(): string;
-  parametrized(params?: IDiscoveryParameters): { [param: string]: string };
+  parametrized?(params?: IDiscoveryParameters): { [param: string]: string };
 }
-
 export interface INamedDiscoveryResource extends IDiscoveryResource {
   discoveryName(): string;
 }
@@ -113,7 +112,8 @@ export abstract class DiscoveryResource implements IDiscoveryResource {
   }
 }
 
-export abstract class NamedDiscoveryResource extends DiscoveryResource
+export abstract class NamedDiscoveryResource
+  extends DiscoveryResource
   implements INamedDiscoveryResource {
   private readonly _name: string;
 
