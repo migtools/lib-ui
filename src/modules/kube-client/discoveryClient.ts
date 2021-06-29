@@ -54,7 +54,7 @@ export class DiscoveryClient extends OAuthClient implements IDiscoveryClient {
   }
 
   public get = (resource: IDiscoveryResource, params?: IDiscoveryParameters): Promise<any> => {
-    if (params) {
+    if (params && resource.parametrized) {
       return this._get(this.fullPath(resource.path()), resource?.parametrized(params));
     } else {
       return this._get(this.fullPath(resource.path()));
