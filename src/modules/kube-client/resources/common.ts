@@ -5,26 +5,10 @@ export interface IKubeResource {
   namedPath(name: string): string;
 }
 
-export interface IDiscoveryResource {
-  discoveryAggregator(): string;
-  discoveryType(): string;
-  path(): string;
-  parametrized?(params?: IDiscoveryParameters): { [param: string]: string };
-}
-export interface INamedDiscoveryResource extends IDiscoveryResource {
-  discoveryName(): string;
-}
-
 export interface IGroupVersionKindPlural {
   group: string;
   version: string;
   kindPlural: string;
-}
-
-export interface IDiscoveryParameters {
-  offset?: number;
-  limit?: number;
-  [param: string]: string | number | undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -67,74 +51,6 @@ export abstract class ClusterResource implements IKubeResource {
   }
   public namedPath(name: string): string {
     return namedPath(this.listPath(), name);
-  }
-}
-
-export abstract class DiscoveryResource implements IDiscoveryResource {
-  private readonly _type: string;
-  private readonly _aggregatorType: string;
-  private readonly _aggregatorName: string;
-  private _discoveryParameters: IDiscoveryParameters;
-
-  constructor(
-    aggregatorName: string,
-    type: string,
-    discoveryParameters: IDiscoveryParameters,
-    customAggregatorType = 'clusters'
-  ) {
-    this._aggregatorType = customAggregatorType;
-    this._aggregatorName = aggregatorName;
-    this._type = type;
-    this._discoveryParameters = discoveryParameters;
-  }
-
-  public discoveryType(): string {
-    return this._type;
-  }
-
-  public discoveryAggregator(): string {
-    return [this._aggregatorType, this._aggregatorName].join('/');
-  }
-
-  public parametrized(params: IDiscoveryParameters = {}): { [param: string]: string } {
-    const merged = {};
-    Object.keys(this._discoveryParameters).map(
-      (param) => (merged[param] = this._discoveryParameters[param]?.toString())
-    );
-    Object.keys(params).map(
-      (param) => (merged[param] = this._discoveryParameters[param]?.toString())
-    );
-    return merged;
-  }
-
-  public path(): string {
-    return [this.discoveryAggregator(), this.discoveryType()].join('/');
-  }
-}
-
-export abstract class NamedDiscoveryResource
-  extends DiscoveryResource
-  implements INamedDiscoveryResource {
-  private readonly _name: string;
-
-  constructor(
-    name: string,
-    aggregator: string,
-    type: string,
-    discoveryParameters: IDiscoveryParameters,
-    customAggregatorType = 'clusters'
-  ) {
-    super(aggregator, type, discoveryParameters, customAggregatorType);
-
-    this._name = name;
-  }
-
-  public discoveryName(): string {
-    return this._name;
-  }
-
-  public path(): string {
-    return [super.path(), this.discoveryName()].join('/');
   }
 }
 
