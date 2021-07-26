@@ -1,0 +1,51 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { usePaginationState } from './usePaginationState';
+import { BasicPagination } from './usePaginationState.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Hooks/usePaginationState" component={usePaginationState} />
+
+# usePaginationState
+
+A custom hook for managing the state of PatternFly's [Pagination component](https://www.patternfly.org/v4/components/pagination) or any client-side pagination of data.
+Given any array of items and an initial number of items per page (defaults to 20), this hook returns a subset of the array representing the current page and an object of `paginationProps`
+that can be passed into `<Pagination>` in order to show pagination info, switch pages, and change how many items are shown on a page.
+
+Supports passing a TypeScript type for the array items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html),
+although that should not be necessary since the type can be trivially inferred from the array.
+
+```ts
+// Syntax:
+const paginationState = usePaginationState<T>(items: T[], initialItemsPerPage: number);
+
+// Return value:
+IPaginationStateHook<T> {
+  currentPageItems: T[];
+  setPageNumber: (pageNumber: number) => void;
+  paginationProps: Pick<
+    PaginationProps, // Props for PatternFly's Pagination component
+    'itemCount' | 'perPage' | 'page' | 'onSetPage' | 'onPerPageSelect'
+  >;
+}
+```
+
+The `currentPageItems` array returned by the hook should be used to render the contents of your list or table.
+The `setPageNumber` function is returned as a convenience because it can be easily used outside the Pagination component to,
+for example, reset the list to its first page in a useEffect if the data changes via sorting or filtering.
+Note that `pageNumber` starts at 1 rather than 0 because that's how it works in the PatternFly component.
+
+Additional props can be passed to `<Pagination>` to customize it. See [PatternFly's docs for the component](https://www.patternfly.org/v4/components/pagination).
+
+## A note about sorting and filtering
+
+If you are also performing sorting and/or filtering of your data, be sure to perform those operations on the whole list of data
+before passing it as `items` into `usePaginationState`. Sorting or filtering the returned `currentPageItems` will cause an inconsistent sort order
+or an incorrect number of items per page. Pagination should be the last thing you do to your data before rendering it.
+
+## Example
+
+<Canvas>
+  <Story story={BasicPagination} />
+</Canvas>
+
+<GithubLink path="src/hooks/usePaginationState/usePaginationState.ts" />
