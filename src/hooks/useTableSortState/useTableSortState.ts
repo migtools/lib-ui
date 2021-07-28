@@ -7,13 +7,10 @@ export interface ISortStateHook<T> {
   sortedItems: T[];
 }
 
-// TODO are these return values generic enough to not be tied to the monolithic Table?
-// TODO examples with both Table and ComposableTable
-
-export const useSortState = <T>(
+export const useTableSortState = <T>(
   items: T[],
   getSortValues: (item: T) => (string | number | boolean)[],
-  initialSort: ISortBy = { index: 0, direction: 'asc' }
+  initialSort: ISortBy = {}
 ): ISortStateHook<T> => {
   const [sortBy, setSortBy] = React.useState<ISortBy>(initialSort);
   const onSort = (event: React.SyntheticEvent, index: number, direction: SortByDirection) => {
@@ -23,6 +20,7 @@ export const useSortState = <T>(
   let sortedItems = items;
   if (sortBy.index !== undefined && sortBy.direction !== undefined) {
     sortedItems = [...items].sort((a: T, b: T) => {
+      // TODO support a custom sort function
       const { index, direction } = sortBy;
       const aValue = getSortValues(a)[index || 0];
       const bValue = getSortValues(b)[index || 0];

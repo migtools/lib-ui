@@ -1,0 +1,51 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { useTableSortState } from './useTableSortState';
+import {
+  ComposableTableSorting,
+  LegacyTableSorting,
+  CustomSorting,
+} from './useTableSortState.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Hooks/useTableSortState" component={useTableSortState} />
+
+# useTableSortState
+
+TODO
+
+Supports passing a TypeScript type for the array items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html).
+
+```ts
+// Syntax:
+// TODO
+
+// Arguments:
+// TODO
+
+// Return value:
+// TODO
+```
+
+TODO
+
+## Examples
+
+### Custom
+
+<Canvas>
+  <Story story={CustomSorting} />
+</Canvas>
+
+### Composable Table
+
+<Canvas>
+  <Story story={ComposableTableSorting} />
+</Canvas>
+
+### Legacy Table
+
+<Canvas>
+  <Story story={LegacyTableSorting} />
+</Canvas>
+
+<GithubLink path="src/hooks/useTableSortState/useTableSortState.ts" />

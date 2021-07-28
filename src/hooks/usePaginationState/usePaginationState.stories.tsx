@@ -5,6 +5,7 @@ import { usePaginationState } from './usePaginationState';
 export const BasicPagination: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data
   const items = Array.from(new Array(100).keys()).map((_, index) => ({
+    id: index,
     name: `Item ${index + 1}`,
   }));
 
