@@ -1,34 +1,79 @@
 import * as React from 'react';
 import { ISortBy, SortByDirection } from '@patternfly/react-table';
 
-export interface ISortStateHook<T> {
-  sortBy: ISortBy;
-  onSort: (event: React.SyntheticEvent, index: number, direction: SortByDirection) => void;
-  sortedItems: T[];
+interface IBaseTableSortStateParams<T> {
+  items: T[];
+  initialSortColumnIndex?: number | null;
+  initialSortDirection?: 'asc' | 'desc';
 }
 
-export const useTableSortState = <T>(
-  items: T[],
-  getSortValues: (item: T) => (string | number | boolean)[],
-  initialSort: ISortBy = {}
-): ISortStateHook<T> => {
-  const [sortBy, setSortBy] = React.useState<ISortBy>(initialSort);
-  const onSort = (event: React.SyntheticEvent, index: number, direction: SortByDirection) => {
-    setSortBy({ index, direction });
+interface ITableSortStateParamsByValue<T> extends IBaseTableSortStateParams<T> {
+  getSortValues: (item: T) => (string | number | boolean)[];
+  compareFn?: never;
+}
+
+interface ITableSortStateParamsByFunction<T> extends IBaseTableSortStateParams<T> {
+  getSortValues?: never;
+  compareFn: (itemA: T, itemB: T, sortColumnIndex: number, sortDirection: 'asc' | 'desc') => number;
+}
+
+export type TableSortStateParams<T> =
+  | ITableSortStateParamsByValue<T>
+  | ITableSortStateParamsByFunction<T>;
+
+export interface ISortStateHook<T> {
+  sortedItems: T[];
+  sortColumnIndex: number | null;
+  setSortColumnIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  sortDirection: 'asc' | 'desc';
+  setSortDirection: React.Dispatch<React.SetStateAction<'asc' | 'desc'>>;
+  reset: () => void;
+  tableSortProps: {
+    sortBy: ISortBy;
+    onSort: (event: React.SyntheticEvent, index: number, direction: SortByDirection) => void;
   };
+}
+
+export const useTableSortState = <T>(params: TableSortStateParams<T>): ISortStateHook<T> => {
+  const { items, initialSortColumnIndex = null, initialSortDirection = 'asc' } = params;
+  const [sortColumnIndex, setSortColumnIndex] = React.useState<number | null>(
+    initialSortColumnIndex
+  );
+  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>(initialSortDirection);
 
   let sortedItems = items;
-  if (sortBy.index !== undefined && sortBy.direction !== undefined) {
-    sortedItems = [...items].sort((a: T, b: T) => {
-      // TODO support a custom sort function
-      const { index, direction } = sortBy;
-      const aValue = getSortValues(a)[index || 0];
-      const bValue = getSortValues(b)[index || 0];
-      if (aValue < bValue) return direction === 'asc' ? -1 : 1;
-      if (aValue > bValue) return direction === 'asc' ? 1 : -1;
-      return 0;
-    });
+  if (sortColumnIndex !== null) {
+    let sortFn: (itemA: T, itemB: T) => number;
+    if (params.compareFn) {
+      sortFn = (a: T, b: T) => params.compareFn(a, b, sortColumnIndex, sortDirection);
+    } else {
+      sortFn = (a: T, b: T) => {
+        const aValue = params.getSortValues(a)[sortColumnIndex || 0];
+        const bValue = params.getSortValues(b)[sortColumnIndex || 0];
+        if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+        return 0;
+      };
+    }
+    sortedItems = [...items].sort(sortFn);
   }
 
-  return { sortBy, onSort, sortedItems };
+  return {
+    sortedItems,
+    sortColumnIndex,
+    setSortColumnIndex,
+    sortDirection,
+    setSortDirection,
+    reset: () => {
+      setSortColumnIndex(initialSortColumnIndex);
+      setSortDirection(initialSortDirection);
+    },
+    tableSortProps: {
+      sortBy: { index: sortColumnIndex || undefined, direction: sortDirection },
+      onSort: (_event, index, direction) => {
+        setSortColumnIndex(index);
+        setSortDirection(direction);
+      },
+    },
+  };
 };

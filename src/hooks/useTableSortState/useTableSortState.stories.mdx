@@ -1,9 +1,10 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 import { useTableSortState } from './useTableSortState';
 import {
+  StandaloneByValue,
+  StandaloneByFunction,
   ComposableTableSorting,
   LegacyTableSorting,
-  CustomSorting,
 } from './useTableSortState.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
@@ -26,23 +27,49 @@ Supports passing a TypeScript type for the array items using [generics](https://
 // TODO
 ```
 
-TODO
+## Standalone examples
 
-## Examples
+These examples use the hook alone with some custom controls to demonstrate that it doesn't need to be coupled to the PatternFly table.
 
-### Custom
+### Simple sorting (using `getSortValues`)
+
+This example uses the `getSortValues` option, which is the simplest way to use `useTableSortState`.
+We simply pass a function that takes an item and returns a string or number for each column,
+and those strings or numbers are compared using `<` and `>` operators to perform the sorting.
+
+Most of the time `getSortValues` should return the same cells that are rendered in the table for that item's row,
+but if you're doing some custom rendering in one of your columns you would return a simple sortable version of the value here.
 
 <Canvas>
-  <Story story={CustomSorting} />
+  <Story story={StandaloneByValue} />
 </Canvas>
 
+### Custom sorting (using `compareFn`)
+
+This example passes a `compareFn` instead of a `getSortValues` function in order to customize the sorting logic.
+Either `compareFn` or `getSortValues` is required, but they can't be used together; TypeScript will give an error if you pass neither or both.
+
+<Canvas>
+  <Story story={StandaloneByFunction} />
+</Canvas>
+
+## PatternFly Table examples
+
+These examples use the `tableSortProps` return value as a convenient way to plug the hook into the PatternFly table components.
+This object contains the `sortBy` and `onSort` props expected by PatternFly so you don't have to manage the `sortColumnIndex` and `sortDirection` yourself.
+
 ### Composable Table
+
+PatternFly's newer `TableComposable` component is preferred because of its rendering flexibility.
+To use it, spread `tableSortProps` into the `sort` prop of each `Th` component along with a `columnIndex` property.
 
 <Canvas>
   <Story story={ComposableTableSorting} />
 </Canvas>
 
 ### Legacy Table
+
+PatternFly's older config-driven `Table` component is also supported. To use it, simply spread `tableSortProps` directly into the `<Table>`.
 
 <Canvas>
   <Story story={LegacyTableSorting} />

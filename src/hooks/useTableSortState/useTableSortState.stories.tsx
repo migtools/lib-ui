@@ -1,7 +1,6 @@
 import {
   ICell,
   sortable,
-  SortByDirection,
   Table,
   TableBody,
   TableComposable,
@@ -16,19 +15,18 @@ import * as React from 'react';
 import { useTableSortState } from './useTableSortState';
 
 // 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a feugiat urna. Duis tincidunt consequat sem, eget efficitur erat luctus in.';
-// TODO cleanup so we have distinct activeSortIndex and activeSortDirection and we don't have to use weird onSort shit (maybe have a tableSortProps: { sortBy, onSort }?)
-// TODO add support for a custom sort function (w/ example). we don't need getSortValues in that case, so how do we pass the params?
 // TODO add an example with sorting and pagination together? can we put it somewhere common and show it in both stories?
+// TODO do we need to have sort columns mapped by keys instead of column indexes? How to support moving columns around in the future?
 
-export const CustomSorting: React.FunctionComponent = () => {
-  // In real usage, these items would come from e.g. API data
+export const StandaloneByValue: React.FunctionComponent = () => {
+  // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
   const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
-  // Given an item, return an array of values used for sort comparisons in each column.
+  // Given an item, getSortValues return an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text];
-  const { sortBy, onSort, sortedItems } = useTableSortState(words, getSortValues);
+  const sortState = useTableSortState({ items: words, getSortValues });
 
   return (
     <>
@@ -36,14 +34,12 @@ export const CustomSorting: React.FunctionComponent = () => {
       <select
         name="sortColumn"
         id="sortColumn"
-        onChange={(event) =>
-          onSort(
-            event,
-            (event.target.value !== 'none' ? parseInt(event.target.value) : undefined) as number,
-            SortByDirection[sortBy.direction || 'asc']
-          )
-        }
-        value={sortBy.index}
+        onChange={(event) => {
+          sortState.setSortColumnIndex(
+            event.target.value !== 'none' ? parseInt(event.target.value) : null
+          );
+        }}
+        value={sortState.sortColumnIndex === null ? 'none' : sortState.sortColumnIndex}
       >
         <option value="none">None</option>
         <option value="0">Index in sentence</option>
@@ -54,14 +50,84 @@ export const CustomSorting: React.FunctionComponent = () => {
       <select
         name="sortDirection"
         id="sortDirection"
-        onChange={(event) => onSort(event, sortBy.index || 0, SortByDirection[event.target.value])}
+        onChange={(event) => {
+          sortState.setSortDirection(event.target.value as 'asc' | 'desc');
+        }}
+        value={sortState.sortDirection}
       >
         <option value="asc">Ascending</option>
         <option value="desc">Descending</option>
       </select>
       <br />
       <ul>
-        {sortedItems.map((word) => (
+        {sortState.sortedItems.map((word) => (
+          <li key={word.index}>
+            {word.index}: {word.text}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+export const StandaloneByFunction: React.FunctionComponent = () => {
+  // In real usage, these items would come from e.g. API data.
+  type Word = { text: string; index: number };
+  const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
+
+  // compareFn can be passed instead of getSortValues to customize the sorting logic.
+  const sortState = useTableSortState({
+    items: words,
+    compareFn: (a, b, sortColumnIndex, sortDirection) => {
+      if (a.index === 0) return -1;
+      if (b.index === 0) return 1;
+      const aValue = [a.index, a.text][sortColumnIndex];
+      const bValue = [b.index, b.text][sortColumnIndex];
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    },
+  });
+
+  return (
+    <>
+      <p>
+        The compareFn here always puts the word &quot;Lorem&quot; at the top regardless of the
+        selections.
+      </p>
+      <br />
+      <label htmlFor="sortColumn">Sort by: </label>
+      <select
+        name="sortColumn"
+        id="sortColumn"
+        onChange={(event) => {
+          sortState.setSortColumnIndex(
+            event.target.value !== 'none' ? parseInt(event.target.value) : null
+          );
+        }}
+        value={sortState.sortColumnIndex === null ? 'none' : sortState.sortColumnIndex}
+      >
+        <option value="none">None</option>
+        <option value="0">Index in sentence</option>
+        <option value="1">Word</option>
+      </select>
+      <br />
+      <label htmlFor="sortDirection">Sort direction: </label>
+      <select
+        name="sortDirection"
+        id="sortDirection"
+        onChange={(event) => {
+          sortState.setSortDirection(event.target.value as 'asc' | 'desc');
+        }}
+        value={sortState.sortDirection}
+      >
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+      <br />
+      <ul>
+        {sortState.sortedItems.map((word) => (
           <li key={word.index}>
             {word.index}: {word.text}
           </li>
@@ -72,21 +138,21 @@ export const CustomSorting: React.FunctionComponent = () => {
 };
 
 export const ComposableTableSorting: React.FunctionComponent = () => {
-  // In real usage, these items would come from e.g. API data
+  // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
   const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
-  // Given an item, return an array of values used for sort comparisons in each column.
+  // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text];
-  const { sortBy, onSort, sortedItems } = useTableSortState(words, getSortValues);
+  const { sortedItems, tableSortProps } = useTableSortState({ items: words, getSortValues });
 
   return (
     <TableComposable aria-label="Composable table sorting example" variant="compact">
       <Thead>
         <Tr>
-          <Th sort={{ sortBy, onSort, columnIndex: 0 }}>Index in sentence</Th>
-          <Th sort={{ sortBy, onSort, columnIndex: 1 }}>Word</Th>
+          <Th sort={{ ...tableSortProps, columnIndex: 0 }}>Index in sentence</Th>
+          <Th sort={{ ...tableSortProps, columnIndex: 1 }}>Word</Th>
         </Tr>
       </Thead>
       <Tbody>
@@ -104,14 +170,14 @@ export const ComposableTableSorting: React.FunctionComponent = () => {
 };
 
 export const LegacyTableSorting: React.FunctionComponent = () => {
-  // In real usage, these items would come from e.g. API data
+  // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
   const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
-  // Given an item, return an array of values used for sort comparisons in each column.
+  // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text];
-  const { sortBy, onSort, sortedItems } = useTableSortState(words, getSortValues);
+  const { sortedItems, tableSortProps } = useTableSortState({ items: words, getSortValues });
 
   const columns: ICell[] = [
     { title: 'Index in Sentence', transforms: [sortable] },
@@ -125,8 +191,7 @@ export const LegacyTableSorting: React.FunctionComponent = () => {
       variant="compact"
       cells={columns}
       rows={rows}
-      sortBy={sortBy}
-      onSort={onSort}
+      {...tableSortProps}
     >
       <TableHeader />
       <TableBody />
