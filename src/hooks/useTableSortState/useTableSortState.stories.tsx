@@ -26,7 +26,7 @@ export const StandaloneByValue: React.FunctionComponent = () => {
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues return an array of values used for sort comparisons in each column.
-  const getSortValues = (word: Word) => [word.index, word.text];
+  const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
   const sortState = useTableSortState({ items: words, getSortValues });
 
   return (
@@ -145,7 +145,7 @@ export const ComposableTableSorting: React.FunctionComponent = () => {
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
-  const getSortValues = (word: Word) => [word.index, word.text];
+  const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
   const { sortedItems, tableSortProps } = useTableSortState({ items: words, getSortValues });
 
   return (
@@ -177,21 +177,18 @@ export const LegacyTableSorting: React.FunctionComponent = () => {
   const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
-  const getSortValues = (word: Word) => [word.index, word.text];
+  const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
   const { sortedItems, tableSortProps } = useTableSortState({ items: words, getSortValues });
-
-  const columns: ICell[] = [
-    { title: 'Index in Sentence', transforms: [sortable] },
-    { title: 'Word', transforms: [sortable] },
-  ];
-  const rows = sortedItems.map((word) => [word.index, word.text]);
 
   return (
     <Table
       aria-label="Legacy table sorting example"
       variant="compact"
-      cells={columns}
-      rows={rows}
+      cells={[
+        { title: 'Index in Sentence', transforms: [sortable] },
+        { title: 'Word', transforms: [sortable] },
+      ]}
+      rows={sortedItems.map((word) => [word.index, word.text])}
       {...tableSortProps}
     >
       <TableHeader />
