@@ -26,7 +26,63 @@ export const StandaloneByValue: React.FunctionComponent = () => {
   const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
   const sortState = useTableSortState({
     items: words,
+    getSortValues, // TODO it can tell this should return an object if we have columnIds, but it can't tell it should be an array if not.
+  });
+
+  return (
+    <>
+      <label htmlFor="sortColumn">Sort by: </label>
+      <select
+        name="sortColumn"
+        id="sortColumn"
+        onChange={(event) => {
+          sortState.setSortColumnIndex(
+            event.target.value !== 'none' ? parseInt(event.target.value) : null
+          );
+        }}
+        value={sortState.sortColumnIndex === null ? 'none' : sortState.sortColumnIndex}
+      >
+        <option value="none">None</option>
+        <option value="0">Index in sentence</option>
+        <option value="1">Word</option>
+      </select>
+      <br />
+      <label htmlFor="sortDirection">Sort direction: </label>
+      <select
+        name="sortDirection"
+        id="sortDirection"
+        onChange={(event) => {
+          sortState.setSortDirection(event.target.value as 'asc' | 'desc');
+        }}
+        value={sortState.sortDirection}
+      >
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select>
+      <br />
+      <ul>
+        {sortState.sortedItems.map((word) => (
+          <li key={word.index}>
+            {word.index}: {word.text}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+};
+
+export const StandaloneByValueWithIds: React.FunctionComponent = () => {
+  // In real usage, these items would come from e.g. API data.
+  type Word = { text: string; index: number };
+  const sentence = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = sentence.split(' ').map((text, index) => ({ text, index }));
+
+  // Given an item, getSortValues return an array of values used for sort comparisons in each column.
+  const getSortValues = (word: Word) => ({ index: word.index, text: word.text.toLowerCase() });
+  const sortState = useTableSortState({
+    items: words,
     getSortValues,
+    columnIds: ['index', 'text'],
   });
 
   return (
