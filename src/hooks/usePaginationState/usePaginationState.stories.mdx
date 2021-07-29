@@ -1,6 +1,7 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 import { usePaginationState } from './usePaginationState';
 import { BasicPagination } from './usePaginationState.stories.tsx';
+import { ComposedSortingAndPagination } from '../../common/hookComposition.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 <Meta title="Hooks/usePaginationState" component={usePaginationState} />
@@ -14,6 +15,10 @@ that can be passed into `<Pagination>` in order to show pagination info, switch 
 
 Supports passing a TypeScript type for the array items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html),
 although that should not be necessary since the type can be trivially inferred from the array.
+
+This hook can be used together with `useTableSortState`. See [this example](#composing-usetablesortstate-with-usepaginationstate).
+
+## Types
 
 ```ts
 // Syntax:
@@ -41,12 +46,23 @@ Additional props can be passed to `<Pagination>` to customize it. See [PatternFl
 
 If you are also performing sorting and/or filtering of your data, be sure to perform those operations on the whole list of data
 before passing it as `items` into `usePaginationState`. Sorting or filtering the returned `currentPageItems` will cause an inconsistent sort order
-or an incorrect number of items per page. Pagination should be the last thing you do to your data before rendering it.
+or an incorrect number of items per page. Pagination should be the last thing you do to your data before rendering it. See [this example](#composing-usetablesortstate-with-usepaginationstate).
 
 ## Example
 
 <Canvas>
   <Story story={BasicPagination} />
+</Canvas>
+
+## Composing `useTableSortState` with `usePaginationState`
+
+You can pass the items returned by `useTableSortState` into `usePaginationState` to easily provide both sorting and pagination in a table!
+In this example, we also use the `onSortChange` argument of `useTableSortState` to reset the pagination when the sort selection changes.
+
+Note: as mentioned above, the order matters here. Pagination must be performed after any sorting or filtering.
+
+<Canvas>
+  <Story story={ComposedSortingAndPagination} />
 </Canvas>
 
 <GithubLink path="src/hooks/usePaginationState/usePaginationState.ts" />

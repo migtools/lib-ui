@@ -6,6 +6,7 @@ import {
   ComposableTableSorting,
   LegacyTableSorting,
 } from './useTableSortState.stories.tsx';
+import { ComposedSortingAndPagination } from '../../common/hookComposition.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 <Meta title="Hooks/useTableSortState" component={useTableSortState} />
@@ -13,11 +14,16 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 # useTableSortState
 
 A custom hook for sorting tabular data which manages the state of the active column and sort direction internally.
+Does not require PatternFly, but integrates well with [PatternFly's table components](https://www.patternfly.org/v4/components/table/).
 
 Given any array of items representing data to be rendered in a table and either a `getSortValues` function or a `compareFn` to specify
 sorting logic for each column, this hook returns the sorted array, sort selections, and callbacks for updating the sort selections.
 
 Supports passing a TypeScript type for the table items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html).
+
+This hook can be used together with `usePaginationState`. See [this example](#composing-usetablesortstate-with-usepaginationstate).
+
+## Types
 
 ```ts
 // Syntax:
@@ -56,7 +62,7 @@ to further process your data before rendering.
 If you are also performing pagination of your data, be sure to sort your data before you paginate it. Using the `currentPageItems`
 returned from `usePaginationState` as the `items` argument for `useTableSortState` will cause an inconsistent sort order.
 If you are using these two hooks together, call `useTableSortState` first and then pass the `sortedItems` into `usePaginationState` as its `items` argument.
-Pagination should be the last thing you do to your data before rendering it.
+Pagination should be the last thing you do to your data before rendering it. See [this example](#composing-usetablesortstate-with-usepaginationstate).
 
 ## Standalone examples
 
@@ -111,6 +117,17 @@ and not stored in your component state.
 
 <Canvas>
   <Story story={LegacyTableSorting} />
+</Canvas>
+
+## Composing `useTableSortState` with `usePaginationState`
+
+You can pass the items returned by `useTableSortState` into `usePaginationState` to easily provide both sorting and pagination in a table!
+In this example, we also use the `onSortChange` argument of `useTableSortState` to reset the pagination when the sort selection changes.
+
+Note: as mentioned above, the order matters here. Pagination must be performed after any sorting or filtering.
+
+<Canvas>
+  <Story story={ComposedSortingAndPagination} />
 </Canvas>
 
 <GithubLink path="src/hooks/useTableSortState/useTableSortState.ts" />

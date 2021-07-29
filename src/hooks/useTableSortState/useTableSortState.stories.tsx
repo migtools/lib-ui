@@ -13,20 +13,21 @@ import {
 import * as React from 'react';
 import { useTableSortState } from './useTableSortState';
 
-// 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a feugiat urna. Duis tincidunt consequat sem, eget efficitur erat luctus in.';
-// TODO add an example with sorting and pagination together? can we put it somewhere common and show it in both stories?
 // TODO do we need to have sort columns mapped by keys instead of column indexes? How to support moving columns around in the future?
 //    - columnKeys can be an array of strings, and if passed, getSortValues and compareFn get a sortColumnKey instead of a sortColumnIndex?
 
 export const StandaloneByValue: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
-  const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-  const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
+  const sentence = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = sentence.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues return an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
-  const sortState = useTableSortState({ items: words, getSortValues });
+  const sortState = useTableSortState({
+    items: words,
+    getSortValues,
+  });
 
   return (
     <>
@@ -73,8 +74,8 @@ export const StandaloneByValue: React.FunctionComponent = () => {
 export const StandaloneByFunction: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
-  const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-  const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
+  const sentence = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = sentence.split(' ').map((text, index) => ({ text, index }));
 
   // compareFn can be passed instead of getSortValues to customize the sorting logic.
   const sortState = useTableSortState({
@@ -140,8 +141,8 @@ export const StandaloneByFunction: React.FunctionComponent = () => {
 export const ComposableTableSorting: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
-  const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-  const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
+  const sentence = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = sentence.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];
@@ -172,8 +173,8 @@ export const ComposableTableSorting: React.FunctionComponent = () => {
 export const LegacyTableSorting: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
-  const text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-  const words: Word[] = text.split(' ').map((text, index) => ({ text, index }));
+  const sentence = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+  const words: Word[] = sentence.split(' ').map((text, index) => ({ text, index }));
 
   // Given an item, getSortValues returns an array of values used for sort comparisons in each column.
   const getSortValues = (word: Word) => [word.index, word.text.toLowerCase()];

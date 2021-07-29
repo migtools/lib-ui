@@ -5,6 +5,7 @@ interface IBaseTableSortStateArgs<T> {
   items: T[];
   initialSortColumnIndex?: number | null;
   initialSortDirection?: 'asc' | 'desc';
+  onSortChange?: () => void;
 }
 
 interface ITableSortStateArgsByValue<T> extends IBaseTableSortStateArgs<T> {
@@ -24,9 +25,9 @@ export type TableSortStateArgs<T> =
 export interface ITableSortStateHook<T> {
   sortedItems: T[];
   sortColumnIndex: number | null;
-  setSortColumnIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setSortColumnIndex: (newIndex: number | null) => void;
   sortDirection: 'asc' | 'desc';
-  setSortDirection: React.Dispatch<React.SetStateAction<'asc' | 'desc'>>;
+  setSortDirection: (newDirection: 'asc' | 'desc') => void;
   reset: () => void;
   tableSortProps: {
     sortBy: ISortBy;
@@ -35,11 +36,21 @@ export interface ITableSortStateHook<T> {
 }
 
 export const useTableSortState = <T>(args: TableSortStateArgs<T>): ITableSortStateHook<T> => {
-  const { items, initialSortColumnIndex = null, initialSortDirection = 'asc' } = args;
-  const [sortColumnIndex, setSortColumnIndex] = React.useState<number | null>(
+  const { items, initialSortColumnIndex = null, initialSortDirection = 'asc', onSortChange } = args;
+  const [sortColumnIndex, baseSetSortColumnIndex] = React.useState<number | null>(
     initialSortColumnIndex
   );
-  const [sortDirection, setSortDirection] = React.useState<'asc' | 'desc'>(initialSortDirection);
+  const [sortDirection, baseSetSortDirection] = React.useState<'asc' | 'desc'>(
+    initialSortDirection
+  );
+  const setSortColumnIndex = (newIndex: number | null) => {
+    baseSetSortColumnIndex(newIndex);
+    if (onSortChange) onSortChange();
+  };
+  const setSortDirection = (newDirection: 'asc' | 'desc') => {
+    baseSetSortDirection(newDirection);
+    if (onSortChange) onSortChange();
+  };
 
   let sortedItems = items;
   if (sortColumnIndex !== null) {
