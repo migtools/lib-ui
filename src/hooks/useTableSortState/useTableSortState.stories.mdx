@@ -12,9 +12,12 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 # useTableSortState
 
-TODO
+A custom hook for sorting tabular data which manages the state of the active column and sort direction internally.
 
-Supports passing a TypeScript type for the array items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html).
+Given any array of items representing data to be rendered in a table and either a `getSortValues` function or a `compareFn` to specify
+sorting logic for each column, this hook returns the sorted array, sort selections, and callbacks for updating the sort selections.
+
+Supports passing a TypeScript type for the table items using [generics](https://www.typescriptlang.org/docs/handbook/generics.html).
 
 ```ts
 // Syntax:
@@ -70,6 +73,10 @@ To use it, spread `tableSortProps` into the `sort` prop of each `Th` component a
 ### Legacy Table
 
 PatternFly's older config-driven `Table` component is also supported. To use it, simply spread `tableSortProps` directly into the `<Table>`.
+
+Note: the items passed into `useTableSortState` should be your underlying data, not the array of rows you're passing into the `Table` component.
+The rows array expected by `Table` should be defined at render time based on the results of the sorting and any other manipulation of your data (e.g. filtering and pagination),
+and not stored in your component state.
 
 <Canvas>
   <Story story={LegacyTableSorting} />
