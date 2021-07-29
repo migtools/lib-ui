@@ -21,14 +21,42 @@ Supports passing a TypeScript type for the table items using [generics](https://
 
 ```ts
 // Syntax:
-// TODO
+const sortState = useTableSortState<T>(args: TableSortStateArgs<T>);
 
-// Arguments:
-// TODO
+// Arguments (simplified, see discriminated union in source):
+type TableSortStateArgs<T> {
+  items: T[];
+  initialSortColumnIndex?: number | null; // Defaults to null
+  initialSortDirection?: 'asc' | 'desc'; // Defaults to 'asc'
+  // One or the other of getSortValues or compareFn is required:
+  getSortValues: (item: T) => (string | number | boolean)[];
+  compareFn: (itemA: T, itemB: T, sortColumnIndex: number, sortDirection: 'asc' | 'desc') => number;
+}
 
 // Return value:
-// TODO
+interface ITableSortStateHook<T> {
+  sortedItems: T[];
+  sortColumnIndex: number | null;
+  setSortColumnIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  sortDirection: 'asc' | 'desc';
+  setSortDirection: React.Dispatch<React.SetStateAction<'asc' | 'desc'>>;
+  reset: () => void; // sets sortColumnIndex to initialSortColumnIndex and sortDirection to initialSortDirection
+  tableSortProps: { // To simplify use with PatternFly
+    sortBy: ISortBy;
+    onSort: (event: React.SyntheticEvent, index: number, direction: SortByDirection) => void;
+  };
+}
 ```
+
+The `sortedItems` array returned from the hook should be used to render the contents of your table, or be passed to another hook like `usePaginationState`
+to further process your data before rendering.
+
+## A note about pagination
+
+If you are also performing pagination of your data, be sure to sort your data before you paginate it. Using the `currentPageItems`
+returned from `usePaginationState` as the `items` argument for `useTableSortState` will cause an inconsistent sort order.
+If you are using these two hooks together, call `useTableSortState` first and then pass the `sortedItems` into `usePaginationState` as its `items` argument.
+Pagination should be the last thing you do to your data before rendering it.
 
 ## Standalone examples
 
@@ -37,8 +65,8 @@ These examples use the hook alone with some custom controls to demonstrate that 
 ### Simple sorting (using `getSortValues`)
 
 This example uses the `getSortValues` option, which is the simplest way to use `useTableSortState`.
-We simply pass a function that takes an item and returns a string or number for each column,
-and those strings or numbers are compared using `<` and `>` operators to perform the sorting.
+We simply pass a function that takes an item and returns an array of primitive values for each column,
+and those values are compared using `<` and `>` operators to perform the sorting.
 
 Most of the time `getSortValues` should return the same cells that are rendered in the table for that item's row,
 but if you're doing some custom rendering in one of your columns you would return a simple sortable version of the value here.
@@ -49,7 +77,10 @@ but if you're doing some custom rendering in one of your columns you would retur
 
 ### Custom sorting (using `compareFn`)
 
-This example passes a `compareFn` instead of a `getSortValues` function in order to customize the sorting logic.
+This example passes a `compareFn` instead of `getSortValues` in order to customize the sorting logic. The `compareFn`'s return value
+follows the rules for the return value of the callback in [JavaScript's Array.prototype.sort() method](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/sort),
+except it also takes the `sortColumnIndex` and `sortDirection` for use in your custom logic.
+
 Either `compareFn` or `getSortValues` is required, but they can't be used together; TypeScript will give an error if you pass neither or both.
 
 <Canvas>
@@ -58,7 +89,7 @@ Either `compareFn` or `getSortValues` is required, but they can't be used togeth
 
 ## PatternFly Table examples
 
-These examples use the `tableSortProps` return value as a convenient way to plug the hook into the PatternFly table components.
+These examples use the `tableSortProps` return value as a convenient way to plug the hook into [PatternFly's table components](https://www.patternfly.org/v4/components/table).
 This object contains the `sortBy` and `onSort` props expected by PatternFly so you don't have to manage the `sortColumnIndex` and `sortDirection` yourself.
 
 ### Composable Table

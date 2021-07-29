@@ -1,5 +1,4 @@
 import {
-  ICell,
   sortable,
   Table,
   TableBody,
