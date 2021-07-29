@@ -69,7 +69,10 @@ export const useTableSortState = <T>(params: TableSortStateParams<T>): ISortStat
       setSortDirection(initialSortDirection);
     },
     tableSortProps: {
-      sortBy: { index: sortColumnIndex || undefined, direction: sortDirection },
+      sortBy: {
+        index: sortColumnIndex !== null ? sortColumnIndex : undefined,
+        direction: sortDirection,
+      },
       onSort: (_event, index, direction) => {
         setSortColumnIndex(index);
         setSortDirection(direction);
