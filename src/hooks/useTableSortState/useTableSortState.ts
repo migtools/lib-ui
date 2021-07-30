@@ -1,39 +1,31 @@
 import * as React from 'react';
 import { ISortBy, SortByDirection } from '@patternfly/react-table';
 
-interface IBaseTableSortStateArgs<T, ColumnIndex extends number | string> {
+interface IBaseTableSortStateArgs<T> {
   items: T[];
-  initialSortColumnIndex?: ColumnIndex | null;
+  initialSortColumnIndex?: number | null;
   initialSortDirection?: 'asc' | 'desc';
-  columnIds?: ColumnIndex[];
   onSortChange?: () => void;
 }
 
-interface ITableSortStateArgsByValue<T, ColumnIndex extends number | string>
-  extends IBaseTableSortStateArgs<T, ColumnIndex> {
-  getSortValues: (item: T) => Record<ColumnIndex, string | number | boolean>;
+interface ITableSortStateArgsByValue<T> extends IBaseTableSortStateArgs<T> {
+  getSortValues: (item: T) => (string | number | boolean)[];
   compareFn?: never;
 }
 
-interface ITableSortStateArgsByFunction<T, ColumnIndex extends number | string>
-  extends IBaseTableSortStateArgs<T, ColumnIndex> {
+interface ITableSortStateArgsByFunction<T> extends IBaseTableSortStateArgs<T> {
   getSortValues?: never;
-  compareFn: (
-    itemA: T,
-    itemB: T,
-    sortColumnIndex: ColumnIndex,
-    sortDirection: 'asc' | 'desc'
-  ) => number;
+  compareFn: (itemA: T, itemB: T, sortColumnIndex: number, sortDirection: 'asc' | 'desc') => number;
 }
 
-export type TableSortStateArgs<T, ColumnIndex extends number | string = number> =
-  | ITableSortStateArgsByValue<T, ColumnIndex>
-  | ITableSortStateArgsByFunction<T, ColumnIndex>;
+export type TableSortStateArgs<T> =
+  | ITableSortStateArgsByValue<T>
+  | ITableSortStateArgsByFunction<T>;
 
-export interface ITableSortStateHook<T, ColumnIndex extends number | string> {
+export interface ITableSortStateHook<T> {
   sortedItems: T[];
-  sortColumnIndex: ColumnIndex | null;
-  setSortColumnIndex: (newIndex: ColumnIndex | null) => void;
+  sortColumnIndex: number | null;
+  setSortColumnIndex: (newIndex: number | null) => void;
   sortDirection: 'asc' | 'desc';
   setSortDirection: (newDirection: 'asc' | 'desc') => void;
   reset: () => void;
@@ -43,17 +35,15 @@ export interface ITableSortStateHook<T, ColumnIndex extends number | string> {
   };
 }
 
-export const useTableSortState = <T, ColumnIndex extends number | string = number>(
-  args: TableSortStateArgs<T, ColumnIndex>
-): ITableSortStateHook<T, ColumnIndex> => {
+export const useTableSortState = <T>(args: TableSortStateArgs<T>): ITableSortStateHook<T> => {
   const { items, initialSortColumnIndex = null, initialSortDirection = 'asc', onSortChange } = args;
-  const [sortColumnIndex, baseSetSortColumnIndex] = React.useState<ColumnIndex | null>(
+  const [sortColumnIndex, baseSetSortColumnIndex] = React.useState<number | null>(
     initialSortColumnIndex
   );
   const [sortDirection, baseSetSortDirection] = React.useState<'asc' | 'desc'>(
     initialSortDirection
   );
-  const setSortColumnIndex = (newIndex: ColumnIndex | null) => {
+  const setSortColumnIndex = (newIndex: number | null) => {
     baseSetSortColumnIndex(newIndex);
     if (onSortChange) onSortChange();
   };
@@ -69,8 +59,8 @@ export const useTableSortState = <T, ColumnIndex extends number | string = numbe
       sortFn = (a: T, b: T) => args.compareFn(a, b, sortColumnIndex, sortDirection);
     } else {
       sortFn = (a: T, b: T) => {
-        const aValue = args.getSortValues(a)[sortColumnIndex];
-        const bValue = args.getSortValues(b)[sortColumnIndex];
+        const aValue = args.getSortValues(a)[sortColumnIndex || 0];
+        const bValue = args.getSortValues(b)[sortColumnIndex || 0];
         if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
         if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
         return 0;
