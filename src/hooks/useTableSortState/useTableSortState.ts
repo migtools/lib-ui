@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { ISortBy, SortByDirection } from '@patternfly/react-table';
 
+// Argument types:
+
 interface IBaseTableSortStateArgs<T> {
   items: T[];
   initialSortColumnIndex?: number | null;
@@ -22,6 +24,8 @@ export type TableSortStateArgs<T> =
   | ITableSortStateArgsByValue<T>
   | ITableSortStateArgsByFunction<T>;
 
+// Return value types:
+
 export interface ITableSortStateHook<T> {
   sortedItems: T[];
   sortColumnIndex: number | null;
@@ -37,20 +41,15 @@ export interface ITableSortStateHook<T> {
 
 export const useTableSortState = <T>(args: TableSortStateArgs<T>): ITableSortStateHook<T> => {
   const { items, initialSortColumnIndex = null, initialSortDirection = 'asc', onSortChange } = args;
-  const [sortColumnIndex, baseSetSortColumnIndex] = React.useState<number | null>(
-    initialSortColumnIndex
-  );
-  const [sortDirection, baseSetSortDirection] = React.useState<'asc' | 'desc'>(
-    initialSortDirection
-  );
-  const setSortColumnIndex = (newIndex: number | null) => {
-    baseSetSortColumnIndex(newIndex);
+
+  const getSortChangeCallback = <T>(setStateFn: (newVal: T) => void) => (newVal: T) => {
+    setStateFn(newVal);
     if (onSortChange) onSortChange();
   };
-  const setSortDirection = (newDirection: 'asc' | 'desc') => {
-    baseSetSortDirection(newDirection);
-    if (onSortChange) onSortChange();
-  };
+  const [sortColumnIndex, baseSetSortColumnIndex] = React.useState(initialSortColumnIndex);
+  const setSortColumnIndex = getSortChangeCallback(baseSetSortColumnIndex);
+  const [sortDirection, baseSetSortDirection] = React.useState(initialSortDirection);
+  const setSortDirection = getSortChangeCallback(baseSetSortDirection);
 
   let sortedItems = items;
   if (sortColumnIndex !== null) {

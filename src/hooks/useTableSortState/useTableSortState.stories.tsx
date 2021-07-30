@@ -13,9 +13,6 @@ import {
 import * as React from 'react';
 import { useTableSortState } from './useTableSortState';
 
-// TODO do we need to have sort columns mapped by keys instead of column indexes? How to support moving columns around in the future?
-//    - columnKeys can be an array of strings, and if passed, getSortValues and compareFn get a sortColumnKey instead of a sortColumnIndex?
-
 export const StandaloneByValue: React.FunctionComponent = () => {
   // In real usage, these items would come from e.g. API data.
   type Word = { text: string; index: number };
