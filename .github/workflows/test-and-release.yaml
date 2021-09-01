@@ -28,7 +28,9 @@ jobs:
         run: yarn run semantic-release
       - name: Build Storybook
         run: yarn storybook:export
-      - name: Install Surge
-        run: npm install -g surge
-      - name: Deploy Storybook to Surge
-        run: surge ./storybook-static/ konveyor-lib-ui.surge.sh --token 62bd7a07b9bf812ff8d3ea91ccd2dc2f
+      - name: Deploy Storybook to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: storybook-static
