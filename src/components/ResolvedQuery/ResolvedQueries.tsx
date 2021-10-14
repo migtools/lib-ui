@@ -10,19 +10,14 @@ import {
 } from '@patternfly/react-core';
 import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { getAggregateQueryStatus } from '../../queries/helpers';
-import { UnknownResult } from '../../common/types';
+import { ResultsMap } from '../../common/types';
 import { KubeClientError } from '../../modules/kube-client/types';
 import LoadingEmptyState from '../LoadingEmptyState';
 
-export enum QuerySpinnerMode {
-  Inline = 'Inline',
-  EmptyState = 'EmptyState',
-  None = 'None',
-}
+export type QuerySpinnerMode = 'inline' | 'emptyState' | 'none';
 
 export interface IResolvedQueriesProps {
-  results: UnknownResult[];
-  errorTitles: string[];
+  resultsMap: ResultsMap[];
   errorsInline?: boolean;
   spinnerMode?: QuerySpinnerMode;
   emptyStateBody?: React.ReactNode;
@@ -34,10 +29,9 @@ export interface IResolvedQueriesProps {
 }
 
 export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = ({
-  results,
-  errorTitles,
+  resultsMap,
   errorsInline = true,
-  spinnerMode = QuerySpinnerMode.EmptyState,
+  spinnerMode = 'emptyState',
   emptyStateBody = null,
   spinnerProps = {},
   alertProps = {},
@@ -45,14 +39,13 @@ export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = (
   forceLoadingState = false,
   children = null,
 }: IResolvedQueriesProps) => {
-  const status = getAggregateQueryStatus(results);
-  const erroredResults = results.filter((result) => result.isError);
-  const filteredErrorTitles = errorTitles.filter((_title, index) => results[index].isError);
+  const status = getAggregateQueryStatus(resultsMap.map((r) => r.result));
+  const erroredResults = resultsMap.filter((resultsMap) => resultsMap.result.isError);
 
   let spinner: React.ReactNode = null;
-  if (spinnerMode === QuerySpinnerMode.Inline) {
+  if (spinnerMode === 'inline') {
     spinner = <Spinner size="lg" className={className} {...spinnerProps} />;
-  } else if (spinnerMode === QuerySpinnerMode.EmptyState) {
+  } else if (spinnerMode === 'emptyState') {
     spinner = <LoadingEmptyState spinnerProps={spinnerProps} body={emptyStateBody} />;
   }
 
@@ -62,42 +55,47 @@ export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = (
         spinner
       ) : status === 'error' ? (
         <AlertGroup aria-live="assertive">
-          {erroredResults.map((result, index) => (
-            <Alert
-              key={`error-${index}`}
-              variant="danger"
-              isInline={errorsInline}
-              title={filteredErrorTitles[index]}
-              className={`${index !== erroredResults.length - 1 ? spacing.mbMd : ''} ${className}`}
-              actionClose={
-                (result as { reset?: () => void }).reset ? (
-                  <AlertActionCloseButton
-                    aria-label="Dismiss error"
-                    onClose={(result as UseMutationResult<unknown>).reset}
-                  />
-                ) : null
-              }
-              {...alertProps}
-            >
-              {result.error ? (
-                <>
-                  {(result.error as Error).message || null}
-                  {(result.error as KubeClientError).response ? (
-                    <>
-                      <br />
-                      {(result.error as KubeClientError).response?.data?.message}
-                    </>
-                  ) : null}
-                  {(result.error as Response).status
-                    ? `${(result.error as Response).status}: ${
-                        (result.error as Response).statusText
-                      }`
-                    : null}
-                  {typeof result.error === 'string' ? result.error : null}
-                </>
-              ) : null}
-            </Alert>
-          ))}
+          {erroredResults.map((resultsMap, index) => {
+            const { result, errorTitle } = resultsMap;
+            return (
+              <Alert
+                key={`error-${index}`}
+                variant="danger"
+                isInline={errorsInline}
+                title={errorTitle}
+                className={`${
+                  index !== erroredResults.length - 1 ? spacing.mbMd : ''
+                } ${className}`}
+                actionClose={
+                  (result as { reset?: () => void }).reset ? (
+                    <AlertActionCloseButton
+                      aria-label="Dismiss error"
+                      onClose={(result as UseMutationResult<unknown>).reset}
+                    />
+                  ) : null
+                }
+                {...alertProps}
+              >
+                {result.error ? (
+                  <>
+                    {(result.error as Error).message || null}
+                    {(result.error as KubeClientError).response ? (
+                      <>
+                        <br />
+                        {(result.error as KubeClientError).response?.data?.message}
+                      </>
+                    ) : null}
+                    {(result.error as Response).status
+                      ? `${(result.error as Response).status}: ${
+                          (result.error as Response).statusText
+                        }`
+                      : null}
+                    {typeof result.error === 'string' ? result.error : null}
+                  </>
+                ) : null}
+              </Alert>
+            );
+          })}
         </AlertGroup>
       ) : (
         children

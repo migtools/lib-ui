@@ -12,6 +12,4 @@ export const ResolvedQuery: React.FunctionComponent<IResolvedQueryProps> = ({
   result,
   errorTitle,
   ...props
-}: IResolvedQueryProps) => (
-  <ResolvedQueries results={[result]} errorTitles={[errorTitle]} {...props} />
-);
+}: IResolvedQueryProps) => <ResolvedQueries {...props} resultsMap={[{ result, errorTitle }]} />;
