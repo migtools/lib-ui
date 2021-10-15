@@ -10,4 +10,4 @@ export type UnknownMutationResult = Pick<
   'isError' | 'isLoading' | 'isIdle' | 'error' | 'reset'
 >;
 
-export type ResultsMap = { result: UnknownResult; errorTitle: string };
+export type ResultsWithErrorTitles = { result: UnknownResult; errorTitle: string };

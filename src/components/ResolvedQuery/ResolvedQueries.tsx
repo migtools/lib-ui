@@ -10,14 +10,14 @@ import {
 } from '@patternfly/react-core';
 import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { getAggregateQueryStatus } from '../../queries/helpers';
-import { ResultsMap } from '../../common/types';
+import { ResultsWithErrorTitles } from '../../common/types';
 import { KubeClientError } from '../../modules/kube-client/types';
 import LoadingEmptyState from '../LoadingEmptyState';
 
 export type QuerySpinnerMode = 'inline' | 'emptyState' | 'none';
 
 export interface IResolvedQueriesProps {
-  resultsMap: ResultsMap[];
+  resultsWithErrorTitles: ResultsWithErrorTitles[];
   errorsInline?: boolean;
   spinnerMode?: QuerySpinnerMode;
   emptyStateBody?: React.ReactNode;
@@ -29,7 +29,7 @@ export interface IResolvedQueriesProps {
 }
 
 export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = ({
-  resultsMap,
+  resultsWithErrorTitles,
   errorsInline = true,
   spinnerMode = 'emptyState',
   emptyStateBody = null,
@@ -39,9 +39,10 @@ export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = (
   forceLoadingState = false,
   children = null,
 }: IResolvedQueriesProps) => {
-  const status = getAggregateQueryStatus(resultsMap.map((r) => r.result));
-  const erroredResults = resultsMap.filter((resultsMap) => resultsMap.result.isError);
-
+  const status = getAggregateQueryStatus(resultsWithErrorTitles.map((r) => r.result));
+  const erroredResults = resultsWithErrorTitles.filter(
+    (resultWithErrorTitle) => resultWithErrorTitle.result.isError
+  );
   let spinner: React.ReactNode = null;
   if (spinnerMode === 'inline') {
     spinner = <Spinner size="lg" className={className} {...spinnerProps} />;
@@ -55,8 +56,8 @@ export const ResolvedQueries: React.FunctionComponent<IResolvedQueriesProps> = (
         spinner
       ) : status === 'error' ? (
         <AlertGroup aria-live="assertive">
-          {erroredResults.map((resultsMap, index) => {
-            const { result, errorTitle } = resultsMap;
+          {erroredResults.map((resultWithErrorTitle, index) => {
+            const { result, errorTitle } = resultWithErrorTitle;
             return (
               <Alert
                 key={`error-${index}`}
