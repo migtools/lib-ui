@@ -22,6 +22,7 @@ export interface IFormField<T> {
 export interface IValidatedFormField<T> extends IFormField<T> {
   error: yup.ValidationError | null;
   isValid: boolean;
+  shouldShowError: boolean; // True if field has validation errors and has been touched (false if it's just blank and untouched)
 }
 
 // The generic TFieldValues type variable is an interface of field value types (the T in IFormField<T>) by field key.
@@ -158,7 +159,8 @@ export const useFormState = <TFieldValues>(
     const validatedField: IValidatedFormField<TFieldValues[keyof TFieldValues]> = {
       ...field,
       error,
-      isValid: !error || !field.isTouched,
+      isValid: !error,
+      shouldShowError: !!error && field.isTouched,
     };
     return { ...newObj, [key]: validatedField };
   }, {} as ValidatedFormFields<TFieldValues>);
@@ -177,25 +179,32 @@ export const useFormState = <TFieldValues>(
 // PatternFly-specific rendering helpers for FormGroup and TextInput components:
 
 export const getFormGroupProps = <T>(
-  field: IValidatedFormField<T>
-): Pick<FormGroupProps, 'validated' | 'helperTextInvalid'> => ({
-  validated: field.isValid ? 'default' : 'error',
-  helperTextInvalid: field.error?.message,
-});
+  field: Pick<IValidatedFormField<T>, 'isTouched' | 'isValid' | 'error' | 'shouldShowError'>,
+  greenWhenValid = false
+): Pick<FormGroupProps, 'validated' | 'helperTextInvalid'> => {
+  const validStyle: FormGroupProps['validated'] = greenWhenValid ? 'success' : 'default';
+  return {
+    validated: field.shouldShowError ? 'error' : field.isValid ? validStyle : 'default',
+    helperTextInvalid: field.error?.message,
+  };
+};
 
 export const getTextFieldProps = (
-  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
+  greenWhenValid = false
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
   onChange: field.setValue,
   onBlur: () => field.setIsTouched(true),
-  validated: field.isValid ? 'default' : 'error',
+  validated: getFormGroupProps(field, greenWhenValid).validated,
 });
 
 export const getTextInputProps = (
-  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
-): Partial<TextInputProps> => getTextFieldProps(field) as Partial<TextInputProps>;
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
+  greenWhenValid = false
+): Partial<TextInputProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextInputProps>;
 
 export const getTextAreaProps = (
-  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>
-): Partial<TextAreaProps> => getTextFieldProps(field) as Partial<TextAreaProps>;
+  field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
+  greenWhenValid = false
+): Partial<TextAreaProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextAreaProps>;

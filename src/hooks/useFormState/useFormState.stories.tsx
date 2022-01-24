@@ -29,7 +29,7 @@ export const BasicTextFields: React.FunctionComponent = () => {
           onChange={(event) => form.fields.name.setValue(event.target.value)}
           onBlur={() => form.fields.name.setIsTouched(true)}
         />
-        {!form.fields.name.isValid ? (
+        {form.fields.name.shouldShowError ? (
           <p style={{ color: 'red' }}>{form.fields.name.error?.message}</p>
         ) : null}
       </div>
@@ -42,7 +42,7 @@ export const BasicTextFields: React.FunctionComponent = () => {
           onChange={(event) => form.fields.description.setValue(event.target.value)}
           onBlur={() => form.fields.description.setIsTouched(true)}
         />
-        {!form.fields.description.isValid ? (
+        {form.fields.name.shouldShowError ? (
           <p style={{ color: 'red' }}>{form.fields.description.error?.message}</p>
         ) : null}
       </div>
@@ -71,7 +71,7 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
         label="Name"
         isRequired
         fieldId="example-2-name"
-        validated={form.fields.name.isValid ? 'default' : 'error'}
+        validated={form.fields.name.shouldShowError ? 'error' : 'default'}
         helperTextInvalid={form.fields.name.error?.message}
       >
         <TextInput
@@ -80,13 +80,13 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
           value={form.fields.name.value}
           onChange={form.fields.name.setValue}
           onBlur={() => form.fields.name.setIsTouched(true)}
-          validated={form.fields.name.isValid ? 'default' : 'error'}
+          validated={form.fields.name.shouldShowError ? 'error' : 'default'}
         />
       </FormGroup>
       <FormGroup
         label="Description"
         fieldId="example-2-desc"
-        validated={form.fields.description.isValid ? 'default' : 'error'}
+        validated={form.fields.description.shouldShowError ? 'error' : 'default'}
         helperTextInvalid={form.fields.description.error?.message}
       >
         <TextArea
@@ -94,7 +94,7 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
           value={form.fields.description.value}
           onChange={form.fields.description.setValue}
           onBlur={() => form.fields.description.setIsTouched(true)}
-          validated={form.fields.description.isValid ? 'default' : 'error'}
+          validated={form.fields.description.shouldShowError ? 'error' : 'default'}
         />
       </FormGroup>
       <Flex>
@@ -264,7 +264,7 @@ export const ComplexFieldTypes: React.FunctionComponent = () => {
             </option>
           ))}
         </select>
-        {!form.fields.store.isValid ? (
+        {form.fields.store.shouldShowError ? (
           <p style={{ color: 'red' }}>{form.fields.store.error?.message}</p>
         ) : null}
       </div>
@@ -286,7 +286,7 @@ export const ComplexFieldTypes: React.FunctionComponent = () => {
             <label htmlFor={`${item}-checkbox`}>{item}</label>
           </div>
         ))}
-        {!form.fields.items.isValid ? (
+        {form.fields.items.shouldShowError ? (
           <p style={{ color: 'red' }}>{form.fields.items.error?.message}</p>
         ) : null}
       </div>
