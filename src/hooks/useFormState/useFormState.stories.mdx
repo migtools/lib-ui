@@ -65,6 +65,7 @@ interface IFormField<T> {
 interface IValidatedFormField<T> extends IFormField<T> {
   error: yup.ValidationError | null;
   isValid: boolean;
+  shouldShowError: boolean; // True if field has validation errors and has been touched (false if it's just blank and untouched)
 }
 
 interface IFormState<TFieldValues> {

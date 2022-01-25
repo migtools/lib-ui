@@ -21,6 +21,8 @@ interface IValidatedTextInputProps
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>;
   /** Either a TextInput or TextArea from @patternfly/react-core. Defaults to TextInput */
   component?: typeof TextInput | typeof TextArea;
+  /** Whether to show the green 'valid' style when the field has been validated. Defaults to false ('default' style) */
+  greenWhenValid?: boolean;
   /** Any extra props for the PatternFly FormGroup */
   formGroupProps?: Partial<FormGroupProps>;
   /** Any extra props for the PatternFly TextInput or TextArea */
@@ -34,6 +36,7 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
   fieldId,
   isRequired,
   type = 'text',
+  greenWhenValid = false,
   formGroupProps = {},
   inputProps = {},
 }: IValidatedTextInputProps) => (
@@ -41,20 +44,20 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
     label={label}
     isRequired={isRequired}
     fieldId={fieldId}
-    {...getFormGroupProps(field as IValidatedFormField<string | undefined>)}
+    {...getFormGroupProps(field as IValidatedFormField<string | undefined>, greenWhenValid)}
     {...formGroupProps}
   >
     {component === TextInput ? (
       <TextInput
         id={fieldId}
         type={type}
-        {...getTextInputProps(field)}
+        {...getTextInputProps(field, greenWhenValid)}
         {...(inputProps as Partial<TextInputProps>)}
       />
     ) : (
       <TextArea
         id={fieldId}
-        {...getTextAreaProps(field)}
+        {...getTextAreaProps(field, greenWhenValid)}
         {...(inputProps as Partial<TextAreaProps>)}
         ref={null} // Necessary because of some weird TS issue with spreading Partial<TextAreaProps>['ref']
       />
