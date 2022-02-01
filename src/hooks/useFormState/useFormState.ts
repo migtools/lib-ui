@@ -9,11 +9,12 @@ export interface IFormField<T> {
   setValue: React.Dispatch<React.SetStateAction<T>>;
   defaultValue: T;
   cleanValue: T;
-  reinitialize: (value: T) => void; // Sets defaultValue, cleanValue and value
-  prefill: (value: T) => void; // Sets cleanValue and value
-  clear: () => void; // Sets value to defaultValue
-  revert: () => void; // Sets value to cleanValue
-  isDirty: boolean; // True if value is different from cleanValue
+  reinitialize: (value: T) => void; // Sets defaultValue, cleanValue and current value. Value will be restored on revert or clear. Useful if initial values are loaded asynchronously.
+  prefill: (value: T) => void; // Sets cleanValue and current value. Value will be restored on revert but not clear. Useful if values to be edited are loaded asynchronously but retains separate defaultValue for clear.
+  markSaved: () => void; // Sets cleanValue to current value. Current value will be restored on revert but not clear. Useful if values have been saved to storage but the form is still open.
+  clear: () => void; // Sets current value to defaultValue.
+  revert: () => void; // Sets current value to cleanValue.
+  isDirty: boolean; // True if current value is different from cleanValue.
   isTouched: boolean;
   setIsTouched: (isTouched: boolean) => void;
   schema: yup.AnySchema<T>;
@@ -40,10 +41,14 @@ export interface IFormState<TFieldValues> {
   fields: ValidatedFormFields<TFieldValues>;
   values: TFieldValues; // For convenience in submitting forms (values are also included in fields property)
   isDirty: boolean;
-  isValid: boolean;
   isTouched: boolean;
-  clear: () => void;
-  revert: () => void;
+  isValid: boolean;
+  setValues: (newValues: Partial<TFieldValues>) => void; // Sets multiple values at once.
+  reinitialize: (newValues: Partial<TFieldValues>) => void; // Reinitializes multiple values at once (see IFormField<T>)
+  prefill: (newValues: Partial<TFieldValues>) => void; // Prefills multiple values at once (see IFormField<T>)
+  markSaved: () => void; // Marks all fields as clean/saved (see IFormField<T>)
+  clear: () => void; // Clears all fields (see IFormField<T>)
+  revert: () => void; // Reverts all fields (see IFormField<T>)
 }
 
 // The generic T type variable is the type of the field's value (the T in IFormField<T>).
@@ -78,6 +83,9 @@ export const useFormField = <T>(
     prefill: (value: T) => {
       setCleanValue(value);
       setValue(value);
+    },
+    markSaved: () => {
+      setCleanValue(value);
     },
     clear: () => {
       setValue(defaultValue);
@@ -153,10 +161,12 @@ export const useFormState = <TFieldValues>(
       {} as ErrorsByField
     ) || ({} as ErrorsByField);
 
+  type TFieldValue = TFieldValues[keyof TFieldValues];
+
   const validatedFields: ValidatedFormFields<TFieldValues> = fieldKeys.reduce((newObj, key) => {
     const field = fields[key];
     const error = errorsByField ? errorsByField[key] : null;
-    const validatedField: IValidatedFormField<TFieldValues[keyof TFieldValues]> = {
+    const validatedField: IValidatedFormField<TFieldValue> = {
       ...field,
       error,
       isValid: !error,
@@ -171,6 +181,19 @@ export const useFormState = <TFieldValues>(
     isDirty,
     isTouched,
     isValid: hasRunInitialValidation && !validationError,
+    setValues: (newValues: Partial<TFieldValues>) =>
+      (Object.keys(newValues) as (keyof TFieldValues)[]).forEach(
+        (key) => fields[key] && fields[key].setValue(newValues[key] as TFieldValue)
+      ),
+    reinitialize: (newValues: Partial<TFieldValues>) =>
+      (Object.keys(newValues) as (keyof TFieldValues)[]).forEach(
+        (key) => fields[key] && fields[key].reinitialize(newValues[key] as TFieldValue)
+      ),
+    prefill: (newValues: Partial<TFieldValues>) =>
+      (Object.keys(newValues) as (keyof TFieldValues)[]).forEach(
+        (key) => fields[key] && fields[key].prefill(newValues[key] as TFieldValue)
+      ),
+    markSaved: () => fieldKeys.forEach((key) => fields[key].markSaved()),
     clear: () => fieldKeys.forEach((key) => fields[key].clear()),
     revert: () => fieldKeys.forEach((key) => fields[key].revert()),
   };
