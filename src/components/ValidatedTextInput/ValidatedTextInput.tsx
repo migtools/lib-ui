@@ -32,7 +32,7 @@ interface IValidatedTextInputProps
 export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProps> = ({
   field,
   component = TextInput,
-  label,
+  label = field.schema.describe().label,
   fieldId,
   isRequired,
   type = 'text',
