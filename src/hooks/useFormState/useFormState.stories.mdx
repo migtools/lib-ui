@@ -36,7 +36,10 @@ PatternFly text fields driven by this hook.
 function useFormField<T>(
   initialValue: T,
   schema: [T] extends [Array<infer E>] ? yup.ArraySchema<E> : yup.Schema<T>,
-  options?: { initialTouched?: boolean }
+  options: {
+    initialTouched?: boolean; // Start field with isTouched set to true
+    onChange?: (newValue: T) => void; // Called after any call to field.setValue, for side effects
+  } = {}
 ): IFormField<T>;
 
 function useFormState<TFieldValues>(
