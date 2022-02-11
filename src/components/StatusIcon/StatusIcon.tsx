@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { Flex, FlexItem, Spinner, SpinnerProps } from '@patternfly/react-core';
-import {
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  ExclamationCircleIcon,
-  InfoCircleIcon,
-  QuestionCircleIcon,
-  PauseCircleIcon,
-} from '@patternfly/react-icons';
-import { SVGIconProps } from '@patternfly/react-icons/dist/js/createIcon';
+import CheckCircleIcon from '@patternfly/react-icons/dist/esm/icons/check-circle-icon';
+import ExclamationTriangleIcon from '@patternfly/react-icons/dist/esm/icons/exclamation-triangle-icon';
+import ExclamationCircleIcon from '@patternfly/react-icons/dist/esm/icons/exclamation-circle-icon';
+import InfoCircleIcon from '@patternfly/react-icons/dist/esm/icons/info-circle-icon';
+import QuestionCircleIcon from '@patternfly/react-icons/dist/esm/icons/question-circle-icon';
+import PauseCircleIcon from '@patternfly/react-icons/dist/esm/icons/pause-circle-icon';
+import { SVGIconProps } from '@patternfly/react-icons/dist/esm/createIcon';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,

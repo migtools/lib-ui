@@ -17,7 +17,7 @@ import {
 interface IValidatedTextInputProps
   extends Pick<FormGroupProps, 'label' | 'fieldId' | 'isRequired'>,
     Pick<TextInputProps, 'type'> {
-  /** A field returned from useFormField() or useFormState().fields.* */
+  /** A field returned from useFormField() or useFormState().fields. */
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>;
   /** Either a TextInput or TextArea from @patternfly/react-core. Defaults to TextInput */
   component?: typeof TextInput | typeof TextArea;
