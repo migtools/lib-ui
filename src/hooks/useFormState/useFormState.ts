@@ -64,12 +64,30 @@ export interface IFormState<TFieldValues> {
 export const useFormField = <T>(
   initialValue: T,
   schema: yup.AnySchema<T | undefined>,
-  options: { initialTouched?: boolean } = {}
+  options: {
+    initialTouched?: boolean; // Start field with isTouched set to true
+    onChange?: (newValue: T) => void; // Called after any call to field.setValue, for side effects
+  } = {}
 ): IFormField<T> => {
   const [defaultValue, setDefaultValue] = React.useState<T>(initialValue); // The value used on clear()
   const [cleanValue, setCleanValue] = React.useState<T>(initialValue); // The value considered "unchanged", determines isDirty and used on revert()
-  const [value, setValue] = React.useState<T>(initialValue); // The actual value in the field
+  const [value, baseSetValue] = React.useState<T>(initialValue); // The actual value in the field
   const [isTouched, setIsTouched] = React.useState(options.initialTouched || false);
+
+  // Replicates the behavior of a real useState dispatch function in order to also call `options.onChange` if present
+  const setValue: React.Dispatch<React.SetStateAction<T>> = (
+    valueOrFn: T | ((prevValue: T) => T)
+  ) => {
+    baseSetValue(valueOrFn);
+    if (options.onChange) {
+      const newValue =
+        typeof valueOrFn === 'function'
+          ? (valueOrFn as (prevValue: T) => T)(value)
+          : (valueOrFn as T);
+      options.onChange(newValue);
+    }
+  };
+
   return {
     value,
     setValue,
