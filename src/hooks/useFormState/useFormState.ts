@@ -219,33 +219,45 @@ export const useFormState = <TFieldValues>(
 
 // PatternFly-specific rendering helpers for FormGroup and TextInput components:
 
+export interface FormGroupOptions {
+  greenWhenValid?: boolean;
+}
+
 export const getFormGroupProps = <T>(
   field: Pick<IValidatedFormField<T>, 'isTouched' | 'isValid' | 'error' | 'shouldShowError'>,
-  greenWhenValid = false
+  options?: FormGroupOptions
 ): Pick<FormGroupProps, 'validated' | 'helperTextInvalid'> => {
-  const validStyle: FormGroupProps['validated'] = greenWhenValid ? 'success' : 'default';
+  const validStyle: FormGroupProps['validated'] = options?.greenWhenValid ? 'success' : 'default';
   return {
     validated: field.shouldShowError ? 'error' : field.isValid ? validStyle : 'default',
     helperTextInvalid: field.error?.message,
   };
 };
 
+export interface TextFieldOptions {
+  greenWhenValid?: boolean;
+  onBlur?: () => void;
+}
+
 export const getTextFieldProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
+  options?: TextFieldOptions
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
   onChange: field.setValue,
-  onBlur: () => field.setIsTouched(true),
-  validated: getFormGroupProps(field, greenWhenValid).validated,
+  onBlur: () => {
+    field.setIsTouched(true);
+    options?.onBlur?.();
+  },
+  validated: getFormGroupProps(field, options).validated,
 });
 
 export const getTextInputProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
-): Partial<TextInputProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextInputProps>;
+  options?: TextFieldOptions
+): Partial<TextInputProps> => getTextFieldProps(field, options) as Partial<TextInputProps>;
 
 export const getTextAreaProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
-): Partial<TextAreaProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextAreaProps>;
+  options?: TextFieldOptions
+): Partial<TextAreaProps> => getTextFieldProps(field, options) as Partial<TextAreaProps>;

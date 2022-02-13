@@ -12,6 +12,7 @@ import {
   getFormGroupProps,
   getTextAreaProps,
   getTextInputProps,
+  TextFieldOptions,
 } from '../../hooks/useFormState';
 
 interface IValidatedTextInputProps
@@ -23,6 +24,8 @@ interface IValidatedTextInputProps
   component?: typeof TextInput | typeof TextArea;
   /** Whether to show the green 'valid' style when the field has been validated. Defaults to false ('default' style) */
   greenWhenValid?: boolean;
+  /** Extra callback to call onBlur in addition to setting the field isTouched in state */
+  onBlur?: () => void;
   /** Any extra props for the PatternFly FormGroup */
   formGroupProps?: Partial<FormGroupProps>;
   /** Any extra props for the PatternFly TextInput or TextArea */
@@ -37,30 +40,34 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
   isRequired,
   type = 'text',
   greenWhenValid = false,
+  onBlur,
   formGroupProps = {},
   inputProps = {},
-}: IValidatedTextInputProps) => (
-  <FormGroup
-    label={label}
-    isRequired={isRequired}
-    fieldId={fieldId}
-    {...getFormGroupProps(field as IValidatedFormField<string | undefined>, greenWhenValid)}
-    {...formGroupProps}
-  >
-    {component === TextInput ? (
-      <TextInput
-        id={fieldId}
-        type={type}
-        {...getTextInputProps(field, greenWhenValid)}
-        {...(inputProps as Partial<TextInputProps>)}
-      />
-    ) : (
-      <TextArea
-        id={fieldId}
-        {...getTextAreaProps(field, greenWhenValid)}
-        {...(inputProps as Partial<TextAreaProps>)}
-        ref={null} // Necessary because of some weird TS issue with spreading Partial<TextAreaProps>['ref']
-      />
-    )}
-  </FormGroup>
-);
+}: IValidatedTextInputProps) => {
+  const options: TextFieldOptions = { greenWhenValid, onBlur };
+  return (
+    <FormGroup
+      label={label}
+      isRequired={isRequired}
+      fieldId={fieldId}
+      {...getFormGroupProps(field as IValidatedFormField<string | undefined>, options)}
+      {...formGroupProps}
+    >
+      {component === TextInput ? (
+        <TextInput
+          id={fieldId}
+          type={type}
+          {...getTextInputProps(field, options)}
+          {...(inputProps as Partial<TextInputProps>)}
+        />
+      ) : (
+        <TextArea
+          id={fieldId}
+          {...getTextAreaProps(field, options)}
+          {...(inputProps as Partial<TextAreaProps>)}
+          ref={null} // Necessary because of some weird TS issue with spreading Partial<TextAreaProps>['ref']
+        />
+      )}
+    </FormGroup>
+  );
+};
