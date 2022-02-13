@@ -39,6 +39,7 @@
     "@patternfly/react-core": "^4.157.3",
     "@patternfly/react-table": "^4.26.6",
     "@patternfly/react-tokens": "^4.11.2",
+    "@patternfly/react-icons": "^4.11.17",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^11.2.1",

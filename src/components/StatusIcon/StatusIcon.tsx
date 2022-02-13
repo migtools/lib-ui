@@ -8,7 +8,7 @@ import {
   QuestionCircleIcon,
   PauseCircleIcon,
 } from '@patternfly/react-icons';
-import { SVGIconProps } from '@patternfly/react-icons/dist/js/createIcon';
+import { SVGIconProps } from '@patternfly/react-icons/dist/esm/createIcon';
 import {
   global_disabled_color_200 as disabledColor,
   global_success_color_100 as successColor,
