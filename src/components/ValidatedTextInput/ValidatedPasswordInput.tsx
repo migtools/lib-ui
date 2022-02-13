@@ -7,8 +7,7 @@ import {
   TextInput,
   TextInputProps,
 } from '@patternfly/react-core';
-import EyeIcon from '@patternfly/react-icons/dist/esm/icons/eye-icon';
-import EyeSlashIcon from '@patternfly/react-icons/dist/esm/icons/eye-slash-icon';
+import { EyeIcon, EyeSlashIcon } from '@patternfly/react-icons';
 import { IValidatedFormField, getFormGroupProps, getTextInputProps } from '../..';
 
 interface IValidatedPasswordInputProps
