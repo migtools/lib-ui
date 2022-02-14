@@ -28,7 +28,7 @@ interface IValidatedPasswordInputProps
 
 export const ValidatedPasswordInput: React.FunctionComponent<IValidatedPasswordInputProps> = ({
   field,
-  label,
+  label = field.schema.describe().label,
   fieldId,
   isRequired,
   greenWhenValid = false,
