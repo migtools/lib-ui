@@ -26,6 +26,8 @@ interface IValidatedTextInputProps
   greenWhenValid?: boolean;
   /** Extra callback to call onBlur in addition to setting the field isTouched in state */
   onBlur?: () => void;
+  /** Extra callback to call onChange in addition to setting the field value in state */
+  onChange?: (value: string) => void;
   /** Any extra props for the PatternFly FormGroup */
   formGroupProps?: Partial<FormGroupProps>;
   /** Any extra props for the PatternFly TextInput or TextArea */
@@ -41,10 +43,11 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
   type = 'text',
   greenWhenValid = false,
   onBlur,
+  onChange,
   formGroupProps = {},
   inputProps = {},
 }: IValidatedTextInputProps) => {
-  const options: TextFieldOptions = { greenWhenValid, onBlur };
+  const options: TextFieldOptions = { greenWhenValid, onBlur, onChange };
   return (
     <FormGroup
       label={label}

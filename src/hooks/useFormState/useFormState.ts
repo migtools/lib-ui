@@ -256,6 +256,7 @@ export const getFormGroupProps = <T>(
 export interface TextFieldOptions {
   greenWhenValid?: boolean;
   onBlur?: () => void;
+  onChange?: (value: string) => void;
 }
 
 export const getTextFieldProps = (
@@ -263,7 +264,9 @@ export const getTextFieldProps = (
   options?: TextFieldOptions
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
-  onChange: field.setValue,
+  onChange: (value: string) => {
+    field.setValue(value), options?.onChange?.(value);
+  },
   onBlur: () => {
     field.setIsTouched(true);
     options?.onBlur?.();
