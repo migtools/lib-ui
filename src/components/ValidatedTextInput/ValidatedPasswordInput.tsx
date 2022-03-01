@@ -18,6 +18,8 @@ interface IValidatedPasswordInputProps
   greenWhenValid?: boolean;
   /** Extra callback to call onBlur in addition to setting the field isTouched in state */
   onBlur?: () => void;
+  /** Extra callback to call onChange in addition to setting the field value in state */
+  onChange?: (value: string) => void;
   /** Any extra props for the PatternFly FormGroup */
   formGroupProps?: Partial<FormGroupProps>;
   /** Any extra props for the PatternFly TextInput */
@@ -33,13 +35,14 @@ export const ValidatedPasswordInput: React.FunctionComponent<IValidatedPasswordI
   isRequired,
   greenWhenValid = false,
   onBlur,
+  onChange,
   formGroupProps = {},
   inputProps = {},
   showPasswordAriaLabel = `Show ${label}`,
   hidePasswordAriaLabel = `Hide ${label}`,
 }: IValidatedPasswordInputProps) => {
   const [isValueVisible, toggleValueVisible] = React.useReducer((isVisible) => !isVisible, false);
-  const options: TextFieldOptions = { greenWhenValid, onBlur };
+  const options: TextFieldOptions = { greenWhenValid, onBlur, onChange };
   return (
     <FormGroup
       label={label}
