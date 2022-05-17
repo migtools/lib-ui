@@ -30,7 +30,7 @@
   "peerDependencies": {
     "@patternfly/react-core": "^4.115.1",
     "@patternfly/react-tokens": "^4.11.2",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -55,7 +55,7 @@
     "@types/rollup-plugin-postcss": "^2.0.1",
     "@typescript-eslint/eslint-plugin": "^4.22.0",
     "@typescript-eslint/parser": "^4.22.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "babel-loader": "^8.2.2",
     "babel-preset-react-app": "^10.0.0",
     "cz-conventional-changelog": "^3.3.0",
