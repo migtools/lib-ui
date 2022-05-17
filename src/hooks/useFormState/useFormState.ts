@@ -134,8 +134,13 @@ export const useFormField = <T>(
 
 export const useFormState = <TFieldValues>(
   fields: FormFields<TFieldValues>,
-  yupOptions: ValidateOptions = {}
+  options: {
+    revalidateOnChange?: unknown[];
+    yupOptions?: ValidateOptions;
+  } = {}
 ): IFormState<TFieldValues> => {
+  const { revalidateOnChange = [], yupOptions = {} } = options;
+
   const fieldKeys = Object.keys(fields) as (keyof TFieldValues)[];
   const values: TFieldValues = fieldKeys.reduce(
     (newObj, key) => ({ ...newObj, [key]: fields[key].value }),
@@ -144,13 +149,19 @@ export const useFormState = <TFieldValues>(
   const isDirty = fieldKeys.some((key) => fields[key].isDirty);
   const isTouched = fieldKeys.some((key) => fields[key].isTouched);
 
-  // Memoize the validation, only recompute if the field values changed
+  // Memoize the validation, only recompute if the field values or revalidateOnChange dependencies changed
   const [validationError, setValidationError] = React.useState<yup.ValidationError | null>(null);
   const [hasRunInitialValidation, setHasRunInitialValidation] = React.useState(false);
   const lastValuesRef = React.useRef(values);
+  const lastRevalidateDepsRef = React.useRef(revalidateOnChange);
   React.useEffect(() => {
-    if (!hasRunInitialValidation || !equal(lastValuesRef.current, values)) {
+    if (
+      !hasRunInitialValidation ||
+      !equal(lastRevalidateDepsRef.current, revalidateOnChange) ||
+      !equal(lastValuesRef.current, values)
+    ) {
       lastValuesRef.current = values;
+      lastRevalidateDepsRef.current = revalidateOnChange;
       const schemaShape = fieldKeys.reduce(
         (newObj, key) => ({ ...newObj, [key]: fields[key].schema }),
         {} as { [key in keyof TFieldValues]: yup.AnySchema<TFieldValues[key]> }
@@ -170,7 +181,15 @@ export const useFormState = <TFieldValues>(
           }
         });
     }
-  }, [fieldKeys, fields, hasRunInitialValidation, validationError, values, yupOptions]);
+  }, [
+    fieldKeys,
+    fields,
+    hasRunInitialValidation,
+    validationError,
+    values,
+    revalidateOnChange,
+    yupOptions,
+  ]);
 
   type ErrorsByField = { [key in keyof TFieldValues]: yup.ValidationError };
   const errorsByField =
@@ -219,33 +238,48 @@ export const useFormState = <TFieldValues>(
 
 // PatternFly-specific rendering helpers for FormGroup and TextInput components:
 
+export interface FormGroupOptions {
+  greenWhenValid?: boolean;
+}
+
 export const getFormGroupProps = <T>(
   field: Pick<IValidatedFormField<T>, 'isTouched' | 'isValid' | 'error' | 'shouldShowError'>,
-  greenWhenValid = false
+  options?: FormGroupOptions
 ): Pick<FormGroupProps, 'validated' | 'helperTextInvalid'> => {
-  const validStyle: FormGroupProps['validated'] = greenWhenValid ? 'success' : 'default';
+  const validStyle: FormGroupProps['validated'] = options?.greenWhenValid ? 'success' : 'default';
   return {
     validated: field.shouldShowError ? 'error' : field.isValid ? validStyle : 'default',
     helperTextInvalid: field.error?.message,
   };
 };
 
+export interface TextFieldOptions {
+  greenWhenValid?: boolean;
+  onBlur?: () => void;
+  onChange?: (value: string) => void;
+}
+
 export const getTextFieldProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
+  options?: TextFieldOptions
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
-  onChange: field.setValue,
-  onBlur: () => field.setIsTouched(true),
-  validated: getFormGroupProps(field, greenWhenValid).validated,
+  onChange: (value: string) => {
+    field.setValue(value), options?.onChange?.(value);
+  },
+  onBlur: () => {
+    field.setIsTouched(true);
+    options?.onBlur?.();
+  },
+  validated: getFormGroupProps(field, options).validated,
 });
 
 export const getTextInputProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
-): Partial<TextInputProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextInputProps>;
+  options?: TextFieldOptions
+): Partial<TextInputProps> => getTextFieldProps(field, options) as Partial<TextInputProps>;
 
 export const getTextAreaProps = (
   field: IValidatedFormField<string> | IValidatedFormField<string | undefined>,
-  greenWhenValid = false
-): Partial<TextAreaProps> => getTextFieldProps(field, greenWhenValid) as Partial<TextAreaProps>;
+  options?: TextFieldOptions
+): Partial<TextAreaProps> => getTextFieldProps(field, options) as Partial<TextAreaProps>;

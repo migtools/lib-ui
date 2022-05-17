@@ -2,13 +2,13 @@ import { NamespacedResource, ClusterResource, IGroupVersionKindPlural } from './
 
 export class CoreNamespacedResource extends NamespacedResource {
   private _gvk: IGroupVersionKindPlural;
-  constructor(kind: CoreNamespacedResourceKind, namespace: string) {
+  constructor(kindPlural: string, namespace: string) {
     super(namespace);
 
     this._gvk = {
       group: '',
       version: 'v1',
-      kindPlural: kind,
+      kindPlural,
     };
   }
   gvk(): IGroupVersionKindPlural {
@@ -27,11 +27,11 @@ export class CoreNamespacedResource extends NamespacedResource {
 export class ExtendedCoreNamespacedResource extends CoreNamespacedResource {
   private _operation: ExtendedCoreNamespacedResourceKind;
   constructor(
-    kind: CoreNamespacedResourceKind,
+    kindPlural: string,
     namespace: string,
     operation: ExtendedCoreNamespacedResourceKind
   ) {
-    super(kind, namespace);
+    super(kindPlural, namespace);
 
     this._operation = operation;
   }
@@ -47,13 +47,13 @@ export class ExtendedCoreNamespacedResource extends CoreNamespacedResource {
 
 export class CoreClusterResource extends ClusterResource {
   private _gvk: IGroupVersionKindPlural;
-  constructor(kind: CoreClusterResourceKind) {
+  constructor(kindPlural: string) {
     super();
 
     this._gvk = {
       group: '',
       version: 'v1',
-      kindPlural: kind,
+      kindPlural,
     };
   }
   gvk(): IGroupVersionKindPlural {

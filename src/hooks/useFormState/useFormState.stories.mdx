@@ -47,7 +47,10 @@ function useFormState<TFieldValues>(
     // an object with values as useFormField calls
     [key in keyof TFieldValues]: IFormField<TFieldValues[key]>;
   },
-  yupOptions?: yup.ValidateOptions
+  options: {
+    revalidateOnChange?: unknown[];
+    yupOptions?: ValidateOptions;
+  } = {}
 ): IFormState<TFieldValues>;
 
 interface IFormField<T> {
