@@ -8,7 +8,12 @@ import {
   TextInputProps,
 } from '@patternfly/react-core';
 import { EyeIcon, EyeSlashIcon } from '@patternfly/react-icons';
-import { IValidatedFormField, getFormGroupProps, getTextInputProps, TextFieldOptions } from '../..';
+import {
+  IValidatedFormField,
+  getFormGroupProps,
+  getTextInputProps,
+  TextFieldOptions,
+} from '../../hooks/useFormState';
 
 interface IValidatedPasswordInputProps
   extends Pick<FormGroupProps, 'label' | 'fieldId' | 'isRequired'> {
