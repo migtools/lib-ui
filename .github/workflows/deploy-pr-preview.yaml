@@ -11,11 +11,11 @@ jobs:
         # This is a base64-encoded OAuth token for the "konveyor-preview-bot" GitHub account, which has no secure access.
         run: echo "::set-output name=GH_TOKEN::`echo 'ODk3MzkyNzJlMDQwZjQ3YThhODJjYjYwZmFhM2RlOWQ3ZTk2YWM3OQo=' | base64 -d`"
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
       - name: Setup Node.js
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-          node-version: 12
+          node-version: 16
       - name: Install dependencies
         run: yarn install
       - name: Build Storybook
@@ -36,5 +36,5 @@ jobs:
       - name: Post URL as PR comment
         uses: mshick/add-pr-comment@v1
         with:
-          message: "🚀 Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}} ✨"
+          message: '🚀 Deployed Storybook Preview: http://${{steps.surge-url.outputs.result}} ✨'
           repo-token: ${{ steps.token.outputs.GH_TOKEN }}
