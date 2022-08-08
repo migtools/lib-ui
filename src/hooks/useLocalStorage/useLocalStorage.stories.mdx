@@ -1,0 +1,48 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { useLocalStorage } from './useLocalStorage';
+import {
+  PersistentTextFieldExample,
+  PersistentCheckboxExample,
+  WelcomeModalExample,
+} from './useLocalStorage.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Hooks/useLocalStorage" component={useLocalStorage} />
+
+# useLocalStorage
+
+A custom hook resembling `React.useState` which persists the value using the browser's localStorage API.
+
+Can be used as a drop-in replacement for `useState`, but the stored value must be a string.
+
+```
+TODO: put type signature here
+```
+
+## Using default values
+
+TODO
+
+## Using boolean values
+
+TODO
+
+## Examples
+
+### Persistent text field
+
+<Canvas>
+  <Story story={PersistentTextFieldExample} />
+</Canvas>
+
+### Persistent checkbox
+
+<Canvas>
+  <Story story={PersistentCheckboxExample} />
+</Canvas>
+
+### Modal with "Don't show this again" checkbox
+
+<Canvas>
+  <Story story={WelcomeModalExample} />
+</Canvas>
