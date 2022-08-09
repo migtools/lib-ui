@@ -1,9 +1,14 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 import { useLocalStorage } from './useLocalStorage';
 import {
+  ClearAllExamplesButton,
+  PersistentCounterExample,
   PersistentTextFieldExample,
   PersistentCheckboxExample,
   WelcomeModalExample,
+  ReusedKeyExample,
+  CustomHookExample,
+  ComplexValueExample,
 } from './useLocalStorage.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
@@ -11,31 +16,60 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 # useLocalStorage
 
-A custom hook resembling `React.useState` which persists the value using the browser's localStorage API.
+A custom hook resembling `React.useState` which persists and synchronizes any JSON-serializable value using the
+browser's [localStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
 
-Can be used as a drop-in replacement for `useState`, but the stored value must be a string.
+The value will persist across page reloads, and updates to the value will cause a re-render anywhere `useLocalStorage`
+is called with the same unique `key` string. The value identified by a `key` will stay in sync between multiple calls
+within the same page, across multiple pages and across multiple tabs/windows via a `StorageEvent` listener. The value
+will only be lost if the user switches to a different browser or a fresh incognito session, or if they clear their
+browsing data.
 
+Just like `useState`, `useLocalStorage` returns the current value and setter function in an array tuple so they can be
+given arbitrary names using [destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment),
+and it supports TypeScript [generics](https://www.typescriptlang.org/docs/handbook/generics.html) and can optionally
+infer its return types based on the `defaultValue`.
+
+```ts
+const [value, setValue] = useLocalStorage<T>(key: string, defaultValue: T);
 ```
-TODO: put type signature here
-```
 
-## Using default values
+## Notes
 
-TODO
+On first render, `value` will either be synchronously loaded from storage or will fall back to `defaultValue` if there
+is no value in storage. If necessary, the storage value can be fully removed by calling `setValue(undefined)`, which
+will re-render with `value` set back to `defaultValue`. Note that this is distinct from calling `setValue(null)`, which
+will persist and synchronize the `null` value.
 
-## Using boolean values
+If `setValue` is called with a value which cannot be serialized to JSON
+([see Exceptions here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#exceptions)),
+or if an error is thrown by the `localStorage` API, the error is caught and logged to the console and the `value` falls
+back to the `defaultValue`.
 
-TODO
+`useLocalStorage` is safe to use in a unit testing environment where `window.localStorage` is not available.
+If `window` is undefined, the hook will simply always use the `defaultValue` and the setter function will do nothing.
 
 ## Examples
 
-### Persistent text field
+For each of these examples, try opening this page in multiple windows side-by-side to see the synchronization in action,
+and try reloading the page to see the persistence in action.
+
+### Persistent counter (`number` value)
+
+The classic `useState` example, but persistent. The `count` variable's type here is inferred as a primitive `number`,
+not a `string`.
+
+<Canvas>
+  <Story story={PersistentCounterExample} />
+</Canvas>
+
+### Persistent text field (`string` value)
 
 <Canvas>
   <Story story={PersistentTextFieldExample} />
 </Canvas>
 
-### Persistent checkbox
+### Persistent checkbox (`boolean` value)
 
 <Canvas>
   <Story story={PersistentCheckboxExample} />
@@ -43,6 +77,40 @@ TODO
 
 ### Modal with "Don't show this again" checkbox
 
+This button will simulate navigating to a page that has a welcome modal which can be disabled for future visits by the user.
+
 <Canvas>
   <Story story={WelcomeModalExample} />
 </Canvas>
+
+### Sharing a persistent value by reusing the same `key`
+
+The same value can be rendered and updated in multiple different components and in the same component rendered in multiple places
+by reusing the same unique `key` string. In this implementation, you will need to use the same `defaultValue` for each instance
+or you'll end up with the values out of sync until one of them is changed by the user. See the next example for an improvement.
+
+<Canvas>
+  <Story story={ReusedKeyExample} />
+</Canvas>
+
+### Sharing a persistent value by factoring out into a custom hook
+
+Sharing the same value can be done more easily (and without the repeated `defaultValue` problem) by creating a custom hook
+wrapping your `useLocalStorage` call and using the custom hook in multiple places.
+
+<Canvas>
+  <Story story={CustomHookExample} />
+</Canvas>
+
+### Persistent array and object values
+
+Any JSON-serializable value can be used with `useLocalStorage` such as an array or an object. Note that this may not be
+desirable; if possible it is simpler to use multiple instances of `useLocalStorage` with separate keys and individual primitive values.
+
+<Canvas>
+  <Story story={ComplexValueExample} />
+</Canvas>
+
+<ClearAllExamplesButton />
+
+<GithubLink path="src/hooks/useLocalStorage/useLocalStorage.ts" />
