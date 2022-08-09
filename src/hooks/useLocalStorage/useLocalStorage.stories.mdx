@@ -48,7 +48,7 @@ back to the `defaultValue`.
 
 `useLocalStorage` is safe to use in a server-side rendering or unit testing environment where `window.localStorage` is
 not available. If `window` is undefined, the hook will simply always use the `defaultValue` and the setter function
-will do nothing.
+will only update the cached value in React state.
 
 ## Examples
 
