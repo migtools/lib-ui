@@ -11,7 +11,7 @@ const getValueFromStorage = <T>(key: string, defaultValue: T): T => {
   }
 };
 
-const setValueInStorage = <T>(key: string, newValue: T) => {
+const setValueInStorage = <T>(key: string, newValue: T | undefined) => {
   if (typeof window === 'undefined') return;
   try {
     if (newValue !== undefined) {
