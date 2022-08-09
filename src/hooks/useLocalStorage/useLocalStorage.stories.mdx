@@ -37,9 +37,9 @@ const [value, setValue] = useLocalStorage<T>(key: string, defaultValue: T);
 ## Notes
 
 On first render, `value` will either be synchronously loaded from storage or will fall back to `defaultValue` if there
-is no value in storage. If necessary, the storage value can be fully removed by calling `setValue(undefined)`, which
-will re-render with `value` set back to `defaultValue`. Note that this is distinct from calling `setValue(null)`, which
-will persist and synchronize the `null` value.
+is no value in storage. If necessary, the data can be fully removed from `localStorage` by calling
+`setValue(undefined)`, which will re-render with `value` set back to `defaultValue`. Note that this is distinct from
+calling `setValue(null)`, which will persist and synchronize the `null` value.
 
 If `setValue` is called with a value which cannot be serialized to JSON
 ([see Exceptions here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#exceptions)),
