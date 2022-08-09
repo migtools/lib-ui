@@ -42,6 +42,10 @@ export const useLocalStorage = <T>(
           ? newValueOrFn(getValueFromStorage(key, defaultValue))
           : newValueOrFn;
       setValueInStorage(key, newValue);
+      if (typeof window === 'undefined') {
+        // If we're in a server or test environment, the cache won't update automatically since there's no StorageEvent.
+        setCachedValue(newValue);
+      }
     },
     [key, defaultValue]
   );
