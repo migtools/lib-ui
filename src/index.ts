@@ -5,5 +5,6 @@ export * from './components/LoadingEmptyState';
 
 export * from './hooks/useSelectionState';
 export * from './hooks/useFormState';
+export * from './hooks/useLocalStorage';
 
 export * from './modules/kube-client';
