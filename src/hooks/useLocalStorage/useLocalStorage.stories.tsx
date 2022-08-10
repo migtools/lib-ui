@@ -67,7 +67,7 @@ export const WelcomeModalExample: React.FunctionComponent = () => {
             If you checked the &quot;don&apos;t show this again&quot; box, try reloading the page
             and returning here and you&apos;ll see the welcome modal won&apos;t come back. If you
             want to see it again, clear your browsing data or try an incognito tab, or use the
-            &quot;Clear localStorage for all examples&quot; button above.
+            &quot;Clear localStorage for all examples&quot; button below.
           </Text>
           <Button variant="secondary" onClick={() => setIsExamplePageOpen(false)}>
             Go back
