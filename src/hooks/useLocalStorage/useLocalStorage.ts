@@ -3,8 +3,8 @@ import * as React from 'react';
 const getValueFromStorage = <T>(key: string, defaultValue: T): T => {
   if (typeof window === 'undefined') return defaultValue;
   try {
-    const item = window.localStorage.getItem(key);
-    return item ? (JSON.parse(item) as T) : defaultValue;
+    const itemJSON = window.localStorage.getItem(key);
+    return itemJSON ? (JSON.parse(itemJSON) as T) : defaultValue;
   } catch (error) {
     console.error(error);
     return defaultValue;
