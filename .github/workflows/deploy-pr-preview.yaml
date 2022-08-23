@@ -1,21 +1,21 @@
-name: PR Storybook Preview
+name: Preview
 on: pull_request
 
 jobs:
   deploy-pr-preview:
-    name: Deploy to Surge
-    runs-on: ubuntu-18.04
+    name: Deploy Storybook
+    runs-on: ubuntu-latest
     steps:
       - name: Set up token
         id: token
-        # This is a base64-encoded OAuth token for the "konveyor-preview-bot" GitHub account, which has no secure access.
-        run: echo "::set-output name=GH_TOKEN::`echo 'ODk3MzkyNzJlMDQwZjQ3YThhODJjYjYwZmFhM2RlOWQ3ZTk2YWM3OQo=' | base64 -d`"
+        # This is a base64-encoded access token for the "migtools-preview-bot" GitHub account, which has no secure access and is only used to post comments.
+        run: echo "::set-output name=GH_TOKEN::`echo 'Z2hwX2ttclAzWUtjdUk4ZWJVRVVpZFJkdWlUOTJBS2pGODI2NUlyeQo=' | base64 -d`"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: lts/*
       - name: Install dependencies
         run: yarn install
       - name: Build Storybook
@@ -27,12 +27,12 @@ jobs:
           github-token: ${{ steps.token.outputs.GH_TOKEN }}
           script: |
             const { issue: { number: issue_number } } = context;
-            return `konveyor-lib-ui-pr-${issue_number}-preview.surge.sh`;
+            return `migtools-lib-ui-pr-${issue_number}-preview.surge.sh`;
           result-encoding: string
       - name: Install Surge
         run: npm install -g surge
       - name: Deploy Storybook to Surge
-        run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token 62bd7a07b9bf812ff8d3ea91ccd2dc2f
+        run: surge ./storybook-static/ "${{steps.surge-url.outputs.result}}" --token 1d92e83069ba094ba43fbb71460a5f84
       - name: Post URL as PR comment
         uses: mshick/add-pr-comment@v1
         with:

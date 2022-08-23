@@ -8,11 +8,8 @@ import {
   ComplexFieldTypes,
 } from './useFormState.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
-import PackageMovedAlert from '../../../.storybook/helpers/PackageMovedAlert';
 
 <Meta title="Hooks/useFormState" component={useFormState} />
-
-<PackageMovedAlert />
 
 # useFormState
 
@@ -23,7 +20,7 @@ parameters returned by `useFormField` and `useFormState` can be inferred from th
 passed as individual type parameters to each `useFormField<T>()`, or passed as a unified interface to the type parameter of `useFormState<T>()`.
 
 This hook uses [yup](https://github.com/jquense/yup) for field validation, and its TypeScript signature enforces that each of your schema types is
-compatible with its field type. `yup` is bundled as a dependency of `@konveyor/lib-ui`.
+compatible with its field type. `yup` is bundled as a dependency of `@migtools/lib-ui`.
 
 We built this solution because we find that most forms do not have complex requirements, and libraries like Formik and co. tend to add unnecessary complexity.
 We were burned by lots of confusing debugging sessions trying to figure out the reinitialization behavior of Formik, among other things,
@@ -172,10 +169,9 @@ our real server-side data, but we also want to provide a way to clear the form b
   <Story story={AsyncPrefilling} />
 </Canvas>
 
-## TODO: better docs coming soon
+## TODO: doc improvements
 
-This initial version is a copy of the implementation introduced in https://github.com/konveyor/virt-ui/pull/53 and enhanced in https://github.com/konveyor/virt-ui/pull/100.
-I am adding it here so it can be reused more widely while it is being developed. Unit tests and better documentation will follow.
+These hooks are still in development as we use them in products and discover issues and features we need.
 
 TODO:
 
