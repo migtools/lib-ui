@@ -110,9 +110,6 @@ yarn storybook
 To run the type-checker, linter and unit tests:
 
 ```sh
-# Run all 3:
-yarn ci
-# Or run them individually:
 yarn type-check
 yarn lint [--fix]
 yarn test [--watch]

@@ -21,9 +21,9 @@
     "lint": "eslint --ext .tsx,.js ./src/",
     "format": "prettier --check --write ./src/**/*.{tsx,ts,scss}",
     "type-check": "yarn tsc --noEmit",
-    "ci": "yarn type-check && yarn lint && yarn test",
     "clean": "rimraf dist && rimraf storybook-static",
-    "build": "rimraf dist && rollup -c",
+    "prebuild": "yarn type-check && yarn clean",
+    "build": "rollup -c",
     "storybook": "start-storybook --docs -p 6006",
     "storybook:export": "rimraf storybook-static && build-storybook --docs"
   },
