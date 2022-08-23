@@ -1,9 +1,9 @@
-name: PR Storybook Preview
+name: Preview
 on: pull_request
 
 jobs:
   deploy-pr-preview:
-    name: Deploy to Surge
+    name: Deploy Storybook
     runs-on: ubuntu-latest
     steps:
       - name: Set up token

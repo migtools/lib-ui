@@ -1,4 +1,4 @@
-name: Test and Release
+name: Release on merge
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:
   test-and-release:
-    name: Run tests and release to npm
+    name: Release to npm and publish docs
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
