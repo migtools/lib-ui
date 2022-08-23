@@ -1,11 +1,5 @@
 # @konveyor/lib-ui
 
----
-
-# IMPORTANT: The `@konveyor/lib-ui` npm package is deprecated and has moved to `@migtools/lib-ui`.
-
----
-
 Reusable React components, hooks, and TypeScript modules shared between Konveyor UI projects.
 
 This library exists as a place to store and reuse abstractions that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
