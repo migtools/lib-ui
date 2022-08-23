@@ -1,14 +1,14 @@
-# @konveyor/lib-ui
+# @migtools/lib-ui
 
-Reusable React components, hooks, and TypeScript modules shared between Konveyor UI projects.
+Reusable React components, hooks, and TypeScript modules shared between migtools UI projects.
 
-This library exists as a place to store and reuse abstractions that are useful for multiple Konveyor UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
+This library exists as a place to store and reuse abstractions that are useful for multiple UI projects, and are either not available in PatternFly yet or not covered by PatternFly's scope.
 
 The React components in this library are compositions and extensions of [patternfly-react](https://github.com/patternfly/patternfly-react) components, and we should avoid duplicating components that are available there.
 
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-Documentation and examples (Storybook): http://konveyor.github.io/lib-ui/
+Documentation and examples (Storybook): http://migtools.github.io/lib-ui/
 
 ## Usage
 
@@ -17,16 +17,16 @@ Documentation and examples (Storybook): http://konveyor.github.io/lib-ui/
 In your app repo, install the library as a normal npm dependency:
 
 ```sh
-yarn add @konveyor/lib-ui
+yarn add @migtools/lib-ui
 # or:
-npm install @konveyor/lib-ui
+npm install @migtools/lib-ui
 ```
 
 ### Install peer dependencies
 
 This package has React and PatternFly packages as peer dependencies, which are not included in the library bundle. That way, your app can also depend on them directly without bundling them twice.
 
-When you install @konveyor/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/konveyor/lib-ui/blob/main/package.json#L30) as dependencies in your app.
+When you install @migtools/lib-ui, you should get a warning from your package manager telling you which versions to install. [Make sure you have compatible versions](https://github.com/migtools/lib-ui/blob/main/package.json#L30) as dependencies in your app.
 
 **Note: The `axios` peer dependency is only required if you are using `modules/kube-client`.**
 
@@ -38,25 +38,25 @@ First, clone the lib-ui repo somewhere, `cd` to that clone, install and build th
 Unfortunately, you then need to delete `node_modules` in the lib-ui directory so the app's builder doesn't pick it up.
 
 ```sh
-git clone https://github.com/konveyor/lib-ui.git konveyor-lib-ui
-cd konveyor-lib-ui
+git clone https://github.com/migtools/lib-ui.git migtools-lib-ui
+cd migtools-lib-ui
 yarn install
 yarn build
 yarn link
 rm -rf node_modules
 ```
 
-Then, `cd` to the app you're developing, and run `yarn link @konveyor/lib-ui` to install the linked version instead of the npm version.
+Then, `cd` to the app you're developing, and run `yarn link @migtools/lib-ui` to install the linked version instead of the npm version.
 
 ```sh
 cd ../virt-ui
-yarn link @konveyor/lib-ui
+yarn link @migtools/lib-ui
 ```
 
 If you make a change in your local lib-ui clone, reinstall its dependencies, rebuild, and remove them. Your app should then pick up the changes.
 
 ```sh
-cd ../konveyor-lib-ui
+cd ../migtools-lib-ui
 yarn install
 yarn build
 rm -rf node_modules
@@ -66,7 +66,7 @@ When you're done, in your app repo, unlink the package and force a reinstall of 
 
 ```sh
 cd ../virt-ui
-yarn unlink @konveyor/lib-ui
+yarn unlink @migtools/lib-ui
 yarn install --force
 ```
 
@@ -77,7 +77,7 @@ Then in the lib-ui directory, run `yarn unlink` if you no longer want it availab
 In your JS/TS, Import named modules from the library, just like PatternFly:
 
 ```js
-import { MyComponent, useSomeHook } from '@konveyor/lib-ui';
+import { MyComponent, useSomeHook } from '@migtools/lib-ui';
 ```
 
 ---
@@ -94,8 +94,8 @@ import { MyComponent, useSomeHook } from '@konveyor/lib-ui';
 Clone and install dependencies:
 
 ```sh
-git clone https://github.com/konveyor/lib-ui.git konveyor-lib-ui
-cd konveyor-lib-ui
+git clone https://github.com/migtools/lib-ui.git migtools-lib-ui
+cd migtools-lib-ui
 yarn install
 ```
 
@@ -147,7 +147,7 @@ First, `git add` any changes you want to commit, then:
 yarn commit
 ```
 
-Follow the prompts based on the scope of your commit. **Note: This will generate a message for an individual commit, but since we use squash-and-merge, what matters is your PR title.** If your PR contains multiple commits, please make sure the PR title itself matches the expected format. [See our PR template for more details](https://github.com/konveyor/lib-ui/blob/main/.github/pull_request_template.md).
+Follow the prompts based on the scope of your commit. **Note: This will generate a message for an individual commit, but since we use squash-and-merge, what matters is your PR title.** If your PR contains multiple commits, please make sure the PR title itself matches the expected format. [See our PR template for more details](https://github.com/migtools/lib-ui/blob/main/.github/pull_request_template.md).
 
 ## File Structure
 

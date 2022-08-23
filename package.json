@@ -1,12 +1,12 @@
 {
-  "name": "@konveyor/lib-ui",
+  "name": "@migtools/lib-ui",
   "version": "1.0.0",
   "main": "dist/index.js",
   "module": "dist/index.es.js",
   "files": [
     "dist"
   ],
-  "repository": "https://github.com/konveyor/lib-ui.git",
+  "repository": "https://github.com/migtools/lib-ui.git",
   "publishConfig": {
     "access": "public",
     "branches": [
