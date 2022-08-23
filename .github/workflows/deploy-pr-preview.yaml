@@ -9,7 +9,7 @@ jobs:
       - name: Set up token
         id: token
         # This is a base64-encoded access token for the "migtools-preview-bot" GitHub account, which has no secure access and is only used to post comments.
-        run: echo "::set-output name=GH_TOKEN::`echo 'Z2hwX3BwWG5lZk5oVzVuQVh0MWFjeGMzblBSZjFhRWt0eDRQYm9QWQ=' | base64 -d`"
+        run: echo "::set-output name=GH_TOKEN::`echo 'Z2hwX2ttclAzWUtjdUk4ZWJVRVVpZFJkdWlUOTJBS2pGODI2NUlyeQo=' | base64 -d`"
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Node.js
