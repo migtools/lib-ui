@@ -39,6 +39,13 @@ export const useSelectionState = <T>({
     [isEqual, selectedItems]
   );
 
+  // If isItemSelectable changes and a selected item is no longer selectable, deselect it
+  React.useEffect(() => {
+    if (!selectedItems.every(isItemSelectable)) {
+      setSelectedItems(selectedItems.filter(isItemSelectable));
+    }
+  }, [isItemSelectable, selectedItems, setSelectedItems]);
+
   const toggleItemSelected = (item: T, isSelecting = !isItemSelected(item)) => {
     if (isSelecting && isItemSelectable(item)) {
       setSelectedItems([...selectedItems, item]);
