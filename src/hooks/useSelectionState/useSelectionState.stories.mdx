@@ -1,6 +1,11 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 import { useSelectionState } from './useSelectionState';
-import { Checkboxes, ExpandableTable, ExternalState } from './useSelectionState.stories.tsx';
+import {
+  Checkboxes,
+  ExpandableTable,
+  ExternalState,
+  NonSelectableItems,
+} from './useSelectionState.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 <Meta title="Hooks/useSelectionState" component={useSelectionState} />
@@ -23,6 +28,7 @@ interface ISelectionStateArgs<T> {
   items: T[];
   initialSelected?: T[]; // Defaults to []
   isEqual?: (a: T, b: T) => boolean; // Defaults to (a, b) => a === b
+  isItemSelectable?: (item: T) => boolean; // Defaults to () => true
   externalState?: [T[], React.Dispatch<React.SetStateAction<T[]>>];
 }
 
@@ -30,6 +36,7 @@ interface ISelectionStateArgs<T> {
 interface ISelectionState<T> {
   selectedItems: T[];
   isItemSelected: (item: T) => boolean;
+  isItemSelectable: (item: T) => boolean;
   toggleItemSelected: (item: T, isSelecting?: boolean) => void;
   selectMultiple: (items: T[], isSelecting: boolean) => void;
   areAllSelected: boolean;
@@ -51,12 +58,6 @@ By default, this uses referential equality (`===`), which works great if you're 
 However, **if your item objects can change between renders, you need to specify an alternate implementation of the `isEqual` argument.**
 For example, if your items have `id` properties, you can use `isEqual: (a, b) => a.id === b.id`.
 
-## Lifting state to an external scope
-
-If necessary, you can pass the optional `externalState` prop in order to manage the actual selections array itself from outside the hook.
-This may be useful if you need to manage the state as part of a centralized form, but you still want the logic from these methods.
-The type of `externalState` is the same as the array returned from `React.useState` (a tuple of `value` and `setValue`.)
-
 ## Examples
 
 ### Checkboxes
@@ -71,10 +72,29 @@ The type of `externalState` is the same as the array returned from `React.useSta
   <Story story={ExpandableTable} />
 </Canvas>
 
-### Checkboxes with external state
+### Lifting state to an external scope
+
+If necessary, you can pass the optional `externalState` prop in order to manage the actual selections array itself from outside the hook.
+This may be useful if you need to manage the state as part of a centralized form, but you still want the logic from these methods.
+The type of `externalState` is the same as the array returned from `React.useState` (a tuple of `value` and `setValue`.)
 
 <Canvas>
   <Story story={ExternalState} />
+</Canvas>
+
+### Disabling selection of certain items
+
+You can use the optional `isItemSelectable: (item: T) => boolean` callback to control whether an item's selection should be allowed.
+A non-selectable item will not be selected when calling `toggleItemSelected`, `selectMultiple` or `selectAll`,
+and it will be ignored when determining the value of `areAllSelected` (if all _selectable_ items are selected, `areAllSelected` will be `true`).
+
+The same `isItemSelectable` callback you pass in will also be included in the return value object so that it can be easily reused
+for rendering purposes (for example, disabling checkboxes for items that are not selectable) without having to lift it out.
+
+If the selectability of an item changes while it is selected, it will automatically be deselected.
+
+<Canvas>
+  <Story story={NonSelectableItems} />
 </Canvas>
 
 <GithubLink path="src/hooks/useSelectionState/useSelectionState.ts" />

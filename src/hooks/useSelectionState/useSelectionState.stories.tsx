@@ -24,7 +24,7 @@ export const Checkboxes: React.FunctionComponent = () => {
   return (
     <div>
       <Checkbox
-        id="select-all"
+        id="example-1-select-all"
         label="Select all"
         isChecked={areAllSelected}
         onChange={(checked) => selectAll(checked)}
@@ -33,7 +33,7 @@ export const Checkboxes: React.FunctionComponent = () => {
       {fruits.map((fruit) => (
         <Checkbox
           key={fruit.name}
-          id={`${fruit.name}-checkbox`}
+          id={`example-1-${fruit.name}-checkbox`}
           label={fruit.name}
           isChecked={isItemSelected(fruit)}
           onChange={() => toggleItemSelected(fruit)}
@@ -126,7 +126,7 @@ export const ExternalState: React.FunctionComponent = () => {
   return (
     <div>
       <Checkbox
-        id="select-all"
+        id="example-3-select-all"
         label="Select all"
         isChecked={areAllSelected}
         onChange={(checked) => selectAll(checked)}
@@ -135,10 +135,75 @@ export const ExternalState: React.FunctionComponent = () => {
       {fruits.map((fruit) => (
         <Checkbox
           key={fruit.name}
-          id={`${fruit.name}-checkbox`}
+          id={`example-3-${fruit.name}-checkbox`}
           label={fruit.name}
           isChecked={isItemSelected(fruit)}
           onChange={() => toggleItemSelected(fruit)}
+        />
+      ))}
+      {selectedItems.length > 0 ? (
+        <>
+          <br />
+          <p>Do something with these! {selectedItems.map((fruit) => fruit.name).join(', ')}</p>
+        </>
+      ) : null}
+    </div>
+  );
+};
+
+export const NonSelectableItems: React.FunctionComponent = () => {
+  interface IFruit {
+    name: string;
+    isRound: boolean;
+  }
+
+  const fruits: IFruit[] = [
+    { name: 'Apple', isRound: true },
+    { name: 'Orange', isRound: true },
+    { name: 'Banana', isRound: false },
+  ];
+
+  const [nonRoundFruitsAllowed, setNonRoundFruitsAllowed] = React.useState(true);
+
+  const {
+    selectedItems,
+    isItemSelected,
+    isItemSelectable,
+    toggleItemSelected,
+    areAllSelected,
+    selectAll,
+  } = useSelectionState<IFruit>({
+    items: fruits,
+    isEqual: (a, b) => a.name === b.name,
+    isItemSelectable: (item) => item.isRound || nonRoundFruitsAllowed,
+  });
+
+  return (
+    <div>
+      <Checkbox
+        id="allow-non-round"
+        label="Allow non-round fruits"
+        isChecked={nonRoundFruitsAllowed}
+        onChange={setNonRoundFruitsAllowed}
+      />
+      <br />
+      <hr />
+      <br />
+      <Checkbox
+        id="example-4-select-all"
+        label="Select all"
+        isChecked={areAllSelected}
+        onChange={(checked) => selectAll(checked)}
+      />
+      <br />
+      {fruits.map((fruit) => (
+        <Checkbox
+          key={fruit.name}
+          id={`example-4-${fruit.name}-checkbox`}
+          label={fruit.name}
+          isChecked={isItemSelected(fruit)}
+          onChange={() => toggleItemSelected(fruit)}
+          isDisabled={!isItemSelectable(fruit)}
         />
       ))}
       {selectedItems.length > 0 ? (
