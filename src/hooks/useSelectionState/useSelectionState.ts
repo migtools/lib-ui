@@ -46,27 +46,36 @@ export const useSelectionState = <T>({
     }
   }, [isItemSelectable, selectedItems, setSelectedItems]);
 
-  const toggleItemSelected = (item: T, isSelecting = !isItemSelected(item)) => {
-    if (isSelecting && isItemSelectable(item)) {
-      setSelectedItems([...selectedItems, item]);
-    } else {
-      setSelectedItems(selectedItems.filter((i) => !isEqual(i, item)));
-    }
-  };
+  const toggleItemSelected = React.useCallback(
+    (item: T, isSelecting = !isItemSelected(item)) => {
+      if (isSelecting && isItemSelectable(item)) {
+        setSelectedItems([...selectedItems, item]);
+      } else {
+        setSelectedItems(selectedItems.filter((i) => !isEqual(i, item)));
+      }
+    },
+    [isEqual, isItemSelectable, isItemSelected, selectedItems, setSelectedItems]
+  );
 
-  const selectMultiple = (itemsSubset: T[], isSelecting: boolean) => {
-    const otherSelectedItems = selectedItems.filter(
-      (selected) => !itemsSubset.some((item) => isEqual(selected, item))
-    );
-    const itemsToSelect = itemsSubset.filter(isItemSelectable);
-    if (isSelecting) {
-      setSelectedItems([...otherSelectedItems, ...itemsToSelect]);
-    } else {
-      setSelectedItems(otherSelectedItems);
-    }
-  };
+  const selectMultiple = React.useCallback(
+    (itemsSubset: T[], isSelecting: boolean) => {
+      const otherSelectedItems = selectedItems.filter(
+        (selected) => !itemsSubset.some((item) => isEqual(selected, item))
+      );
+      const itemsToSelect = itemsSubset.filter(isItemSelectable);
+      if (isSelecting) {
+        setSelectedItems([...otherSelectedItems, ...itemsToSelect]);
+      } else {
+        setSelectedItems(otherSelectedItems);
+      }
+    },
+    [isEqual, isItemSelectable, selectedItems, setSelectedItems]
+  );
 
-  const selectAll = (isSelecting = true) => setSelectedItems(isSelecting ? selectableItems : []);
+  const selectAll = React.useCallback(
+    (isSelecting = true) => setSelectedItems(isSelecting ? selectableItems : []),
+    [selectableItems, setSelectedItems]
+  );
   const areAllSelected = selectedItems.length === selectableItems.length;
 
   // Preserve original order of items
