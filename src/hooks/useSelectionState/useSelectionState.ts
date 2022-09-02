@@ -29,7 +29,15 @@ export const useSelectionState = <T>({
   const internalState = React.useState<T[]>(initialSelected);
   const [selectedItems, setSelectedItems] = externalState || internalState;
 
-  const isItemSelected = (item: T) => selectedItems.some((i) => isEqual(item, i));
+  const selectableItems = React.useMemo(() => items.filter(isItemSelectable), [
+    items,
+    isItemSelectable,
+  ]);
+
+  const isItemSelected = React.useCallback(
+    (item: T) => selectedItems.some((i) => isEqual(item, i)),
+    [isEqual, selectedItems]
+  );
 
   const toggleItemSelected = (item: T, isSelecting = !isItemSelected(item)) => {
     if (isSelecting && isItemSelectable(item)) {
@@ -51,17 +59,18 @@ export const useSelectionState = <T>({
     }
   };
 
-  const selectableItems = items.filter(isItemSelectable);
   const selectAll = (isSelecting = true) => setSelectedItems(isSelecting ? selectableItems : []);
   const areAllSelected = selectedItems.length === selectableItems.length;
 
   // Preserve original order of items
-  let selectedItemsInOrder: T[] = [];
-  if (areAllSelected) {
-    selectedItemsInOrder = selectableItems;
-  } else if (selectedItems.length > 0) {
-    selectedItemsInOrder = selectableItems.filter(isItemSelected);
-  }
+  const selectedItemsInOrder = React.useMemo(() => {
+    if (areAllSelected) {
+      return selectableItems;
+    } else if (selectedItems.length > 0) {
+      return selectableItems.filter(isItemSelected);
+    }
+    return [];
+  }, [areAllSelected, isItemSelected, selectableItems, selectedItems.length]);
 
   return {
     selectedItems: selectedItemsInOrder,
