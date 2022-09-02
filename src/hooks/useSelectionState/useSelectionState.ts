@@ -4,12 +4,14 @@ export interface ISelectionStateArgs<T> {
   items: T[];
   initialSelected?: T[];
   isEqual?: (a: T, b: T) => boolean;
+  isItemSelectable?: (item: T) => boolean;
   externalState?: [T[], React.Dispatch<React.SetStateAction<T[]>>];
 }
 
 export interface ISelectionState<T> {
   selectedItems: T[];
   isItemSelected: (item: T) => boolean;
+  isItemSelectable: (item: T) => boolean;
   toggleItemSelected: (item: T, isSelecting?: boolean) => void;
   selectMultiple: (items: T[], isSelecting: boolean) => void;
   areAllSelected: boolean;
@@ -21,6 +23,7 @@ export const useSelectionState = <T>({
   items,
   initialSelected = [],
   isEqual = (a, b) => a === b,
+  isItemSelectable = () => true,
   externalState,
 }: ISelectionStateArgs<T>): ISelectionState<T> => {
   const internalState = React.useState<T[]>(initialSelected);
@@ -29,38 +32,41 @@ export const useSelectionState = <T>({
   const isItemSelected = (item: T) => selectedItems.some((i) => isEqual(item, i));
 
   const toggleItemSelected = (item: T, isSelecting = !isItemSelected(item)) => {
-    if (isSelecting) {
+    if (isSelecting && isItemSelectable(item)) {
       setSelectedItems([...selectedItems, item]);
     } else {
       setSelectedItems(selectedItems.filter((i) => !isEqual(i, item)));
     }
   };
 
-  const selectMultiple = (items: T[], isSelecting: boolean) => {
+  const selectMultiple = (itemsSubset: T[], isSelecting: boolean) => {
     const otherSelectedItems = selectedItems.filter(
-      (selected) => !items.some((item) => isEqual(selected, item))
+      (selected) => !itemsSubset.some((item) => isEqual(selected, item))
     );
+    const itemsToSelect = itemsSubset.filter(isItemSelectable);
     if (isSelecting) {
-      setSelectedItems([...otherSelectedItems, ...items]);
+      setSelectedItems([...otherSelectedItems, ...itemsToSelect]);
     } else {
       setSelectedItems(otherSelectedItems);
     }
   };
 
-  const selectAll = (isSelecting = true) => setSelectedItems(isSelecting ? items : []);
-  const areAllSelected = selectedItems.length === items.length;
+  const selectableItems = items.filter(isItemSelectable);
+  const selectAll = (isSelecting = true) => setSelectedItems(isSelecting ? selectableItems : []);
+  const areAllSelected = selectedItems.length === selectableItems.length;
 
   // Preserve original order of items
   let selectedItemsInOrder: T[] = [];
   if (areAllSelected) {
-    selectedItemsInOrder = items;
+    selectedItemsInOrder = selectableItems;
   } else if (selectedItems.length > 0) {
-    selectedItemsInOrder = items.filter(isItemSelected);
+    selectedItemsInOrder = selectableItems.filter(isItemSelected);
   }
 
   return {
     selectedItems: selectedItemsInOrder,
     isItemSelected,
+    isItemSelectable,
     toggleItemSelected,
     selectMultiple,
     areAllSelected,
