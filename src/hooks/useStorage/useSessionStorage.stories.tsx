@@ -93,6 +93,7 @@ export const ComplexValueExample: React.FunctionComponent = () => {
               setItems((value) => [...value, { name, description }]);
               addForm.clear();
             }}
+            isDisabled={!addForm.isValid}
           >
             Add
           </Button>
