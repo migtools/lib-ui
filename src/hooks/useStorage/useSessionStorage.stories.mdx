@@ -11,7 +11,7 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 # useSessionStorage
 
-A custom hook resembling `React.useState` which persists and synchronizes any JSON-serializable value using the
+A custom hook resembling `React.useState` which persists any JSON-serializable value using the
 browser's [sessionStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
 
 See also: [useLocalStorage](/docs/hooks-uselocalstorage--persistent-counter-example)
@@ -36,7 +36,7 @@ const [value, setValue] = useSessionStorage<T>(key: string, defaultValue: T);
 On first render, `value` will either be synchronously loaded from storage or will fall back to `defaultValue` if there
 is no value in storage. If necessary, the data can be fully removed from `sessionStorage` by calling
 `setValue(undefined)`, which will re-render with `value` set back to `defaultValue`. Note that this is distinct from
-calling `setValue(null)`, which will persist and synchronize the `null` value.
+calling `setValue(null)`, which will persist the `null` value.
 
 If `setValue` is called with a value which cannot be serialized to JSON
 ([see Exceptions here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#exceptions)),
