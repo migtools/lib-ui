@@ -14,7 +14,7 @@ import {
   FormGroup,
 } from '@patternfly/react-core';
 import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from './useStorage';
 import { useFormState, useFormField } from '../useFormState';
 import { ValidatedTextInput } from '../../components/ValidatedTextInput';
 import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
@@ -234,7 +234,9 @@ export const ComplexValueExample: React.FunctionComponent = () => {
             onClick={() => {
               const { name, description } = addForm.values;
               setItems((value) => [...value, { name, description }]);
+              addForm.clear();
             }}
+            isDisabled={!addForm.isValid}
           >
             Add
           </Button>

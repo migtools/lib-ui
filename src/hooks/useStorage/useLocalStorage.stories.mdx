@@ -1,5 +1,5 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
-import { useLocalStorage } from './useLocalStorage';
+import { useLocalStorage } from './useStorage';
 import {
   ClearAllExamplesButton,
   PersistentCounterExample,
@@ -18,6 +18,8 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 A custom hook resembling `React.useState` which persists and synchronizes any JSON-serializable value using the
 browser's [localStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
+
+See also: [useSessionStorage](/docs/hooks-usesessionstorage--persistent-counter-example)
 
 The value will persist across page reloads, and updates to the value will cause a re-render anywhere `useLocalStorage`
 is called with the same unique `key` string. The value identified by a `key` will stay in sync between multiple calls
@@ -114,4 +116,4 @@ desirable; if possible it is simpler to use multiple instances of `useLocalStora
 
 <ClearAllExamplesButton />
 
-<GithubLink path="src/hooks/useLocalStorage/useLocalStorage.ts" />
+<GithubLink path="src/hooks/useStorage/useStorage.ts" />
