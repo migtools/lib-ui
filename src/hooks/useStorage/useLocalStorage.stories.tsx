@@ -234,6 +234,7 @@ export const ComplexValueExample: React.FunctionComponent = () => {
             onClick={() => {
               const { name, description } = addForm.values;
               setItems((value) => [...value, { name, description }]);
+              addForm.clear();
             }}
           >
             Add
