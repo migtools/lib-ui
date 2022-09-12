@@ -1,0 +1,77 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { useSessionStorage } from './useStorage';
+import {
+  PersistentCounterExample,
+  PersistentTextFieldExample,
+  ComplexValueExample,
+} from './useSessionStorage.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Hooks/useSessionStorage" component={useSessionStorage} />
+
+# useSessionStorage
+
+A custom hook resembling `React.useState` which persists and synchronizes any JSON-serializable value using the
+browser's [sessionStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
+
+The value identified by a unique `key` will persist across page reloads and component re-renders.
+Unlike `useLocalStorage`, however, the value will be cleared if the tab or window is closed, and it will not be shared
+between multiple tabs.
+See the [sessionStorage API docs](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage) for more
+details on when data stored in sessionStorage expires.
+
+Just like `useState`, `useSessionStorage` returns the current value and setter function in an array tuple so they can be
+given arbitrary names using [destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment),
+and it supports TypeScript [generics](https://www.typescriptlang.org/docs/handbook/generics.html) and can optionally
+infer its return types based on the `defaultValue`.
+
+```ts
+const [value, setValue] = useSessionStorage<T>(key: string, defaultValue: T);
+```
+
+## Notes
+
+On first render, `value` will either be synchronously loaded from storage or will fall back to `defaultValue` if there
+is no value in storage. If necessary, the data can be fully removed from `sessionStorage` by calling
+`setValue(undefined)`, which will re-render with `value` set back to `defaultValue`. Note that this is distinct from
+calling `setValue(null)`, which will persist and synchronize the `null` value.
+
+If `setValue` is called with a value which cannot be serialized to JSON
+([see Exceptions here](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#exceptions)),
+or if an error is thrown by the `sessionStorage` API, the error is caught and logged to the console and the `value` falls
+back to the `defaultValue`.
+
+`useSessionStorage` is safe to use in a server-side rendering or unit testing environment where `window.sessionStorage` is
+not available. If `window` is undefined, the hook will simply act like a normal `useState` (only update the value cached
+in React state).
+
+## Examples
+
+For each of these examples, try changing the value and reloading the page to see the persistence in action, and try
+opening this page in multiple windows side-by-side to see that the values are unique to each browser tab.
+
+### Persistent counter (`number` value)
+
+The classic `useState` example, but persistent. The `count` variable's type here is inferred as a primitive `number`,
+not a `string`.
+
+<Canvas>
+  <Story story={PersistentCounterExample} />
+</Canvas>
+
+### Persistent text field (`string` value)
+
+<Canvas>
+  <Story story={PersistentTextFieldExample} />
+</Canvas>
+
+### Persistent array and object values
+
+Any JSON-serializable value can be used with `useSessionStorage` such as an array or an object. Note that this may not be
+desirable; if possible it is simpler to use multiple instances of `useSessionStorage` with separate keys and individual primitive values.
+
+<Canvas>
+  <Story story={ComplexValueExample} />
+</Canvas>
+
+<GithubLink path="src/hooks/useStorage/useStorage.ts" />
