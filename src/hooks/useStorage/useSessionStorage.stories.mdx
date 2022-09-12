@@ -14,6 +14,8 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 A custom hook resembling `React.useState` which persists and synchronizes any JSON-serializable value using the
 browser's [sessionStorage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage).
 
+See also: [useLocalStorage](/docs/hooks-uselocalstorage--persistent-counter-example)
+
 The value identified by a unique `key` will persist across page reloads and component re-renders.
 Unlike `useLocalStorage`, however, the value will be cleared if the tab or window is closed, and it will not be shared
 between multiple tabs.
