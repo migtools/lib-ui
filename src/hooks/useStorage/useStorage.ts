@@ -1,9 +1,11 @@
 import * as React from 'react';
 
-const getValueFromStorage = <T>(key: string, defaultValue: T): T => {
+type StorageType = 'localStorage' | 'sessionStorage';
+
+const getValueFromStorage = <T>(storageType: StorageType, key: string, defaultValue: T): T => {
   if (typeof window === 'undefined') return defaultValue;
   try {
-    const itemJSON = window.localStorage.getItem(key);
+    const itemJSON = window[storageType].getItem(key);
     return itemJSON ? (JSON.parse(itemJSON) as T) : defaultValue;
   } catch (error) {
     console.error(error);
@@ -11,47 +13,56 @@ const getValueFromStorage = <T>(key: string, defaultValue: T): T => {
   }
 };
 
-const setValueInStorage = <T>(key: string, newValue: T | undefined) => {
+const setValueInStorage = <T>(storageType: StorageType, key: string, newValue: T | undefined) => {
   if (typeof window === 'undefined') return;
   try {
     if (newValue !== undefined) {
       const newValueJSON = JSON.stringify(newValue);
-      window.localStorage.setItem(key, newValueJSON);
-      // setItem only causes the StorageEvent to be dispatched in other windows. We dispatch it here
-      // manually so that all instances of useLocalStorage on this window also react to this change.
-      window.dispatchEvent(new StorageEvent('storage', { key, newValue: newValueJSON }));
+      window[storageType].setItem(key, newValueJSON);
+      if (storageType === 'localStorage') {
+        // setItem only causes the StorageEvent to be dispatched in other windows. We dispatch it here
+        // manually so that all instances of useLocalStorage on this window also react to this change.
+        window.dispatchEvent(new StorageEvent('storage', { key, newValue: newValueJSON }));
+      }
     } else {
-      window.localStorage.removeItem(key);
-      window.dispatchEvent(new StorageEvent('storage', { key, newValue: null }));
+      window[storageType].removeItem(key);
+      if (storageType === 'localStorage') {
+        window.dispatchEvent(new StorageEvent('storage', { key, newValue: null }));
+      }
     }
   } catch (error) {
     console.error(error);
   }
 };
 
-export const useLocalStorage = <T>(
+const useStorage = <T>(
+  storageType: StorageType,
   key: string,
   defaultValue: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {
-  const [cachedValue, setCachedValue] = React.useState<T>(getValueFromStorage(key, defaultValue));
+  const [cachedValue, setCachedValue] = React.useState<T>(
+    getValueFromStorage(storageType, key, defaultValue)
+  );
+
+  const usingStorageEvents = storageType === 'localStorage' && typeof window !== 'undefined';
 
   const setValue: React.Dispatch<React.SetStateAction<T>> = React.useCallback(
     (newValueOrFn: T | ((prevState: T) => T)) => {
       const newValue =
         newValueOrFn instanceof Function
-          ? newValueOrFn(getValueFromStorage(key, defaultValue))
+          ? newValueOrFn(getValueFromStorage(storageType, key, defaultValue))
           : newValueOrFn;
-      setValueInStorage(key, newValue);
-      if (typeof window === 'undefined') {
-        // If we're in a server or test environment, the cache won't update automatically since there's no StorageEvent.
+      setValueInStorage(storageType, key, newValue);
+      if (!usingStorageEvents) {
+        // The cache won't update automatically if there is no StorageEvent dispatched.
         setCachedValue(newValue);
       }
     },
-    [key, defaultValue]
+    [storageType, key, defaultValue, usingStorageEvents]
   );
 
   React.useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (!usingStorageEvents) return;
     const onStorageUpdated = (event: StorageEvent) => {
       if (event.key === key) {
         setCachedValue(event.newValue ? JSON.parse(event.newValue) : defaultValue);
@@ -61,7 +72,17 @@ export const useLocalStorage = <T>(
     return () => {
       window.removeEventListener('storage', onStorageUpdated);
     };
-  }, [key, defaultValue]);
+  }, [key, defaultValue, usingStorageEvents]);
 
   return [cachedValue, setValue];
 };
+
+export const useLocalStorage = <T>(
+  key: string,
+  defaultValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] => useStorage('localStorage', key, defaultValue);
+
+export const useSessionStorage = <T>(
+  key: string,
+  defaultValue: T
+): [T, React.Dispatch<React.SetStateAction<T>>] => useStorage('sessionStorage', key, defaultValue);
