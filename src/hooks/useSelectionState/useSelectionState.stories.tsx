@@ -10,16 +10,11 @@ export const Checkboxes: React.FunctionComponent = () => {
 
   const fruits: IFruit[] = [{ name: 'Apple' }, { name: 'Orange' }, { name: 'Banana' }];
 
-  const {
-    selectedItems,
-    isItemSelected,
-    toggleItemSelected,
-    areAllSelected,
-    selectAll,
-  } = useSelectionState<IFruit>({
-    items: fruits,
-    isEqual: (a, b) => a.name === b.name,
-  });
+  const { selectedItems, isItemSelected, toggleItemSelected, areAllSelected, selectAll } =
+    useSelectionState<IFruit>({
+      items: fruits,
+      isEqual: (a, b) => a.name === b.name,
+    });
 
   return (
     <div>
@@ -62,13 +57,11 @@ export const ExpandableTable: React.FunctionComponent = () => {
     { name: 'Banana', price: '$0.45', description: 'On sale this week!' },
   ];
 
-  const {
-    isItemSelected: isItemExpanded,
-    toggleItemSelected: toggleItemExpanded,
-  } = useSelectionState<IFruit>({
-    items: fruits,
-    isEqual: (a, b) => a.name === b.name,
-  });
+  const { isItemSelected: isItemExpanded, toggleItemSelected: toggleItemExpanded } =
+    useSelectionState<IFruit>({
+      items: fruits,
+      isEqual: (a, b) => a.name === b.name,
+    });
 
   const columns: ICell[] = [{ title: 'Name' }, { title: 'Price' }];
   const rows: IRow[] = [];
@@ -111,17 +104,12 @@ export const ExternalState: React.FunctionComponent = () => {
 
   const fruits: IFruit[] = [{ name: 'Apple' }, { name: 'Orange' }, { name: 'Banana' }];
 
-  const {
-    selectedItems,
-    isItemSelected,
-    toggleItemSelected,
-    areAllSelected,
-    selectAll,
-  } = useSelectionState<IFruit>({
-    items: fruits,
-    isEqual: (a, b) => a.name === b.name,
-    externalState: [selectedFruits, setSelectedFruits],
-  });
+  const { selectedItems, isItemSelected, toggleItemSelected, areAllSelected, selectAll } =
+    useSelectionState<IFruit>({
+      items: fruits,
+      isEqual: (a, b) => a.name === b.name,
+      externalState: [selectedFruits, setSelectedFruits],
+    });
 
   return (
     <div>
