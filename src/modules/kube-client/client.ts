@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 import { KubeResource, OAuthClient, TokenExpiryHandler } from './resources/common';
 
-import type { AxiosStatic, AxiosInstance, ResponseType } from 'axios';
+import type { AxiosStatic, AxiosInstance, ResponseType, AxiosError } from 'axios';
 
 let axios: AxiosStatic;
 try {
@@ -58,7 +58,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.requester.get(resource.listPath(), { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };
@@ -67,7 +67,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.requester.get(resource.namedPath(name), { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };
@@ -81,7 +81,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.requester.put(resource.namedPath(name), updatedObject, { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };
@@ -95,7 +95,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.patchRequester.patch(resource.namedPath(name), patch, { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };
@@ -108,7 +108,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.requester.post(resource.listPath(), newObject, { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };
@@ -117,7 +117,7 @@ export class ClusterClient extends OAuthClient {
     try {
       return await this.requester.delete(resource.namedPath(name), { params });
     } catch (err) {
-      super.checkExpiry(err);
+      super.checkExpiry(err as AxiosError);
       throw err;
     }
   };

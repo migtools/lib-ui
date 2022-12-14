@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 export type KubeResource = NamespacedResource | ClusterResource;
 
 export interface IKubeResource {
@@ -74,7 +76,7 @@ export abstract class OAuthClient {
     this._tokenExpiryTime = tokenExpiryTime;
   }
 
-  public checkExpiry(err: { response?: { status: number } }): void {
+  public checkExpiry(err: AxiosError): void {
     if (err.response && err.response.status === 401) {
       this._tokenExpiryHandler && this._tokenExpiryHandler(this._oldToken());
     }
