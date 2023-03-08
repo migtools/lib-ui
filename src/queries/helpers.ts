@@ -1,4 +1,4 @@
-import { QueryStatus } from 'react-query';
+import { QueryStatus } from '@tanstack/react-query';
 import { UnknownResult } from '../common/types';
 
 export const getAggregateQueryStatus = (queryResults: UnknownResult[]): QueryStatus => {
