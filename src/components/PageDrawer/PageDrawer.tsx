@@ -30,10 +30,13 @@ type PageDrawerState = ReturnType<typeof usePageDrawerState>;
 
 const PageDrawerContext = React.createContext<PageDrawerState>({
   isDrawerMounted: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsDrawerMounted: () => {},
   isDrawerExpanded: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsDrawerExpanded: () => {},
   drawerChildren: null,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setDrawerChildren: () => {},
   drawerFocusRef: null,
 });
@@ -81,15 +84,15 @@ export const PageContentWithDrawerProvider: React.FC<IPageContentWithDrawerProvi
 
 let numPageDrawerContentInstances = 0;
 
-// PageDrawerContent can be rendered anywhere, but must have only one instance rendered at a time.
-export interface IPageDrawerContentProps {
+// PageDrawer can be rendered anywhere, but must have only one instance rendered at a time.
+export interface IPageDrawerProps {
   isExpanded: boolean;
   onCloseClick: () => void; // Should be used to update local state such that `isExpanded` becomes false.
   children: React.ReactNode; // The content to show in the drawer when `isExpanded` is true.
   focusKey?: string | number; // A unique key representing the object being described in the drawer. When this changes, the drawer will regain focus.
 }
 
-export const PageDrawerContent: React.FC<IPageDrawerContentProps> = ({
+export const PageDrawer: React.FC<IPageDrawerProps> = ({
   isExpanded: localIsExpandedProp,
   onCloseClick,
   children,
@@ -126,17 +129,20 @@ export const PageDrawerContent: React.FC<IPageDrawerContentProps> = ({
     return () => {
       setIsDrawerExpanded(false);
     };
-  }, [localIsExpandedProp]);
+  }, [localIsExpandedProp, setIsDrawerExpanded]);
 
   // If the drawer is already expanded describing app A, then the user clicks app B, we want to send focus back to the drawer.
   React.useEffect(() => {
     drawerFocusRef?.current?.focus();
-  }, [focusKey]);
+  }, [drawerFocusRef, focusKey]);
 
   React.useEffect(() => {
+    console.log(
+      'DRAWER CHILDREN UPDATING -- do we need to memoize onCloseClick or break useEffect deps array rules?'
+    );
     setDrawerChildren(
       <DrawerHead>
-        <span tabIndex={0} ref={drawerFocusRef}>
+        <span tabIndex={localIsExpandedProp ? 0 : -1} ref={drawerFocusRef}>
           {children}
         </span>
         <DrawerActions>
@@ -148,6 +154,6 @@ export const PageDrawerContent: React.FC<IPageDrawerContentProps> = ({
         </DrawerActions>
       </DrawerHead>
     );
-  }, [children]);
+  }, [children, drawerFocusRef, localIsExpandedProp, onCloseClick, setDrawerChildren]);
   return null;
 };
