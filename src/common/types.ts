@@ -1,9 +1,6 @@
-import { UseMutationResult, UseQueryResult } from 'react-query';
+import { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 
-export type UnknownResult = Pick<
-  UseQueryResult<unknown>,
-  'isError' | 'isLoading' | 'isIdle' | 'error'
->;
+export type UnknownResult = Pick<UseQueryResult<unknown>, 'isError' | 'isLoading' | 'error'>;
 
 export type UnknownMutationResult = Pick<
   UseMutationResult<unknown>,
