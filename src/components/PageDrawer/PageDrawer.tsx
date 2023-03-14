@@ -110,7 +110,7 @@ export const PageDrawer: React.FC<IPageDrawerProps> = ({
       numPageDrawerContentInstances--;
       setIsDrawerMounted(false);
     };
-  }, []);
+  }, [setIsDrawerMounted]);
   if (numPageDrawerContentInstances > 1) {
     console.warn(
       `${numPageDrawerContentInstances} instances of PageDrawerContent are currently rendered! Only one instance of this component should be rendered at a time.`
