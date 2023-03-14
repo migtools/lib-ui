@@ -98,12 +98,8 @@ export const PageDrawer: React.FC<IPageDrawerProps> = ({
   children,
   focusKey,
 }) => {
-  const {
-    setIsDrawerMounted,
-    setIsDrawerExpanded,
-    drawerFocusRef,
-    setDrawerChildren,
-  } = React.useContext(PageDrawerContext);
+  const { setIsDrawerMounted, setIsDrawerExpanded, drawerFocusRef, setDrawerChildren } =
+    React.useContext(PageDrawerContext);
 
   // Prevent Drawer boilerplate from being rendered in PageContentWithDrawerProvider if no PageDrawerContent exists.
   // Also, warn if we are trying to render more than one PageDrawerContent (they'll fight over the same state).
