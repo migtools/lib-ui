@@ -1,6 +1,10 @@
 import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
 import { LabelCustomColor } from './LabelCustomColor';
-import { LabelCustomColorPicker, LabelCustomColorExamples } from './LabelCustomColor.stories.tsx';
+import {
+  LabelCustomColorPicker,
+  LabelCustomColorExamples,
+  LabelCustomColorPerfTest,
+} from './LabelCustomColor.stories.tsx';
 import GithubLink from '../../../.storybook/helpers/GithubLink';
 
 <Meta title="Components/LabelCustomColor" component={LabelCustomColor} />
@@ -14,9 +18,13 @@ This component attempts to solve the color contrast issue by applying the given 
 [tinycolor2](https://www.npmjs.com/package/tinycolor2) library to determine a lightened background color and darkened
 text color (if necessary).
 
+All props of PatternFly's Label component are supported except the `variant` prop (only the default "filled" variant is supported).
+
 ## Examples
 
 ### Arbitrary Color Picker
+
+Choose any color here to see how the readability adjustments apply to it.
 
 <Canvas>
   <Story story={LabelCustomColorPicker} />
@@ -26,6 +34,15 @@ text color (if necessary).
 
 <Canvas>
   <Story story={LabelCustomColorExamples} />
+</Canvas>
+
+### Performance Test
+
+The component maintains a global cache of the readability adjustments it makes for each color.
+If labels of the same color are rendered multiple times on a page, each color only needs to be processed once.
+
+<Canvas>
+  <Story story={LabelCustomColorPerfTest} />
 </Canvas>
 
 ## Props

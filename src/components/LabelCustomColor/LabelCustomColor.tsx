@@ -7,10 +7,14 @@ export interface ILabelCustomColorProps extends Omit<LabelProps, 'variant' | 'co
   color: string;
 }
 
-// TODO how do we handle dark mode??
+const globalColorCache: Record<
+  string,
+  { borderColor: string; backgroundColor: string; textColor: string }
+> = {};
 
 export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...props }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
+    if (globalColorCache[color]) return globalColorCache[color];
     // Lighten the background 25%, and lighten it further if necessary until it can support readable text
     const bgColorObj = tinycolor(color).lighten(25);
     const blackTextReadability = () => tinycolor.readability(bgColorObj, '#000000');
@@ -27,19 +31,20 @@ export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...p
         textColorObj.lighten(5);
       }
     }
-    return {
+    globalColorCache[color] = {
       borderColor: color,
       backgroundColor: bgColorObj.toString(),
       textColor: textColorObj.toString(),
     };
+    return globalColorCache[color];
   }, [color]);
   return (
     <Label
       style={
         {
           '--pf-c-label__content--before--BorderColor': borderColor,
-          '--pf-c-label__content--link--hover--before--BorderColor': borderColor, // Should it be any different?
-          '--pf-c-label__content--link--focus--before--BorderColor': borderColor, // Should it be any different?
+          '--pf-c-label__content--link--hover--before--BorderColor': borderColor,
+          '--pf-c-label__content--link--focus--before--BorderColor': borderColor,
           '--pf-c-label--BackgroundColor': backgroundColor,
           '--pf-c-label__icon--Color': textColor,
           '--pf-c-label__content--Color': textColor,
