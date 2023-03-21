@@ -10,8 +10,9 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 A wrapper for PatternFly's <a href="https://www.patternfly.org/v4/components/label">Label</a> component that supports
 arbitrary custom CSS colors (e.g. hexadecimal).
 
-This component attempts to solve the color contrast issue by applying the given color as a border color and using
-CSS magic to determine a lightened background color.
+This component attempts to solve the color contrast issue by applying the given color as a border color and using the
+[tinycolor2](https://www.npmjs.com/package/tinycolor2) library to determine a lightened background color and darkened
+text color (if necessary).
 
 ## Examples
 
