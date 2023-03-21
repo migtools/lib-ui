@@ -13,21 +13,15 @@ export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...p
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
     // Lighten the background 25%, and lighten it further if necessary until it can support readable text
     const bgColorObj = tinycolor(color).lighten(25);
-    let blackTextReadability;
-    let whiteTextReadability;
-    const calculateBlackWhiteReadability = () => {
-      blackTextReadability = tinycolor.readability(bgColorObj, '#000000');
-      whiteTextReadability = tinycolor.readability(bgColorObj, '#FFFFFF');
-    };
-    calculateBlackWhiteReadability();
-    while (blackTextReadability < 9 && whiteTextReadability < 9) {
+    const blackTextReadability = () => tinycolor.readability(bgColorObj, '#000000');
+    const whiteTextReadability = () => tinycolor.readability(bgColorObj, '#FFFFFF');
+    while (blackTextReadability() < 9 && whiteTextReadability() < 9) {
       bgColorObj.lighten(5);
-      calculateBlackWhiteReadability();
     }
     // Darken or lighten the text color until it is sufficiently readable
     const textColorObj = tinycolor(color);
     while (tinycolor.readability(bgColorObj, textColorObj) < 7) {
-      if (blackTextReadability > whiteTextReadability) {
+      if (blackTextReadability() > whiteTextReadability()) {
         textColorObj.darken(5);
       } else {
         textColorObj.lighten(5);
