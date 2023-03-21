@@ -11,12 +11,18 @@ export interface ILabelCustomColorProps extends Omit<LabelProps, 'variant' | 'co
 
 export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
-    const colorObj = tinycolor(color);
-    const backgroundColorObj = colorObj.lighten(75);
+    const backgroundColorObj = tinycolor(color).lighten(50);
+    while (backgroundColorObj.isDark()) {
+      backgroundColorObj.lighten(10);
+    }
+    const textColorObj = tinycolor(color);
+    while (textColorObj.isLight()) {
+      textColorObj.darken(10);
+    }
     return {
       borderColor: color,
       backgroundColor: backgroundColorObj.toString(),
-      textColor: colorObj.isLight() ? colorObj.darken(75).toString() : color,
+      textColor: textColorObj.toString(),
     };
   }, [color]);
   return (
@@ -29,7 +35,6 @@ export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color }) =>
           '--pf-c-label--BackgroundColor': backgroundColor,
           '--pf-c-label__icon--Color': textColor,
           '--pf-c-label__content--Color': textColor,
-          background: `linear-gradient(to top, rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0.75)) ${color}`,
         } as React.CSSProperties
       }
     >
