@@ -17,7 +17,7 @@ export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...p
     let whiteTextReadability;
     const calculateBlackWhiteReadability = () => {
       blackTextReadability = tinycolor.readability(bgColorObj, '#000000');
-      whiteTextReadability = tinycolor.readability(bgColorObj, '#ffffff');
+      whiteTextReadability = tinycolor.readability(bgColorObj, '#FFFFFF');
     };
     calculateBlackWhiteReadability();
     while (blackTextReadability < 9 && whiteTextReadability < 9) {

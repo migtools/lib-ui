@@ -4,7 +4,7 @@ import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { LabelCustomColor } from './LabelCustomColor';
 
 export const LabelCustomColorPicker: React.FC = () => {
-  const [color, setColor] = React.useState('#0066CC');
+  const [color, setColor] = React.useState('#4A90E2');
   return (
     <>
       <LabelCustomColor color={color}>Label Text Here</LabelCustomColor>
