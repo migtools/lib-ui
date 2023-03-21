@@ -11,17 +11,31 @@ export interface ILabelCustomColorProps extends Omit<LabelProps, 'variant' | 'co
 
 export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...props }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
-    const backgroundColorObj = tinycolor(color).lighten(30);
-    while (backgroundColorObj.getBrightness() < 230) {
-      backgroundColorObj.lighten(5);
+    // Lighten the background 25%, and lighten it further if necessary until it can support readable text
+    const bgColorObj = tinycolor(color).lighten(25);
+    let blackTextReadability;
+    let whiteTextReadability;
+    const calculateBlackWhiteReadability = () => {
+      blackTextReadability = tinycolor.readability(bgColorObj, '#000000');
+      whiteTextReadability = tinycolor.readability(bgColorObj, '#ffffff');
+    };
+    calculateBlackWhiteReadability();
+    while (blackTextReadability < 9 && whiteTextReadability < 9) {
+      bgColorObj.lighten(5);
+      calculateBlackWhiteReadability();
     }
+    // Darken or lighten the text color until it is sufficiently readable
     const textColorObj = tinycolor(color);
-    while (textColorObj.getBrightness() > 80) {
-      textColorObj.darken(5);
+    while (tinycolor.readability(bgColorObj, textColorObj) < 7) {
+      if (blackTextReadability > whiteTextReadability) {
+        textColorObj.darken(5);
+      } else {
+        textColorObj.lighten(5);
+      }
     }
     return {
       borderColor: color,
-      backgroundColor: backgroundColorObj.toString(),
+      backgroundColor: bgColorObj.toString(),
       textColor: textColorObj.toString(),
     };
   }, [color]);
