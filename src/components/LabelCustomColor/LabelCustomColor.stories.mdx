@@ -12,11 +12,15 @@ import GithubLink from '../../../.storybook/helpers/GithubLink';
 # LabelCustomColor
 
 A wrapper for PatternFly's <a href="https://www.patternfly.org/v4/components/label">Label</a> component that supports
-arbitrary custom CSS colors (e.g. hexadecimal).
+arbitrary custom CSS colors (e.g. hexadecimal) and ensures text will always be readable.
 
-This component attempts to solve the color contrast issue by applying the given color as a border color and using the
+Applying an arbitrary color to a label presents the possibility of unreadable text due to insufficient color contrast.
+This component solves the issue by applying the given color as a border color and using the
 [tinycolor2](https://www.npmjs.com/package/tinycolor2) library to determine a lightened background color and darkened
-text color (if necessary).
+text color (if necessary) in order to reach a color contrast ratio of at least 7:1. This ratio meets the "level AAA"
+requirement of the [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html).
+
+**Note: This adjustment means that multiple labels with very similar colors (especially dark colors) may be adjusted to look almost identical.**
 
 All props of PatternFly's Label component are supported except the `variant` prop (only the default "filled" variant is supported).
 
