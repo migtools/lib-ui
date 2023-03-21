@@ -9,7 +9,7 @@ export interface ILabelCustomColorProps extends Omit<LabelProps, 'variant' | 'co
 
 // TODO how do we handle dark mode??
 
-export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color }) => {
+export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...props }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
     const backgroundColorObj = tinycolor(color).lighten(30);
     while (backgroundColorObj.getBrightness() < 230) {
@@ -37,9 +37,8 @@ export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color }) =>
           '--pf-c-label__content--Color': textColor,
         } as React.CSSProperties
       }
-    >
-      Label Text Here
-    </Label>
+      {...props}
+    />
   );
 };
 
