@@ -12,11 +12,11 @@ export interface ILabelCustomColorProps extends Omit<LabelProps, 'variant' | 'co
 export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
     const backgroundColorObj = tinycolor(color).lighten(50);
-    while (backgroundColorObj.isDark()) {
+    while (backgroundColorObj.getBrightness() < 180) {
       backgroundColorObj.lighten(10);
     }
     const textColorObj = tinycolor(color);
-    while (textColorObj.isLight()) {
+    while (textColorObj.getBrightness() > 120) {
       textColorObj.darken(10);
     }
     return {
