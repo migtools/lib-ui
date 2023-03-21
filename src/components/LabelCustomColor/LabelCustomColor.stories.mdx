@@ -1,0 +1,26 @@
+import { Meta, Story, Canvas, ArgsTable } from '@storybook/addon-docs/blocks';
+import { LabelCustomColor } from './LabelCustomColor';
+import { LabelCustomColorExample } from './LabelCustomColor.stories.tsx';
+import GithubLink from '../../../.storybook/helpers/GithubLink';
+
+<Meta title="Components/LabelCustomColor" component={LabelCustomColor} />
+
+# LabelCustomColor
+
+A wrapper for PatternFly's <a href="https://www.patternfly.org/v4/components/label">Label</a> component that supports
+arbitrary custom CSS colors (e.g. hexadecimal).
+
+This component attempts to solve the color contrast issue by applying the given color as a border color and using
+CSS magic to determine a lightened background color.
+
+## Example
+
+<Canvas>
+  <Story story={LabelCustomColorExample} />
+</Canvas>
+
+## Props
+
+<ArgsTable of={LabelCustomColor} />
+
+<GithubLink path="src/components/LabelCustomColor/LabelCustomColor.tsx" />
