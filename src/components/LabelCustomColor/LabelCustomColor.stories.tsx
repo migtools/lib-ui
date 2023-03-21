@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { SketchPicker } from 'react-color';
+import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
 import { LabelCustomColor } from './LabelCustomColor';
 
 export const LabelCustomColorPicker: React.FC = () => {
@@ -52,9 +53,9 @@ export const LabelCustomColorExamples: React.FC = () => {
   return (
     <>
       {colors.map((color) => (
-        <React.Fragment key={color}>
-          <LabelCustomColor color={color}>{color}</LabelCustomColor>{' '}
-        </React.Fragment>
+        <LabelCustomColor key={color} color={color} className={spacing.mXs}>
+          {color}
+        </LabelCustomColor>
       ))}
     </>
   );
