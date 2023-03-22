@@ -28,18 +28,18 @@
     "storybook:export": "rimraf storybook-static && build-storybook --docs"
   },
   "peerDependencies": {
-    "@patternfly/react-core": "^4.221.3",
-    "@patternfly/react-tokens": "^4.73.3",
+    "@patternfly/react-core": "^4.276.6",
+    "@patternfly/react-tokens": "^4.94.6",
     "axios": "^0.21.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.13.16",
-    "@patternfly/react-core": "^4.221.3",
-    "@patternfly/react-icons": "^4.72.3",
-    "@patternfly/react-table": "^4.90.3",
-    "@patternfly/react-tokens": "^4.73.3",
+    "@patternfly/react-core": "^4.276.6",
+    "@patternfly/react-icons": "^4.93.6",
+    "@patternfly/react-table": "^4.112.39",
+    "@patternfly/react-tokens": "^4.94.6",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
