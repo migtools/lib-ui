@@ -1,6 +1,17 @@
 import * as React from 'react';
 import { SketchPicker } from 'react-color';
 import spacing from '@patternfly/react-styles/css/utilities/Spacing/spacing';
+import {
+  global_palette_black_1000 as black,
+  global_palette_black_500 as gray,
+  global_palette_blue_300 as blue,
+  global_palette_green_300 as green,
+  global_palette_cyan_300 as cyan,
+  global_palette_purple_600 as purple,
+  global_palette_gold_300 as gold,
+  global_palette_orange_300 as orange,
+} from '@patternfly/react-tokens';
+
 import { LabelCustomColor } from './LabelCustomColor';
 
 export const LabelCustomColorPicker: React.FC = () => {
@@ -15,15 +26,16 @@ export const LabelCustomColorPicker: React.FC = () => {
   );
 };
 
-// Colors from https://sashamaps.net/docs/resources/20-colors/ with pink, lavender, beige, mind and apricot removed for being too bright
+// Colors from https://sashamaps.net/docs/resources/20-colors/ with some colors removed for being too bright
+// and PF global pallete colors used in place of their closest counterparts
 const EXAMPLE_COLORS = [
-  '#E6194B', // Red
-  '#3CB44B', // Green
-  '#FFE119', // Yellow
-  '#4363D8', // Blue
-  '#F58231', // Orange
-  '#911EB4', // Purple
-  '#42D4F4', // Cyan
+  '#D95F55', // Red (PF red is weird because 100 is too close to Maroon and 50 is too bright)
+  green.value, // Green
+  gold.value, // Gold
+  blue.value, // Blue
+  orange.value, // Orange
+  purple.value, // Purple
+  cyan.value, // Cyan
   '#F032E6', // Magenta
   '#BFEF45', // Lime
   '#469990', // Teal
@@ -31,8 +43,8 @@ const EXAMPLE_COLORS = [
   '#800000', // Maroon
   '#808000', // Olive
   '#000075', // Navy
-  '#A9A9A9', // Grey
-  '#000000', // Black
+  gray.value, // Gray
+  black.value, // Black
 ];
 
 export const LabelCustomColorExamples: React.FC = () => (
