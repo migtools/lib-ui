@@ -15,8 +15,8 @@ const globalColorCache: Record<
 export const LabelCustomColor: React.FC<ILabelCustomColorProps> = ({ color, ...props }) => {
   const { borderColor, backgroundColor, textColor } = React.useMemo(() => {
     if (globalColorCache[color]) return globalColorCache[color];
-    // Lighten the background 25%, and lighten it further if necessary until it can support readable text
-    const bgColorObj = tinycolor(color).lighten(25);
+    // Lighten the background 30%, and lighten it further if necessary until it can support readable text
+    const bgColorObj = tinycolor(color).lighten(30);
     const blackTextReadability = () => tinycolor.readability(bgColorObj, '#000000');
     const whiteTextReadability = () => tinycolor.readability(bgColorObj, '#FFFFFF');
     while (blackTextReadability() < 9 && whiteTextReadability() < 9) {

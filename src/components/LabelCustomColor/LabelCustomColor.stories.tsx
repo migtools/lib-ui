@@ -15,39 +15,24 @@ export const LabelCustomColorPicker: React.FC = () => {
   );
 };
 
-// Colors from https://github.com/konveyor/tackle2-hub/blob/main/migration/v3/seed/main.go#L331-L766
+// Colors from https://sashamaps.net/docs/resources/20-colors/ with pink, lavender, beige, mind and apricot removed for being too bright
 const EXAMPLE_COLORS = [
-  '#773CF3',
-  '#74F33C',
-  '#F33CA9',
-  '#3CF342',
-  '#4EF33C',
-  '#F33CE6',
-  '#F3AC3C',
-  '#3CF367',
-  '#F3D23C',
-  '#B43CF3',
-  '#F3493C',
-  '#3C65F3',
-  '#3CF3E1',
-  '#3CF3A4',
-  '#F33C47',
-  '#F36F3C',
-  '#B1F33C',
-  '#F3E93C',
-  '#3C7CF3',
-  '#3C3FF3',
-  '#3CDFF3',
-  '#F33C6C',
-  '#D93CF3',
-  '#3CF37F',
-  '#3CF3CA',
-  '#F33CCF',
-  '#9AF33C',
-  '#F3953C',
-  '#D7F33C',
-  '#3CA2F3',
-  '#9C3CF3',
+  '#E6194B', // Red
+  '#3CB44B', // Green
+  '#FFE119', // Yellow
+  '#4363D8', // Blue
+  '#F58231', // Orange
+  '#911EB4', // Purple
+  '#42D4F4', // Cyan
+  '#F032E6', // Magenta
+  '#BFEF45', // Lime
+  '#469990', // Teal
+  '#9A6324', // Brown
+  '#800000', // Maroon
+  '#808000', // Olive
+  '#000075', // Navy
+  '#A9A9A9', // Grey
+  '#000000', // Black
 ];
 
 export const LabelCustomColorExamples: React.FC = () => (
