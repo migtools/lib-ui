@@ -59,25 +59,46 @@ const iconList: IconListType = {
   },
 };
 
-export interface IStatusIconProps {
-  status: StatusType;
+export interface IStatusIconCommonProps {
   label?: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
 }
+export type StatusIconConditionalProps =
+  | {
+      status?: StatusType;
+      customIcon?: never;
+      customColor?: never;
+    }
+  | {
+      status?: never;
+      customIcon: React.ComponentClass<SVGIconProps>;
+      customColor?: string;
+    };
 
-export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
+export const StatusIcon: React.FunctionComponent<
+  IStatusIconCommonProps & StatusIconConditionalProps
+> = ({
   status,
+  customColor,
+  customIcon,
   label,
   isDisabled = false,
   className = '',
-}: IStatusIconProps) => {
-  const Icon = iconList[status].Icon;
-  const icon = (
+}: IStatusIconCommonProps & StatusIconConditionalProps) => {
+  const Icon = status! && iconList[status].Icon;
+  const CustomIcon = customIcon! && customIcon;
+
+  const icon = status ? (
     <Icon
-      color={isDisabled ? disabledColor.value : iconList[status].color?.value || '#151515'} // TODO use --pf-global--Color--100 after upgrading PF, for some reason that is resolving to #000 in this version
+      color={isDisabled ? disabledColor.value : iconList[status].color?.value || '#151515'}
       className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
     />
+  ) : (
+    <CustomIcon
+      color={isDisabled ? disabledColor.value : customColor}
+      className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
+    ></CustomIcon>
   );
 
   if (label) {
