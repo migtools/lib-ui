@@ -242,17 +242,6 @@ export interface FormGroupOptions {
   greenWhenValid?: boolean;
 }
 
-export const getFormGroupProps = <T>(
-  field: Pick<IValidatedFormField<T>, 'isTouched' | 'isValid' | 'error' | 'shouldShowError'>,
-  options?: FormGroupOptions
-): Pick<FormGroupProps, 'validated' | 'helperTextInvalid'> => {
-  const validStyle: FormGroupProps['validated'] = options?.greenWhenValid ? 'success' : 'default';
-  return {
-    validated: field.shouldShowError ? 'error' : field.isValid ? validStyle : 'default',
-    helperTextInvalid: field.error?.message,
-  };
-};
-
 export interface TextFieldOptions {
   greenWhenValid?: boolean;
   onBlur?: () => void;
@@ -264,14 +253,13 @@ export const getTextFieldProps = (
   options?: TextFieldOptions
 ): Pick<TextInputProps | TextAreaProps, 'value' | 'onChange' | 'onBlur' | 'validated'> => ({
   value: field.value,
-  onChange: (value: string) => {
+  onChange: (event: React.FormEvent<HTMLInputElement>, value: string) => {
     field.setValue(value), options?.onChange?.(value);
   },
   onBlur: () => {
     field.setIsTouched(true);
     options?.onBlur?.();
   },
-  validated: getFormGroupProps(field, options).validated,
 });
 
 export const getTextInputProps = (

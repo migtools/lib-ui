@@ -38,7 +38,11 @@ export const PersistentCounterExample: React.FunctionComponent = () => {
 export const PersistentTextFieldExample: React.FunctionComponent = () => {
   const [value, setValue] = useLocalStorage('exampleTextField', '');
   return (
-    <TextInput aria-label="Persistent text field example input" value={value} onChange={setValue} />
+    <TextInput
+      aria-label="Persistent text field example input"
+      value={value}
+      onChange={(_, value) => setValue(value)}
+    />
   );
 };
 
@@ -49,7 +53,7 @@ export const PersistentCheckboxExample: React.FunctionComponent = () => {
       id="checkbox-example"
       label="I'm a persistent checkbox!"
       isChecked={isChecked}
-      onChange={setIsChecked}
+      onChange={(_, value) => setIsChecked(value)}
     />
   );
 };
@@ -95,7 +99,7 @@ export const WelcomeModalExample: React.FunctionComponent = () => {
             label="Don't show this again"
             id="show-again-checkbox"
             isChecked={isModalDisabled}
-            onChange={setIsModalDisabled}
+            onChange={(_, value) => setIsModalDisabled(value)}
           />
         </Modal>
       </>
@@ -123,7 +127,11 @@ export const ReusedKeyExample: React.FunctionComponent = () => {
         <TextContent className={spacing.mbSm}>
           <Text component="h4">Component A</Text>
         </TextContent>
-        <TextInput aria-label="Component A example text input" value={value} onChange={setValue} />
+        <TextInput
+          aria-label="Component A example text input"
+          value={value}
+          onChange={(_, value) => setValue(value)}
+        />
       </div>
     );
   };
@@ -159,7 +167,11 @@ export const CustomHookExample: React.FunctionComponent = () => {
         <TextContent className={spacing.mbSm}>
           <Text component="h4">Component A</Text>
         </TextContent>
-        <TextInput aria-label="Component A example text input" value={value} onChange={setValue} />
+        <TextInput
+          aria-label="Component A example text input"
+          value={value}
+          onChange={(_, value) => setValue(value)}
+        />
       </div>
     );
   };

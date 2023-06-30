@@ -36,7 +36,11 @@ export const PersistentCounterExample: React.FunctionComponent = () => {
 export const PersistentTextFieldExample: React.FunctionComponent = () => {
   const [value, setValue] = useSessionStorage('exampleTextField', '');
   return (
-    <TextInput aria-label="Persistent text field example input" value={value} onChange={setValue} />
+    <TextInput
+      aria-label="Persistent text field example input"
+      value={value}
+      onChange={(_, value) => setValue(value)}
+    />
   );
 };
 

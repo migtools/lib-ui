@@ -1,11 +1,20 @@
 import * as React from 'react';
 import * as yup from 'yup';
-import { Form, FormGroup, TextInput, TextArea, Flex, Button } from '@patternfly/react-core';
+import {
+  Form,
+  FormGroup,
+  TextInput,
+  TextArea,
+  Flex,
+  Button,
+  FormHelperText,
+  HelperText,
+  HelperTextItem,
+} from '@patternfly/react-core';
 
 import {
   useFormState,
   useFormField,
-  getFormGroupProps,
   getTextInputProps,
   getTextAreaProps,
   useSelectionState,
@@ -67,35 +76,40 @@ export const PatternFlyTextFields: React.FunctionComponent = () => {
 
   return (
     <Form>
-      <FormGroup
-        label="Name"
-        isRequired
-        fieldId="example-2-name"
-        validated={form.fields.name.shouldShowError ? 'error' : 'default'}
-        helperTextInvalid={form.fields.name.error?.message}
-      >
+      <FormGroup label="Name" isRequired fieldId="example-2-name">
         <TextInput
           id="example-2-name"
           type="text"
           value={form.fields.name.value}
-          onChange={form.fields.name.setValue}
+          onChange={(_, value) => form.fields.name.setValue(value)}
           onBlur={() => form.fields.name.setIsTouched(true)}
           validated={form.fields.name.shouldShowError ? 'error' : 'default'}
         />
+        {form.fields.name.shouldShowError && (
+          <FormHelperText>
+            <HelperText>
+              <HelperTextItem variant="error">{form.fields.name.error?.message}</HelperTextItem>
+            </HelperText>
+          </FormHelperText>
+        )}
       </FormGroup>
-      <FormGroup
-        label="Description"
-        fieldId="example-2-desc"
-        validated={form.fields.description.shouldShowError ? 'error' : 'default'}
-        helperTextInvalid={form.fields.description.error?.message}
-      >
+      <FormGroup label="Description" fieldId="example-2-desc">
         <TextArea
           id="example-2-desc"
           value={form.fields.description.value}
-          onChange={form.fields.description.setValue}
+          onChange={(_, value) => form.fields.description.setValue(value)}
           onBlur={() => form.fields.description.setIsTouched(true)}
           validated={form.fields.description.shouldShowError ? 'error' : 'default'}
-        />
+        />{' '}
+        {form.fields.name.shouldShowError && (
+          <FormHelperText>
+            <HelperText>
+              <HelperTextItem variant="error">
+                {form.fields.description.error?.message}
+              </HelperTextItem>
+            </HelperText>
+          </FormHelperText>
+        )}
       </FormGroup>
       <Flex>
         <Button
@@ -121,19 +135,10 @@ export const PatternFlyTextFieldsWithHelpers: React.FunctionComponent = () => {
 
   return (
     <Form>
-      <FormGroup
-        label="Name"
-        isRequired
-        fieldId="example-3-name"
-        {...getFormGroupProps(form.fields.name)}
-      >
+      <FormGroup label="Name" isRequired fieldId="example-3-name">
         <TextInput id="example-3-name" type="text" {...getTextInputProps(form.fields.name)} />
       </FormGroup>
-      <FormGroup
-        label="Description"
-        fieldId="example-3-desc"
-        {...getFormGroupProps(form.fields.description)}
-      >
+      <FormGroup label="Description" fieldId="example-3-desc">
         <TextArea id="example-3-desc" {...getTextAreaProps(form.fields.description)} ref={null} />
       </FormGroup>
       <Flex>
@@ -175,19 +180,10 @@ export const AsyncPrefilling: React.FunctionComponent = () => {
 
   return (
     <Form>
-      <FormGroup
-        label="Name"
-        isRequired
-        fieldId="example-3-name"
-        {...getFormGroupProps(form.fields.name)}
-      >
+      <FormGroup label="Name" isRequired fieldId="example-3-name">
         <TextInput id="example-3-name" type="text" {...getTextInputProps(form.fields.name)} />
       </FormGroup>
-      <FormGroup
-        label="Description"
-        fieldId="example-3-desc"
-        {...getFormGroupProps(form.fields.description)}
-      >
+      <FormGroup label="Description" fieldId="example-3-desc">
         <TextArea id="example-3-desc" {...getTextAreaProps(form.fields.description)} ref={null} />
       </FormGroup>
       <Flex>
