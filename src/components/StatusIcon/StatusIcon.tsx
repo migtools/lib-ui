@@ -24,7 +24,7 @@ type IconListType = Partial<
   Record<
     StatusType,
     {
-      Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
+      Icon: React.ComponentClass<SVGIconProps>;
       color?: { name: string; value: string; var: string };
     }
   >
