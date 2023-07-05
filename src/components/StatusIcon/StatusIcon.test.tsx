@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import {
   global_disabled_color_200 as disabledColor,
@@ -13,8 +13,8 @@ import { StatusIcon, IStatusIconProps } from './StatusIcon';
 
 const checkColor = (props: IStatusIconProps, color: string) => {
   const { container } = render(<StatusIcon {...props} />);
-  const icon = container.querySelector('svg');
-  expect(icon).toHaveAttribute('fill', color);
+  const icon = container.querySelector('.pf-v5-svg');
+  expect(icon).toHaveAttribute('color', color);
 };
 
 const checkClass = (props: IStatusIconProps, className: string, selector: string) => {
@@ -25,7 +25,7 @@ const checkClass = (props: IStatusIconProps, className: string, selector: string
 
 const checkText = (props: IStatusIconProps, text: string) => {
   const { container } = render(<StatusIcon {...props} />);
-  const icon = container.querySelector('.pf-l-flex');
+  const icon = container.querySelector('.pf-v5-l-flex');
   expect(icon).toContainHTML(text);
 };
 
@@ -41,7 +41,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Ok', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Ok', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Ok', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 
@@ -56,7 +56,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Warning', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Warning', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Warning', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 
@@ -71,7 +71,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Error', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Error', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Error', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 
@@ -86,7 +86,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Info', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Info', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Info', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 
@@ -95,7 +95,7 @@ describe('StatusIcon', () => {
       checkText({ status: 'Loading', label: 'Loading' }, 'Loading');
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Loading', className: 'foo' }, 'foo', 'span');
+      checkClass({ status: 'Loading', className: 'foo' }, 'foo', '.pf-v5-c-spinner');
     });
   });
 
@@ -110,7 +110,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Paused', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Paused', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Paused', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 
@@ -125,7 +125,7 @@ describe('StatusIcon', () => {
       checkColor({ status: 'Unknown', isDisabled: true }, disabledColor.value);
     });
     it('should pass down a given className', () => {
-      checkClass({ status: 'Unknown', className: 'foo' }, 'foo', 'svg');
+      checkClass({ status: 'Unknown', className: 'foo' }, 'foo', '.pf-v5-svg');
     });
   });
 });
