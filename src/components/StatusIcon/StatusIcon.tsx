@@ -16,19 +16,20 @@ import {
   global_Color_dark_200 as unknownColor,
   global_danger_color_100 as errorColor,
   global_info_color_100 as infoColor,
-  global_info_color_200 as loadingColor,
 } from '@patternfly/react-tokens';
-
-import './StatusIcon.css';
 
 export type StatusType = 'Ok' | 'Warning' | 'Error' | 'Info' | 'Loading' | 'Paused' | 'Unknown';
 
-type IconListType = {
-  [key in StatusType]: {
-    Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
-    color?: { name: string; value: string; var: string };
-  };
-};
+type IconListType = Partial<
+  Record<
+    StatusType,
+    {
+      Icon: React.ComponentClass<SVGIconProps> | React.FunctionComponent<SpinnerProps>;
+      color?: { name: string; value: string; var: string };
+    }
+  >
+>;
+
 const iconList: IconListType = {
   Ok: {
     Icon: CheckCircleIcon,
@@ -45,10 +46,6 @@ const iconList: IconListType = {
   Info: {
     Icon: InfoCircleIcon,
     color: infoColor,
-  },
-  Loading: {
-    Icon: Spinner,
-    color: loadingColor,
   },
   Paused: {
     Icon: PauseCircleIcon,
@@ -72,13 +69,20 @@ export const StatusIcon: React.FunctionComponent<IStatusIconProps> = ({
   isDisabled = false,
   className = '',
 }: IStatusIconProps) => {
-  const Icon = iconList[status].Icon;
-  const icon = (
-    <Icon
-      color={isDisabled ? disabledColor.value : iconList[status].color?.value || '#151515'} // TODO use --pf-global--Color--100 after upgrading PF, for some reason that is resolving to #000 in this version
-      className={status === 'Loading' ? `${className} status-icon-loading-spinner` : className}
-    />
-  );
+  let icon: JSX.Element | null = null;
+  if (status === 'Loading') {
+    icon = <Spinner isInline className={className} />;
+  } else {
+    const IconComponent = iconList[status]?.Icon;
+    if (IconComponent) {
+      icon = (
+        <IconComponent
+          color={isDisabled ? disabledColor.value : iconList[status]?.color?.value || '#151515'} // TODO use --pf-global--Color--100 after upgrading PF, for some reason that is resolving to #000 in this version
+          className={className}
+        />
+      );
+    }
+  }
 
   if (label) {
     return (
