@@ -8,12 +8,7 @@ import {
   TextInputProps,
 } from '@patternfly/react-core';
 import { EyeIcon, EyeSlashIcon } from '@patternfly/react-icons';
-import {
-  IValidatedFormField,
-  getFormGroupProps,
-  getTextInputProps,
-  TextFieldOptions,
-} from '../../hooks/useFormState';
+import { IValidatedFormField, getTextInputProps, TextFieldOptions } from '../../hooks/useFormState';
 
 interface IValidatedPasswordInputProps
   extends Pick<FormGroupProps, 'label' | 'fieldId' | 'isRequired'> {
@@ -49,13 +44,7 @@ export const ValidatedPasswordInput: React.FunctionComponent<IValidatedPasswordI
   const [isValueVisible, toggleValueVisible] = React.useReducer((isVisible) => !isVisible, false);
   const options: TextFieldOptions = { greenWhenValid, onBlur, onChange };
   return (
-    <FormGroup
-      label={label}
-      isRequired={isRequired}
-      fieldId={fieldId}
-      {...getFormGroupProps(field as IValidatedFormField<string | undefined>, options)}
-      {...formGroupProps}
-    >
+    <FormGroup label={label} isRequired={isRequired} fieldId={fieldId} {...formGroupProps}>
       <InputGroup>
         <TextInput
           id={fieldId}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Checkbox } from '@patternfly/react-core';
-import { Table, TableHeader, TableBody, ICell, IRow } from '@patternfly/react-table';
+import { ICell, IRow } from '@patternfly/react-table';
+import { Table, TableHeader, TableBody } from '@patternfly/react-table/deprecated';
 import { useSelectionState } from './useSelectionState';
 
 export const Checkboxes: React.FunctionComponent = () => {
@@ -22,7 +23,7 @@ export const Checkboxes: React.FunctionComponent = () => {
         id="example-1-select-all"
         label="Select all"
         isChecked={areAllSelected}
-        onChange={(checked) => selectAll(checked)}
+        onChange={(_, checked) => selectAll(checked)}
       />
       <br />
       {fruits.map((fruit) => (
@@ -117,7 +118,7 @@ export const ExternalState: React.FunctionComponent = () => {
         id="example-3-select-all"
         label="Select all"
         isChecked={areAllSelected}
-        onChange={(checked) => selectAll(checked)}
+        onChange={(_, checked) => selectAll(checked)}
       />
       <br />
       {fruits.map((fruit) => (
@@ -172,7 +173,7 @@ export const NonSelectableItems: React.FunctionComponent = () => {
         id="allow-non-round"
         label="Allow non-round fruits"
         isChecked={nonRoundFruitsAllowed}
-        onChange={setNonRoundFruitsAllowed}
+        onChange={(_, value) => setNonRoundFruitsAllowed(value)}
       />
       <br />
       <hr />
@@ -181,7 +182,7 @@ export const NonSelectableItems: React.FunctionComponent = () => {
         id="example-4-select-all"
         label="Select all"
         isChecked={areAllSelected}
-        onChange={(checked) => selectAll(checked)}
+        onChange={(_, checked) => selectAll(checked)}
       />
       <br />
       {fruits.map((fruit) => (

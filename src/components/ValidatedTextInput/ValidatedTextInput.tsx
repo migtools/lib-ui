@@ -9,7 +9,6 @@ import {
 } from '@patternfly/react-core';
 import {
   IValidatedFormField,
-  getFormGroupProps,
   getTextAreaProps,
   getTextInputProps,
   TextFieldOptions,
@@ -49,13 +48,7 @@ export const ValidatedTextInput: React.FunctionComponent<IValidatedTextInputProp
 }: IValidatedTextInputProps) => {
   const options: TextFieldOptions = { greenWhenValid, onBlur, onChange };
   return (
-    <FormGroup
-      label={label}
-      isRequired={isRequired}
-      fieldId={fieldId}
-      {...getFormGroupProps(field as IValidatedFormField<string | undefined>, options)}
-      {...formGroupProps}
-    >
+    <FormGroup label={label} isRequired={isRequired} fieldId={fieldId} {...formGroupProps}>
       {component === TextInput ? (
         <TextInput
           id={fieldId}

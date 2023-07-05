@@ -20,7 +20,7 @@ const LoadingEmptyState: React.FunctionComponent<ILoadingEmptyStateProps> = ({
   body = null,
 }: ILoadingEmptyStateProps) => (
   <Bullseye className={className}>
-    <EmptyState variant="large">
+    <EmptyState variant="lg">
       <div className="pf-c-empty-state__icon">
         <Spinner aria-labelledby="loadingPrefLabel" size="xl" {...spinnerProps} />
       </div>
