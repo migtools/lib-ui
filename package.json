@@ -29,7 +29,7 @@
   },
   "peerDependencies": {
     "@patternfly/react-core": "5.0.0-prerelease.15",
-    "@patternfly/react-tokens": "5.0.0-prerelease.7",
+    "@patternfly/react-tokens": "5.0.0-prerelease.5",
     "axios": "^0.21.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
