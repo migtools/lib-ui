@@ -20,7 +20,7 @@ import { ValidatedTextInput } from '../../components/ValidatedTextInput';
 import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
 
 export const PersistentCounterExample: React.FunctionComponent = () => {
-  const [count, setCount] = useLocalStorage('exampleCounter', 0);
+  const [count, setCount] = useLocalStorage({ key: 'exampleCounter', defaultValue: 0 });
   return (
     <NumberInput
       value={count}
@@ -36,7 +36,7 @@ export const PersistentCounterExample: React.FunctionComponent = () => {
 };
 
 export const PersistentTextFieldExample: React.FunctionComponent = () => {
-  const [value, setValue] = useLocalStorage('exampleTextField', '');
+  const [value, setValue] = useLocalStorage({ key: 'exampleTextField', defaultValue: '' });
   return (
     <TextInput
       aria-label="Persistent text field example input"
@@ -47,7 +47,10 @@ export const PersistentTextFieldExample: React.FunctionComponent = () => {
 };
 
 export const PersistentCheckboxExample: React.FunctionComponent = () => {
-  const [isChecked, setIsChecked] = useLocalStorage('exampleCheckboxChecked', false);
+  const [isChecked, setIsChecked] = useLocalStorage({
+    key: 'exampleCheckboxChecked',
+    defaultValue: false,
+  });
   return (
     <Checkbox
       id="checkbox-example"
@@ -60,7 +63,10 @@ export const PersistentCheckboxExample: React.FunctionComponent = () => {
 
 export const WelcomeModalExample: React.FunctionComponent = () => {
   const ExamplePage: React.FunctionComponent = () => {
-    const [isModalDisabled, setIsModalDisabled] = useLocalStorage('welcomeModalDisabled', false);
+    const [isModalDisabled, setIsModalDisabled] = useLocalStorage({
+      key: 'welcomeModalDisabled',
+      defaultValue: false,
+    });
     const [isModalOpen, setIsModalOpen] = React.useState(!isModalDisabled);
     return (
       <>
@@ -121,7 +127,10 @@ export const WelcomeModalExample: React.FunctionComponent = () => {
 export const ReusedKeyExample: React.FunctionComponent = () => {
   // In a real app each of these components would be in separate files.
   const ComponentA: React.FunctionComponent = () => {
-    const [value, setValue] = useLocalStorage('exampleReusedKey', 'default value here');
+    const [value, setValue] = useLocalStorage({
+      key: 'exampleReusedKey',
+      defaultValue: 'default value here',
+    });
     return (
       <div className={spacing.mbLg}>
         <TextContent className={spacing.mbSm}>
@@ -136,7 +145,10 @@ export const ReusedKeyExample: React.FunctionComponent = () => {
     );
   };
   const ComponentB: React.FunctionComponent = () => {
-    const [value] = useLocalStorage('exampleReusedKey', 'default value here');
+    const [value] = useLocalStorage({
+      key: 'exampleReusedKey',
+      defaultValue: 'default value here',
+    });
     return (
       <div className={spacing.mbLg}>
         <TextContent className={spacing.mbSm}>
@@ -157,7 +169,8 @@ export const ReusedKeyExample: React.FunctionComponent = () => {
 
 export const CustomHookExample: React.FunctionComponent = () => {
   // This could be exported from its own file and imported in multiple component files.
-  const useMyStoredValue = () => useLocalStorage('myStoredValue', 'default defined once');
+  const useMyStoredValue = () =>
+    useLocalStorage({ key: 'myStoredValue', defaultValue: 'default defined once' });
 
   // In a real app each of these components would be in separate files.
   const ComponentA: React.FunctionComponent = () => {
@@ -176,7 +189,7 @@ export const CustomHookExample: React.FunctionComponent = () => {
     );
   };
   const ComponentB: React.FunctionComponent = () => {
-    const [value] = useLocalStorage('exampleReusedKey', 'default value here');
+    const [value] = useMyStoredValue();
     return (
       <div className={spacing.mbLg}>
         <TextContent className={spacing.mbSm}>
@@ -197,7 +210,7 @@ export const CustomHookExample: React.FunctionComponent = () => {
 
 export const ComplexValueExample: React.FunctionComponent = () => {
   type Item = { name: string; description?: string };
-  const [items, setItems] = useLocalStorage<Item[]>('exampleArray', []);
+  const [items, setItems] = useLocalStorage<Item[]>({ key: 'exampleArray', defaultValue: [] });
 
   const addForm = useFormState({
     name: useFormField('', yup.string().required().label('Name')),
