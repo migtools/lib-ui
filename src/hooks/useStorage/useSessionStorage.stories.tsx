@@ -18,7 +18,7 @@ import { ValidatedTextInput } from '../../components/ValidatedTextInput';
 import TimesIcon from '@patternfly/react-icons/dist/esm/icons/times-icon';
 
 export const PersistentCounterExample: React.FunctionComponent = () => {
-  const [count, setCount] = useSessionStorage('exampleCounter', 0);
+  const [count, setCount] = useSessionStorage({ key: 'exampleCounter', defaultValue: 0 });
   return (
     <NumberInput
       value={count}
@@ -34,7 +34,7 @@ export const PersistentCounterExample: React.FunctionComponent = () => {
 };
 
 export const PersistentTextFieldExample: React.FunctionComponent = () => {
-  const [value, setValue] = useSessionStorage('exampleTextField', '');
+  const [value, setValue] = useSessionStorage({ key: 'exampleTextField', defaultValue: '' });
   return (
     <TextInput
       aria-label="Persistent text field example input"
@@ -46,7 +46,7 @@ export const PersistentTextFieldExample: React.FunctionComponent = () => {
 
 export const ComplexValueExample: React.FunctionComponent = () => {
   type Item = { name: string; description?: string };
-  const [items, setItems] = useSessionStorage<Item[]>('exampleArray', []);
+  const [items, setItems] = useSessionStorage<Item[]>({ key: 'exampleArray', defaultValue: [] });
 
   const addForm = useFormState({
     name: useFormField('', yup.string().required().label('Name')),

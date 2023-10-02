@@ -33,7 +33,7 @@ and it supports TypeScript [generics](https://www.typescriptlang.org/docs/handbo
 infer its return types based on the `defaultValue`.
 
 ```ts
-const [value, setValue] = useLocalStorage<T>(key: string, defaultValue: T);
+const [value, setValue] = useLocalStorage<T>({ key: string, defaultValue: T });
 ```
 
 ## Notes

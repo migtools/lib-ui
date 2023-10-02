@@ -35,30 +35,38 @@ const setValueInStorage = <T>(storageType: StorageType, key: string, newValue: T
   }
 };
 
-const useStorage = <T>(
-  storageType: StorageType,
-  key: string,
-  defaultValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] => {
+interface IUseStorageOptions<T> {
+  isEnabled?: boolean;
+  type: StorageType;
+  key: string;
+  defaultValue: T;
+}
+
+const useStorage = <T>({
+  isEnabled = true,
+  type,
+  key,
+  defaultValue,
+}: IUseStorageOptions<T>): [T, React.Dispatch<React.SetStateAction<T>>] => {
   const [cachedValue, setCachedValue] = React.useState<T>(
-    getValueFromStorage(storageType, key, defaultValue)
+    getValueFromStorage(type, key, defaultValue)
   );
 
-  const usingStorageEvents = storageType === 'localStorage' && typeof window !== 'undefined';
+  const usingStorageEvents = type === 'localStorage' && typeof window !== 'undefined' && isEnabled;
 
   const setValue: React.Dispatch<React.SetStateAction<T>> = React.useCallback(
     (newValueOrFn: T | ((prevState: T) => T)) => {
       const newValue =
         newValueOrFn instanceof Function
-          ? newValueOrFn(getValueFromStorage(storageType, key, defaultValue))
+          ? newValueOrFn(getValueFromStorage(type, key, defaultValue))
           : newValueOrFn;
-      setValueInStorage(storageType, key, newValue);
+      setValueInStorage(type, key, newValue);
       if (!usingStorageEvents) {
         // The cache won't update automatically if there is no StorageEvent dispatched.
         setCachedValue(newValue);
       }
     },
-    [storageType, key, defaultValue, usingStorageEvents]
+    [type, key, defaultValue, usingStorageEvents]
   );
 
   React.useEffect(() => {
@@ -77,12 +85,13 @@ const useStorage = <T>(
   return [cachedValue, setValue];
 };
 
+export type UseStorageTypeOptions<T> = Omit<IUseStorageOptions<T>, 'type'>;
+
 export const useLocalStorage = <T>(
-  key: string,
-  defaultValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] => useStorage('localStorage', key, defaultValue);
+  options: UseStorageTypeOptions<T>
+): [T, React.Dispatch<React.SetStateAction<T>>] => useStorage({ ...options, type: 'localStorage' });
 
 export const useSessionStorage = <T>(
-  key: string,
-  defaultValue: T
-): [T, React.Dispatch<React.SetStateAction<T>>] => useStorage('sessionStorage', key, defaultValue);
+  options: UseStorageTypeOptions<T>
+): [T, React.Dispatch<React.SetStateAction<T>>] =>
+  useStorage({ ...options, type: 'sessionStorage' });
