@@ -189,10 +189,7 @@ export const CustomHookExample: React.FunctionComponent = () => {
     );
   };
   const ComponentB: React.FunctionComponent = () => {
-    const [value] = useLocalStorage({
-      key: 'exampleReusedKey',
-      defaultValue: 'default value here',
-    });
+    const [value] = useMyStoredValue();
     return (
       <div className={spacing.mbLg}>
         <TextContent className={spacing.mbSm}>
